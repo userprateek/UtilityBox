@@ -38,24 +38,26 @@
 // ----------------------------------------------------------------------------
 // Glassmorphism & Surface Mixins
 // ----------------------------------------------------------------------------
-@mixin glass-surface($bg-opacity: 0.7, $blur: 16px, $border-color: rgba(255, 255, 255, 0.08)) {
-  background: rgba(15, 23, 42, $bg-opacity);
+@mixin glass-surface($bg: var(--color-surface), $blur: 16px, $border-color: var(--color-border)) {
+  background: $bg;
   backdrop-filter: blur($blur);
   -webkit-backdrop-filter: blur($blur);
   border: 1px solid $border-color;
 }
 
 @mixin glass-card {
-  @include glass-surface(0.6, 12px, rgba(255, 255, 255, 0.08));
+  @include glass-surface(var(--color-surface-card), 14px, var(--color-border));
   border-radius: $radius-lg;
-  box-shadow: $shadow-md;
-  transition: all $transition-smooth;
+  box-shadow: var(--shadow-card);
+  transition:
+    transform $transition-smooth,
+    box-shadow $transition-smooth,
+    border-color $transition-smooth,
+    background $transition-smooth;
 
   &:hover {
-    border-color: rgba(255, 255, 255, 0.16);
-    box-shadow:
-      $shadow-lg,
-      0 0 20px -5px hsla(230, 80%, 56%, 0.15);
+    border-color: var(--color-border-hover);
+    box-shadow: var(--shadow-card-hover);
     transform: translateY(-2px);
   }
 }
@@ -96,7 +98,7 @@
   overflow: hidden;
 }
 
-@mixin gradient-text($gradient: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%)) {
+@mixin gradient-text($gradient: var(--gradient-brand-text)) {
   background: $gradient;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -104,7 +106,7 @@
 }
 
 @mixin brand-gradient-text {
-  background: linear-gradient(135deg, #ffffff 10%, #93c5fd 50%, #818cf8 100%);
+  background: var(--gradient-brand-text);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -116,9 +118,9 @@
 @mixin focus-ring {
   outline: none;
   &:focus-visible {
-    outline: 2px solid $primary-400;
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
-    box-shadow: 0 0 0 4px hsla(230, 80%, 56%, 0.25);
+    box-shadow: 0 0 0 4px var(--color-primary-glow);
   }
 }
 
@@ -131,13 +133,13 @@
     height: 6px;
   }
   &::-webkit-scrollbar-track {
-    background: rgba(15, 23, 42, 0.5);
+    background: var(--color-bg-subtle);
   }
   &::-webkit-scrollbar-thumb {
-    background: $neutral-700;
+    background: var(--color-text-faint);
     border-radius: $radius-full;
     &:hover {
-      background: $neutral-600;
+      background: var(--color-text-muted);
     }
   }
 }

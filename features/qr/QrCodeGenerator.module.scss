@@ -35,7 +35,7 @@
   gap: $space-2;
   flex-wrap: wrap;
   padding-bottom: $space-4;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .typeBtn {
@@ -45,16 +45,16 @@
   padding: 8px $space-3;
   font-size: $font-size-xs;
   font-weight: $font-weight-medium;
-  color: $neutral-300;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--color-text-muted);
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
   border-radius: $radius-lg;
   cursor: pointer;
   transition: all $transition-fast;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: #ffffff;
+    background: var(--color-surface-hover);
+    color: var(--color-text-main);
   }
 }
 
@@ -89,16 +89,16 @@
 .label {
   font-size: $font-size-xs;
   font-weight: $font-weight-medium;
-  color: $neutral-200;
+  color: var(--color-text-main);
 }
 
 .textarea {
   width: 100%;
   padding: $space-3 $space-4;
   font-size: $font-size-sm;
-  color: #ffffff;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--color-text-main);
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
   border-radius: $radius-lg;
   outline: none;
   resize: vertical;
@@ -106,8 +106,8 @@
   transition: border-color $transition-fast;
 
   &:focus {
-    border-color: $primary-400;
-    box-shadow: 0 0 0 3px hsla(230, 80%, 56%, 0.2);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-glow);
   }
 }
 
@@ -116,7 +116,7 @@
 // ----------------------------------------------------------------------------
 .logoSection {
   padding-top: $space-4;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   gap: $space-3;
@@ -129,7 +129,7 @@
 }
 
 .sectionIcon {
-  color: $primary-400;
+  color: var(--color-primary);
 }
 
 .logoPillsRow {
@@ -146,24 +146,24 @@
   padding: 6px 12px;
   font-size: $font-size-xs;
   font-weight: $font-weight-medium;
-  color: $neutral-300;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--color-text-muted);
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
   border-radius: $radius-full;
   cursor: pointer;
   transition: all $transition-fast;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: #ffffff;
+    background: var(--color-surface-hover);
+    color: var(--color-text-main);
   }
 }
 
 .logoPillActive {
-  background: rgba(79, 70, 229, 0.25) !important;
-  color: #ffffff !important;
-  border-color: $primary-400 !important;
-  box-shadow: 0 0 10px hsla(230, 80%, 56%, 0.3);
+  background: var(--color-primary-subtle) !important;
+  color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 10px var(--color-primary-glow);
 }
 
 .logoPillIcon {
@@ -178,8 +178,8 @@
   gap: $space-3;
   padding: $space-2 $space-3;
   border-radius: $radius-lg;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
   width: fit-content;
 }
 
@@ -192,7 +192,7 @@
 
 .customLogoName {
   font-size: $font-size-xs;
-  color: $neutral-200;
+  color: var(--color-text-main);
 }
 
 .removeLogoBtn {
@@ -202,13 +202,14 @@
   width: 20px;
   height: 20px;
   border-radius: $radius-full;
-  background: rgba(239, 68, 68, 0.2);
-  color: #f87171;
+  background: var(--color-error-bg);
+  color: var(--color-error);
   border: none;
   cursor: pointer;
 
   &:hover {
-    background: rgba(239, 68, 68, 0.4);
+    background: var(--color-error);
+    color: #ffffff;
   }
 }
 
@@ -229,8 +230,8 @@
 .valueBadge {
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
-  color: $primary-300;
-  background: rgba(79, 70, 229, 0.15);
+  color: var(--color-primary);
+  background: var(--color-primary-subtle);
   padding: 2px 8px;
   border-radius: $radius-full;
 }
@@ -238,7 +239,8 @@
 .rangeInput {
   width: 100%;
   height: 6px;
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--color-surface-hover);
+  border: 1px solid var(--color-border);
   border-radius: $radius-full;
   outline: none;
   cursor: pointer;
@@ -249,7 +251,7 @@
     width: 16px;
     height: 16px;
     border-radius: $radius-full;
-    background: $primary-400;
+    background: var(--color-primary);
     cursor: pointer;
   }
 }
@@ -259,7 +261,7 @@
 // ----------------------------------------------------------------------------
 .styleOptions {
   padding-top: $space-4;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   gap: $space-3;
@@ -268,7 +270,7 @@
 .styleTitle {
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
-  color: $neutral-400;
+  color: var(--color-text-faint);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -287,17 +289,17 @@
 
 .subLabel {
   font-size: $font-size-xs;
-  color: $neutral-400;
+  color: var(--color-text-muted);
 }
 
 .pickerBox {
   display: flex;
   align-items: center;
   gap: $space-2;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--color-surface-card);
   padding: 4px $space-2;
   border-radius: $radius-md;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--color-border);
 }
 
 .colorInput {
@@ -319,22 +321,22 @@
 
 .colorHex {
   font-size: $font-size-xs;
-  color: $neutral-300;
+  color: var(--color-text-main);
   font-family: monospace;
 }
 
 .select {
   padding: 6px $space-2;
   font-size: $font-size-xs;
-  color: #ffffff;
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--color-text-main);
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
   border-radius: $radius-md;
   outline: none;
   cursor: pointer;
 
   &:focus {
-    border-color: $primary-400;
+    border-color: var(--color-primary);
   }
 }
 
@@ -354,14 +356,14 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--color-border);
   padding-bottom: $space-3;
 }
 
 .previewTitle {
   font-size: $font-size-base;
   font-weight: $font-weight-semibold;
-  color: #ffffff;
+  color: var(--color-text-main);
 }
 
 .liveBadge {
@@ -369,8 +371,8 @@
   align-items: center;
   gap: 4px;
   font-size: $font-size-xs;
-  color: $primary-300;
-  background: rgba(79, 70, 229, 0.15);
+  color: var(--color-primary);
+  background: var(--color-primary-subtle);
   padding: 2px 8px;
   border-radius: $radius-full;
 }
@@ -382,7 +384,9 @@
   justify-content: center;
   padding: $space-4;
   border-radius: $radius-2xl;
-  box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.6);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-subtle);
   width: 100%;
   max-width: 270px;
   aspect-ratio: 1 / 1;
@@ -401,7 +405,7 @@
 
 .captionText {
   font-size: $font-size-xs;
-  color: $neutral-400;
+  color: var(--color-text-muted);
   word-break: break-all;
   max-width: 280px;
 }
@@ -421,10 +425,10 @@
 
 .freeBadge {
   font-size: $font-size-xs;
-  color: $color-success;
-  background: rgba(16, 185, 129, 0.08);
+  color: var(--color-success);
+  background: var(--color-success-bg);
   padding: 6px $space-3;
   border-radius: $radius-md;
-  border: 1px solid rgba(16, 185, 129, 0.2);
+  border: 1px solid var(--color-success-border);
   width: 100%;
 }

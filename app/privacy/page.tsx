@@ -3,8 +3,8 @@ import { Container } from '@/components/layout/Container/Container';
 import styles from '../info.module.scss';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | UtilityBox',
-  description: 'UtilityBox Privacy Policy: We do not store, view, or transmit your files.',
+  title: 'Privacy Policy | DocsWala',
+  description: 'DocsWala Privacy Policy: We do not store, view, or transmit your files.',
 };
 
 export default function PrivacyPage() {
@@ -31,7 +31,7 @@ export default function PrivacyPage() {
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>2. Zero Personal Data Retention</h2>
             <p className={styles.text}>
-              UtilityBox does not require an account, does not ask for personal information, and
+              DocsWala does not require an account, does not ask for personal information, and
               does not build identifiable user profiles.
             </p>
           </section>

@@ -1,3 +1,5 @@
+import { siteConfig } from '@/config/site';
+
 /**
  * Formats a byte number into human-readable units (B, KB, MB, GB)
  */
@@ -31,6 +33,80 @@ export function calculateSavings(
     savedBytes: Math.max(0, diff),
     isReduced: diff > 0,
   };
+}
+
+/**
+ * Extracts clean domain host from site URL (e.g. 'docswala.net')
+ */
+export function getSiteDomain(): string {
+  try {
+    return siteConfig.url.replace(/^https?:\/\//i, '').replace(/\/.*$/, '') || 'docswala.net';
+  } catch {
+    return 'docswala.net';
+  }
+}
+
+/**
+ * Generates a branded filename for downloaded files.
+ * Format: {uploadedfilename}_{action}_{siteurl}.{extension}
+ *
+ * Example:
+ *  - passport_photo.jpg + compressed -> passport_photo_compressed_docswala.net.jpg
+ *  - signature.png + cropped -> signature_cropped_docswala.net.png
+ *  - marksheets.pdf + merged -> marksheets_merged_docswala.net.pdf
+ *  - qrcode_upi + qr -> qrcode_upi_qr_docswala.net.png
+ */
+export function generateDownloadFilename(
+  originalFilename: string,
+  action: string = 'processed',
+  customExtension?: string
+): string {
+  const domain = getSiteDomain();
+
+  // Extract base filename without extension
+  const lastDot = originalFilename.lastIndexOf('.');
+  const rawBaseName = lastDot > 0 ? originalFilename.slice(0, lastDot) : originalFilename;
+
+  // Clean special characters from base name while preserving readability
+  const cleanBaseName =
+    rawBaseName
+      .replace(/[^a-zA-Z0-9_\-]/g, '_')
+      .replace(/_+/g, '_')
+      .replace(/^_+|_+$/g, '') || 'file';
+
+  // Format action string (e.g. image-compressor -> compressed, pdf-merger -> merged)
+  const actionMap: Record<string, string> = {
+    'image-compressor': 'compressed',
+    'pdf-compressor': 'compressed',
+    'image-cropper': 'cropped',
+    'image-resizer': 'resized',
+    'image-converter': 'converted',
+    'pdf-merger': 'merged',
+    'pdf-splitter': 'split',
+    'pdf-to-image': 'converted',
+    'image-to-pdf': 'converted',
+    'qr-code-generator': 'qr',
+    'json-formatter': 'formatted',
+    'base64-converter': 'converted',
+  };
+
+  const cleanAction = (
+    actionMap[action] ||
+    action
+      .replace(/^image-|^pdf-/, '')
+      .replace(/[^a-zA-Z0-9_\-]/g, '_')
+      .toLowerCase() ||
+    'processed'
+  ).toLowerCase();
+
+  // Determine output extension
+  const extension = (
+    customExtension
+      ? customExtension.replace(/^\./, '')
+      : getFileExtension(originalFilename) || 'bin'
+  ).toLowerCase();
+
+  return `${cleanBaseName}_${cleanAction}_${domain}.${extension}`;
 }
 
 /**

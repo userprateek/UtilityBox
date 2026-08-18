@@ -30,9 +30,9 @@
 }
 
 .placeholder {
-  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border: 1px dashed var(--color-border);
   border-radius: $radius-lg;
-  background: rgba(15, 23, 42, 0.3);
+  background: var(--color-surface-subtle);
   padding: $space-4;
 }
 
@@ -48,12 +48,12 @@
 .placeholderLabel {
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
-  color: $neutral-500;
+  color: var(--color-text-faint);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .placeholderSub {
   font-size: $font-size-xs;
-  color: $neutral-600;
+  color: var(--color-text-faint);
 }

@@ -27,11 +27,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!tool) {
     return {
-      title: 'Tool Not Found | UtilityBox',
+      title: `Tool Not Found | ${siteConfig.name}`,
     };
   }
 
-  const pageUrl = `${siteConfig.url}/tools/${tool.slug}`;
+  const pageUrl = `${siteConfig.url}/${tool.slug}`;
 
   return {
     title: tool.seoTitle,
@@ -65,10 +65,10 @@ export default async function ToolPage({ params }: Props) {
     notFound();
   }
 
-  const pageUrl = `${siteConfig.url}/tools/${tool.slug}`;
+  const pageUrl = `${siteConfig.url}/${tool.slug}`;
   const breadcrumbItems = [
     { name: 'All Tools', url: '/tools' },
-    { name: tool.name, url: `/tools/${tool.slug}` },
+    { name: tool.name, url: `/${tool.slug}` },
   ];
 
   const toolJsonLd = generateToolJsonLd(tool);

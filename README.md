@@ -1,4 +1,4 @@
-# 📦 UtilityBox
+# 📦 DocsWala
 
 > **100% Free • No Sign-Up • Fast In-Browser Utilities**  
 > A high-performance suite of client-side browser tools for images, PDFs, QR codes, and everyday form filling. Built for cyber cafes, small xerox & print shops, students, and citizens filling online exam/government portal forms.
@@ -9,7 +9,7 @@
 
 Traditional file conversion websites upload your confidential documents (Aadhaar cards, marksheets, signatures, bank statements) to unknown cloud servers.
 
-**UtilityBox executes 100% locally on your computer:**
+**DocsWala executes 100% locally on your computer:**
 
 - **Zero Server Uploads**: Files never leave your browser sandbox.
 - **No Sign-Up Required**: Instant unlimited access without creating an account.
@@ -20,14 +20,14 @@ Traditional file conversion websites upload your confidential documents (Aadhaar
 
 ## 🚀 Key Features & Implemented Tools
 
-### 1. ✂️ Interactive Passport Photo & Signature Cropper (`/tools/image-cropper`)
+### 1. ✂️ Interactive Passport Photo & Signature Cropper (`/image-cropper`)
 
 - Custom draggable crop box with **4 prominent side grip buttons** and **4 corner grab handles**.
 - 1-Click presets for **Passport Photos (35×45mm / 2×2 in)**, **Signatures (3:1)**, **ID Cards (4:3)**, and custom ratios.
 - Rotate (90°, 180°, 270°) and flip tools with intermediate canvas projection for 100% mathematical crop precision.
 - High-res PNG, JPEG, and WebP downloads.
 
-### 2. 📱 Shop UPI & WhatsApp QR Code Generator (`/tools/qr-code-generator`)
+### 2. 📱 Shop UPI & WhatsApp QR Code Generator (`/qr-code-generator`)
 
 - **Shop UPI Payment QR**: Custom Shop UPI ID (VPA), Payee Name, and optional fixed amount for Google Pay, PhonePe, Paytm, and BHIM.
 - **Center Logo & Image Embedding**:
@@ -39,7 +39,7 @@ Traditional file conversion websites upload your confidential documents (Aadhaar
 - **Print Standee Button**: Generates a print-ready counter standee card ready for physical shop printing.
 - **Copy Image**: 1-Click copy to clipboard for instant pasting (`Ctrl+V`) into MS Word, Photoshop, or WhatsApp Web.
 
-### 3. 📸 Image Compressor (`/tools/image-compressor`)
+### 3. 📸 Image Compressor (`/image-compressor`)
 
 - Target file size reduction (e.g. Under 50KB / 100KB for government and exam portals).
 - Quality adjustment slider with live percentage savings calculator.
@@ -202,7 +202,7 @@ The architecture is fully decoupled: adding new tools requires zero modification
 
 Create `features/pdf/PdfMergerWorkspace.tsx` or options component in `features/pdf/`.
 
-### Step 3: Lazy Route in `app/tools/[slug]/ToolPageClient.tsx`
+### Step 3: Lazy Route in `app/[slug]/ToolPageClient.tsx`
 
 ```tsx
 const PdfMergerWorkspace = dynamic(
@@ -215,4 +215,4 @@ const PdfMergerWorkspace = dynamic(
 
 ## 📄 License
 
-MIT © [UtilityBox](https://utilitybox.pp9.uk)
+MIT © [DocsWala](https://docswala.net)

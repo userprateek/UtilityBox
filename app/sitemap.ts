@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = siteConfig.url;
 
   const toolUrls = tools.map((tool) => ({
-    url: `${baseUrl}/tools/${tool.slug}`,
+    url: `${baseUrl}/${tool.slug}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: tool.isPopular ? 0.9 : 0.8,

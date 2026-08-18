@@ -15,7 +15,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
   const category = TOOL_CATEGORIES[tool.category];
 
   return (
-    <Link href={`/tools/${tool.slug}`} className={styles.cardLink}>
+    <Link href={`/${tool.slug}`} className={styles.cardLink}>
       <div className={styles.card}>
         <div className={styles.cardHeader}>
           <div className={styles.iconWrapper} style={{ color: category?.accentColor }}>

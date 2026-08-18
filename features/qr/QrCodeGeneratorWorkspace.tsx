@@ -22,6 +22,8 @@ import { Button } from '@/components/common/Button/Button';
 import { Card } from '@/components/common/Card/Card';
 import { Input } from '@/components/common/Input/Input';
 import { ToolHeader } from '@/components/tool/ToolHeader/ToolHeader';
+import { generateDownloadFilename } from '@/lib/file/fileUtils';
+import { siteConfig } from '@/config/site';
 import styles from './QrCodeGenerator.module.scss';
 
 export interface QrCodeGeneratorWorkspaceProps {
@@ -60,7 +62,7 @@ export const QrCodeGeneratorWorkspace: React.FC<QrCodeGeneratorWorkspaceProps> =
   const [qrType, setQrType] = useState<QrType>('url');
 
   // Fields for URL / Text
-  const [textContent, setTextContent] = useState<string>('https://utilitybox.pp9.uk');
+  const [textContent, setTextContent] = useState<string>(siteConfig.url);
 
   // Fields for UPI Payment
   const [upiId, setUpiId] = useState<string>('shopname@upi');
@@ -133,7 +135,7 @@ export const QrCodeGeneratorWorkspace: React.FC<QrCodeGeneratorWorkspaceProps> =
       }
       case 'url':
       default:
-        return textContent || 'https://utilitybox.pp9.uk';
+        return textContent || siteConfig.url;
     }
   }, [
     qrType,
@@ -240,7 +242,7 @@ export const QrCodeGeneratorWorkspace: React.FC<QrCodeGeneratorWorkspaceProps> =
     if (!dataUrl) return;
     const a = document.createElement('a');
     a.href = dataUrl;
-    a.download = `qrcode-${qrType}-${Date.now()}.png`;
+    a.download = generateDownloadFilename(`qrcode-${qrType}`, 'qr', 'png');
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -254,7 +256,7 @@ export const QrCodeGeneratorWorkspace: React.FC<QrCodeGeneratorWorkspaceProps> =
     printWindow.document.write(`
       <html>
         <head>
-          <title>Print QR Code - UtilityBox</title>
+          <title>Print QR Code - ${siteConfig.name}</title>
           <style>
             body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90vh; margin: 0; }
             .card { border: 2px dashed #000; padding: 28px; border-radius: 16px; text-align: center; max-width: 380px; }
@@ -269,7 +271,7 @@ export const QrCodeGeneratorWorkspace: React.FC<QrCodeGeneratorWorkspaceProps> =
             <h2>${qrType === 'upi' ? payeeName || 'Scan & Pay via UPI' : qrType === 'wifi' ? `WiFi: ${wifiSsid}` : 'Scan QR Code'}</h2>
             <p>${qrType === 'upi' ? `UPI ID: ${upiId}` : 'Scan with your camera or payment app'}</p>
             <img src="${dataUrl}" alt="QR Code" />
-            <div class="footer">UtilityBox • Fast & Free QR</div>
+            <div class="footer">${siteConfig.name} • Fast & Free QR</div>
           </div>
           <script>
             window.onload = function() { window.print(); window.close(); }

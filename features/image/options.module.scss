@@ -22,14 +22,14 @@
 .label {
   font-size: $font-size-sm;
   font-weight: $font-weight-medium;
-  color: $neutral-200;
+  color: var(--color-text-main);
 }
 
 .valueBadge {
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
-  color: $primary-300;
-  background: rgba(79, 70, 229, 0.15);
+  color: var(--color-primary);
+  background: var(--color-primary-subtle);
   padding: 2px 8px;
   border-radius: $radius-full;
 }
@@ -37,7 +37,8 @@
 .rangeInput {
   width: 100%;
   height: 6px;
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--color-surface-hover);
+  border: 1px solid var(--color-border);
   border-radius: $radius-full;
   outline: none;
   cursor: pointer;
@@ -48,8 +49,8 @@
     width: 18px;
     height: 18px;
     border-radius: $radius-full;
-    background: $primary-400;
-    box-shadow: 0 0 10px hsla(230, 80%, 56%, 0.5);
+    background: var(--color-primary);
+    box-shadow: 0 0 10px var(--color-primary-glow);
     cursor: pointer;
     transition: transform $transition-fast;
 
@@ -63,7 +64,7 @@
   display: flex;
   justify-content: space-between;
   font-size: $font-size-xs;
-  color: $neutral-400;
+  color: var(--color-text-faint);
 }
 
 .checkboxGroup {
@@ -77,7 +78,7 @@
   align-items: center;
   gap: $space-2;
   font-size: $font-size-sm;
-  color: $neutral-300;
+  color: var(--color-text-muted);
   cursor: pointer;
   user-select: none;
 }
@@ -85,6 +86,6 @@
 .checkbox {
   width: 16px;
   height: 16px;
-  accent-color: $primary-500;
+  accent-color: var(--color-primary);
   cursor: pointer;
 }

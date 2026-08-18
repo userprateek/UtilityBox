@@ -17,6 +17,7 @@ import {
 import { cn } from '@/lib/utils/cn';
 import { Container } from '../Container/Container';
 import { Badge } from '@/components/common/Badge/Badge';
+import { ThemeToggle } from '@/components/common/ThemeToggle/ThemeToggle';
 import { TOOL_CATEGORIES_LIST } from '@/config/tools/categories';
 import styles from './Header.module.scss';
 
@@ -53,7 +54,7 @@ export const Header: React.FC = () => {
           </div>
           <div className={styles.logoText}>
             <span className={styles.brandName}>
-              Utility<span className={styles.brandAccent}>Box</span>
+              Docs<span className={styles.brandAccent}>Wala</span>
             </span>
           </div>
         </Link>
@@ -128,6 +129,9 @@ export const Header: React.FC = () => {
             <kbd className={styles.searchKbd}>⌘K</kbd>
           </Link>
 
+          {/* Theme Switcher Toggle */}
+          <ThemeToggle />
+
           {/* Mobile Menu Trigger */}
           <button
             type="button"
@@ -145,6 +149,10 @@ export const Header: React.FC = () => {
       {mobileMenuOpen && (
         <div className={styles.mobileDrawer}>
           <nav className={styles.mobileNav}>
+            <div className={styles.mobileThemeWrapper}>
+              <ThemeToggle variant="row" />
+            </div>
+
             <Link
               href="/"
               className={cn(styles.mobileNavLink, pathname === '/' && styles.active)}

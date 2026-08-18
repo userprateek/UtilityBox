@@ -56,12 +56,12 @@ export default function HomePage() {
                 Explore All {allTools.length} Tools
               </Button>
             </Link>
-            <Link href="/tools/image-compressor">
+            <Link href="/image-compressor">
               <Button size="lg" variant="secondary">
                 Compress Photo for Forms
               </Button>
             </Link>
-            <Link href="/tools/qr-code-generator">
+            <Link href="/qr-code-generator">
               <Button size="lg" variant="ghost" leftIcon={<QrCode size={16} />}>
                 Create Shop QR Code
               </Button>
@@ -104,7 +104,7 @@ export default function HomePage() {
 
           <div className={styles.tasksGrid}>
             {/* Task 1 */}
-            <Link href="/tools/image-compressor" className={styles.taskCard}>
+            <Link href="/image-compressor" className={styles.taskCard}>
               <div className={styles.taskIconWrapper}>
                 <FileCheck2 size={24} />
               </div>
@@ -117,7 +117,7 @@ export default function HomePage() {
             </Link>
 
             {/* Task 2 */}
-            <Link href="/tools/image-cropper" className={styles.taskCard}>
+            <Link href="/image-cropper" className={styles.taskCard}>
               <div className={styles.taskIconWrapper}>
                 <Scissors size={24} />
               </div>
@@ -129,7 +129,7 @@ export default function HomePage() {
             </Link>
 
             {/* Task 3 */}
-            <Link href="/tools/pdf-merger" className={styles.taskCard}>
+            <Link href="/pdf-merger" className={styles.taskCard}>
               <div className={styles.taskIconWrapper}>
                 <Layers size={24} />
               </div>
@@ -141,7 +141,7 @@ export default function HomePage() {
             </Link>
 
             {/* Task 4 */}
-            <Link href="/tools/qr-code-generator" className={styles.taskCard}>
+            <Link href="/qr-code-generator" className={styles.taskCard}>
               <div className={styles.taskIconWrapper}>
                 <QrCode size={24} />
               </div>
@@ -153,7 +153,7 @@ export default function HomePage() {
             </Link>
 
             {/* Task 5 */}
-            <Link href="/tools/pdf-compressor" className={styles.taskCard}>
+            <Link href="/pdf-compressor" className={styles.taskCard}>
               <div className={styles.taskIconWrapper}>
                 <FileMinus size={24} />
               </div>
@@ -165,7 +165,7 @@ export default function HomePage() {
             </Link>
 
             {/* Task 6 */}
-            <Link href="/tools/image-to-pdf" className={styles.taskCard}>
+            <Link href="/image-to-pdf" className={styles.taskCard}>
               <div className={styles.taskIconWrapper}>
                 <FileUp size={24} />
               </div>
@@ -210,11 +210,11 @@ export default function HomePage() {
       <section className={styles.valueSection}>
         <Container size="lg">
           <div className={styles.valueHeader}>
-            <span className={styles.sectionOverline}>Why People Choose UtilityBox</span>
+            <span className={styles.sectionOverline}>Why People Choose DocsWala</span>
             <h2 className={styles.sectionTitle}>Built for Cyber Cafes, Shopkeepers & Students</h2>
             <p className={styles.valueSubtitle}>
               Unlike other websites that force you to register, add watermarks, or make you pay
-              after 2 files, UtilityBox is made for fast everyday work.
+              after 2 files, DocsWala is made for fast everyday work.
             </p>
           </div>
 

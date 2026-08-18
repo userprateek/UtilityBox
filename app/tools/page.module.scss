@@ -25,7 +25,7 @@
 
 .pageSubtitle {
   font-size: $font-size-base;
-  color: $neutral-300;
+  color: var(--color-text-muted);
 }
 
 // ----------------------------------------------------------------------------
@@ -61,24 +61,24 @@
   padding: 6px $space-4;
   font-size: $font-size-xs;
   font-weight: $font-weight-medium;
-  color: $neutral-400;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--color-text-muted);
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
   border-radius: $radius-full;
   transition: all $transition-fast;
   cursor: pointer;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: $neutral-100;
+    background: var(--color-surface-hover);
+    color: var(--color-text-main);
   }
 }
 
 .activeTab {
-  background: $primary-500;
+  background: $primary-500 !important;
   color: #ffffff !important;
-  border-color: $primary-500;
-  box-shadow: 0 0 12px hsla(230, 80%, 56%, 0.4);
+  border-color: $primary-500 !important;
+  box-shadow: 0 0 12px hsla(230, 80%, 56%, 0.35);
 }
 
 .resultsInfo {
@@ -86,15 +86,15 @@
   align-items: center;
   justify-content: space-between;
   padding-bottom: $space-2;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .resultsCount {
   font-size: $font-size-xs;
-  color: $neutral-400;
+  color: var(--color-text-muted);
 
   strong {
-    color: $neutral-100;
+    color: var(--color-text-main);
   }
 }
 
@@ -121,15 +121,15 @@
   padding: $space-2 $space-4;
   font-size: $font-size-xs;
   font-weight: $font-weight-medium;
-  color: $primary-400;
-  background: rgba(79, 70, 229, 0.1);
-  border: 1px solid rgba(79, 70, 229, 0.3);
+  color: var(--color-primary);
+  background: var(--color-primary-subtle);
+  border: 1px solid var(--color-primary-glow);
   border-radius: $radius-md;
   cursor: pointer;
   transition: all $transition-fast;
 
   &:hover {
-    background: rgba(79, 70, 229, 0.2);
-    color: $primary-300;
+    background: var(--color-primary);
+    color: #ffffff;
   }
 }

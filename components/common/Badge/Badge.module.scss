@@ -13,55 +13,55 @@
 }
 
 .sm {
-  padding: 2px $space-2;
+  padding: 3px $space-2;
   font-size: $font-size-xs;
 }
 
 .md {
-  padding: 4px $space-3;
+  padding: 5px $space-3;
   font-size: $font-size-xs;
 }
 
 .primary {
-  background: hsla(230, 80%, 56%, 0.15);
-  color: $primary-300;
-  border-color: hsla(230, 80%, 56%, 0.3);
+  background: var(--color-primary-subtle);
+  color: var(--color-primary);
+  border-color: var(--color-primary-glow);
 }
 
 .secondary {
-  background: rgba(255, 255, 255, 0.08);
-  color: $neutral-200;
-  border-color: rgba(255, 255, 255, 0.12);
+  background: var(--color-surface-hover);
+  color: var(--color-text-main);
+  border-color: var(--color-border);
 }
 
 .neutral {
-  background: $neutral-850;
-  color: $neutral-400;
-  border-color: $neutral-700;
+  background: var(--color-surface-subtle);
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
 }
 
 .success {
-  background: $color-success-bg;
-  color: $color-success;
-  border-color: $color-success-border;
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  border-color: var(--color-success-border);
 }
 
 .warning {
-  background: $color-warning-bg;
-  color: $color-warning;
-  border-color: $color-warning-border;
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+  border-color: var(--color-warning-border);
 }
 
 .error {
-  background: $color-error-bg;
-  color: $color-error;
-  border-color: $color-error-border;
+  background: var(--color-error-bg);
+  color: var(--color-error);
+  border-color: var(--color-error-border);
 }
 
 .outline {
   background: transparent;
-  color: $neutral-300;
-  border-color: rgba(255, 255, 255, 0.15);
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
 }
 
 .icon {

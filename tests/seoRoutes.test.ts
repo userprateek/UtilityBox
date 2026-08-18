@@ -1,6 +1,6 @@
 import sitemap from '@/app/sitemap';
 import robots from '@/app/robots';
-import { generateMetadata } from '@/app/tools/[slug]/page';
+import { generateMetadata } from '@/app/[slug]/page';
 import { getAllTools } from '@/config/tools/registry';
 
 describe('SEO & Route Verification', () => {
@@ -11,12 +11,12 @@ describe('SEO & Route Verification', () => {
     expect(sitemapEntries.length).toBeGreaterThan(allTools.length);
 
     // Root and directory
-    expect(sitemapEntries.some((e) => e.url === 'https://utilitybox.pp9.uk')).toBe(true);
-    expect(sitemapEntries.some((e) => e.url === 'https://utilitybox.pp9.uk/tools')).toBe(true);
+    expect(sitemapEntries.some((e) => e.url === 'https://docswala.net')).toBe(true);
+    expect(sitemapEntries.some((e) => e.url === 'https://docswala.net/tools')).toBe(true);
 
     // Verify every registered tool has an entry
     allTools.forEach((tool) => {
-      const match = sitemapEntries.find((e) => e.url.endsWith(`/tools/${tool.slug}`));
+      const match = sitemapEntries.find((e) => e.url.endsWith(`/${tool.slug}`));
       expect(match).toBeDefined();
       expect(match?.changeFrequency).toBe('weekly');
     });
@@ -25,7 +25,7 @@ describe('SEO & Route Verification', () => {
   it('generates robots.txt with allow-all rules and sitemap location', () => {
     const robotsConfig = robots();
     expect(robotsConfig.rules).toBeDefined();
-    expect(robotsConfig.sitemap).toBe('https://utilitybox.pp9.uk/sitemap.xml');
+    expect(robotsConfig.sitemap).toBe('https://docswala.net/sitemap.xml');
   });
 
   it('generates rich OpenGraph and Twitter metadata for tool pages', async () => {

@@ -14,7 +14,7 @@
   justify-content: space-between;
   gap: $space-4;
   padding-bottom: $space-2;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .titleInfo {
@@ -26,16 +26,17 @@
 .listTitle {
   font-size: $font-size-base;
   font-weight: $font-weight-semibold;
-  color: #ffffff;
+  color: var(--color-text-main);
 }
 
 .countBadge {
   font-size: $font-size-xs;
   font-weight: $font-weight-medium;
-  color: $neutral-400;
-  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text-muted);
+  background: var(--color-surface-hover);
   padding: 2px 8px;
   border-radius: $radius-full;
+  border: 1px solid var(--color-border);
 }
 
 .headerActions {
@@ -62,14 +63,16 @@
   align-items: center;
   gap: $space-4;
   padding: $space-3 $space-4;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
   border-radius: $radius-lg;
+  box-shadow: var(--shadow-card);
   transition: all $transition-fast;
 
   &:hover {
-    border-color: rgba(255, 255, 255, 0.16);
-    background: rgba(15, 23, 42, 0.85);
+    border-color: var(--color-border-hover);
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-1px);
   }
 }
 
@@ -80,8 +83,8 @@
   width: 52px;
   height: 52px;
   border-radius: $radius-md;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -97,7 +100,7 @@
 }
 
 .genericIcon {
-  color: $primary-400;
+  color: var(--color-primary);
 }
 
 .details {
@@ -118,7 +121,7 @@
 .fileName {
   font-size: $font-size-sm;
   font-weight: $font-weight-medium;
-  color: $neutral-100;
+  color: var(--color-text-main);
   @include truncate;
 }
 
@@ -126,14 +129,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: $neutral-400;
+  color: var(--color-text-muted);
   padding: 4px;
   border-radius: $radius-sm;
+  background: transparent;
+  border: none;
+  cursor: pointer;
   transition: all $transition-fast;
 
   &:hover {
-    color: $color-error;
-    background: $color-error-bg;
+    color: var(--color-error);
+    background: var(--color-error-bg);
   }
 }
 
@@ -146,7 +152,7 @@
 
 .fileSize {
   font-size: $font-size-xs;
-  color: $neutral-400;
+  color: var(--color-text-muted);
 }
 
 .savingsBadge {
@@ -155,10 +161,11 @@
   gap: 3px;
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
-  color: $color-success;
-  background: $color-success-bg;
+  color: var(--color-success);
+  background: var(--color-success-bg);
   padding: 1px 6px;
   border-radius: $radius-sm;
+  border: 1px solid var(--color-success-border);
 }
 
 .progressContainer {
@@ -167,7 +174,7 @@
 
 .errorMessage {
   font-size: $font-size-xs;
-  color: $color-error;
+  color: var(--color-error);
   @include truncate;
 }
 

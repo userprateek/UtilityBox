@@ -3,9 +3,9 @@ import { Container } from '@/components/layout/Container/Container';
 import styles from '../info.module.scss';
 
 export const metadata: Metadata = {
-  title: 'About UtilityBox - Fast, Private, In-Browser Utilities',
+  title: 'About DocsWala - Fast, Private, In-Browser Utilities',
   description:
-    'Learn about UtilityBox, our architecture, and why we believe privacy-first browser tools are the future of file processing.',
+    'Learn about DocsWala, our architecture, and why we believe privacy-first browser tools are the future of file processing.',
 };
 
 export default function AboutPage() {
@@ -13,7 +13,7 @@ export default function AboutPage() {
     <Container size="lg">
       <div className={styles.infoContainer}>
         <div className={styles.header}>
-          <h1 className={styles.title}>About UtilityBox</h1>
+          <h1 className={styles.title}>About DocsWala</h1>
           <p className={styles.subtitle}>
             A modern, privacy-focused alternative to traditional cloud file conversion websites.
           </p>
@@ -31,9 +31,9 @@ export default function AboutPage() {
           </section>
 
           <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>The UtilityBox Solution</h2>
+            <h2 className={styles.sectionTitle}>The DocsWala Solution</h2>
             <p className={styles.text}>
-              UtilityBox is built on modern Web APIs, WebAssembly (WASM), and Canvas pipelines.
+              DocsWala is built on modern Web APIs, WebAssembly (WASM), and Canvas pipelines.
               Instead of sending your data to our servers, we bring the processing engine directly
               into your browser. Your files are manipulated entirely on your local machine and never
               leave your device.

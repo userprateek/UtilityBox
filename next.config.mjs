@@ -18,6 +18,15 @@ const nextConfig = {
     unoptimized: true,
   },
   outputFileTracingRoot: __dirname,
+  async redirects() {
+    return [
+      {
+        source: '/tools/:slug',
+        destination: '/:slug',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

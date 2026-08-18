@@ -21,7 +21,7 @@ export const Footer: React.FC = () => {
             <p className={styles.privacyDesc}>
               Unlike other file conversion websites that upload confidential Aadhaar cards,
               marksheets, and signatures to remote cloud servers,
-              <strong> UtilityBox processes everything directly inside your browser</strong>. Your
+              <strong> DocsWala processes everything directly inside your browser</strong>. Your
               customer documents never leave your computer.
             </p>
           </div>
@@ -36,7 +36,7 @@ export const Footer: React.FC = () => {
                 <Box size={20} />
               </div>
               <span className={styles.brandName}>
-                Utility<span className={styles.brandAccent}>Box</span>
+                Docs<span className={styles.brandAccent}>Wala</span>
               </span>
             </Link>
             <p className={styles.brandTagline}>
@@ -68,32 +68,32 @@ export const Footer: React.FC = () => {
             <h5 className={styles.colTitle}>Popular Tools</h5>
             <ul className={styles.linksList}>
               <li>
-                <Link href="/tools/image-compressor" className={styles.footerLink}>
+                <Link href="/image-compressor" className={styles.footerLink}>
                   Photo Compressor (Under 50KB)
                 </Link>
               </li>
               <li>
-                <Link href="/tools/image-cropper" className={styles.footerLink}>
+                <Link href="/image-cropper" className={styles.footerLink}>
                   Passport Photo & Sign Cropper
                 </Link>
               </li>
               <li>
-                <Link href="/tools/pdf-merger" className={styles.footerLink}>
+                <Link href="/pdf-merger" className={styles.footerLink}>
                   Merge Marksheets & IDs
                 </Link>
               </li>
               <li>
-                <Link href="/tools/qr-code-generator" className={styles.footerLink}>
+                <Link href="/qr-code-generator" className={styles.footerLink}>
                   Shop UPI & WhatsApp QR Maker
                 </Link>
               </li>
               <li>
-                <Link href="/tools/pdf-compressor" className={styles.footerLink}>
+                <Link href="/pdf-compressor" className={styles.footerLink}>
                   PDF Compressor (Under 200KB)
                 </Link>
               </li>
               <li>
-                <Link href="/tools/image-to-pdf" className={styles.footerLink}>
+                <Link href="/image-to-pdf" className={styles.footerLink}>
                   Photos to Clean PDF
                 </Link>
               </li>
@@ -106,7 +106,7 @@ export const Footer: React.FC = () => {
             <ul className={styles.linksList}>
               <li>
                 <Link href="/about" className={styles.footerLink}>
-                  About UtilityBox
+                  About DocsWala
                 </Link>
               </li>
               <li>
@@ -136,7 +136,7 @@ export const Footer: React.FC = () => {
         {/* Bottom Bar */}
         <div className={styles.bottomBar}>
           <p className={styles.copyright}>
-            © {new Date().getFullYear()} UtilityBox. 100% Free & Private. No sign-up required.
+            © {new Date().getFullYear()} DocsWala. 100% Free & Private. No sign-up required.
           </p>
           <div className={styles.madeWith}>
             <span>Crafted for cyber cafes & everyday work</span>

@@ -22,7 +22,7 @@ import { Button } from '@/components/common/Button/Button';
 import { Card } from '@/components/common/Card/Card';
 import { ProgressBar } from '@/components/common/ProgressBar/ProgressBar';
 import { Alert } from '@/components/common/States/Alert';
-import { downloadBlob, downloadUrl } from '@/lib/file/fileUtils';
+import { downloadBlob, downloadUrl, generateDownloadFilename } from '@/lib/file/fileUtils';
 import styles from './ToolShell.module.scss';
 
 export interface ToolShellProps {
@@ -109,10 +109,11 @@ export const ToolShell: React.FC<ToolShellProps> = ({
 
   const handleDownloadAll = () => {
     files.forEach((file) => {
+      const filename = generateDownloadFilename(file.name, tool.slug);
       if (file.processedBlob) {
-        downloadBlob(file.processedBlob, `processed-${file.name}`);
+        downloadBlob(file.processedBlob, filename);
       } else if (file.previewUrl) {
-        downloadUrl(file.previewUrl, `processed-${file.name}`);
+        downloadUrl(file.previewUrl, filename);
       }
     });
   };

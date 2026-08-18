@@ -19,7 +19,7 @@ export function generateToolJsonLd(tool: ToolMetadata) {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: tool.name,
-    url: `${siteConfig.url}/tools/${tool.slug}`,
+    url: `${siteConfig.url}/${tool.slug}`,
     description: tool.description,
     applicationCategory: mapCategoryToSchemaCategory(tool.category),
     operatingSystem: 'All (Web Browser)',
@@ -121,7 +121,7 @@ export function getDefaultToolFaqs(tool: ToolMetadata): FaqItem[] {
   return [
     {
       question: `Is the ${tool.name} free to use?`,
-      answer: `Yes, ${tool.name} on UtilityBox is 100% free with no subscriptions, file size paywalls, or hidden limitations.`,
+      answer: `Yes, ${tool.name} on ${siteConfig.name} is 100% free with no subscriptions, file size paywalls, or hidden limitations.`,
     },
     {
       question: `Are my files uploaded to your servers when using ${tool.name}?`,

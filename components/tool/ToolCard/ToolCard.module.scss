@@ -13,8 +13,9 @@
   height: 100%;
   padding: $space-5;
   border-radius: $radius-xl;
-  @include glass-surface(0.55, 14px, rgba(255, 255, 255, 0.08));
-  box-shadow: $shadow-sm;
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
   transition: all $transition-smooth;
   position: relative;
   overflow: hidden;
@@ -26,17 +27,14 @@
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
     opacity: 0;
     transition: opacity $transition-smooth;
   }
 
   &:hover {
-    border-color: rgba(255, 255, 255, 0.18);
-    background: rgba(15, 23, 42, 0.85);
-    box-shadow:
-      $shadow-xl,
-      0 0 24px -6px hsla(230, 80%, 56%, 0.25);
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-card-hover);
     transform: translateY(-3px);
 
     &::before {
@@ -44,7 +42,7 @@
     }
 
     .arrowIcon {
-      color: #ffffff;
+      color: var(--color-primary);
       transform: translate(2px, -2px);
     }
   }
@@ -64,8 +62,8 @@
   width: 44px;
   height: 44px;
   border-radius: $radius-lg;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
   transition: all $transition-fast;
 }
 
@@ -76,7 +74,7 @@
 }
 
 .arrowIcon {
-  color: $neutral-500;
+  color: var(--color-text-faint);
   transition: all $transition-fast;
   display: flex;
   align-items: center;
@@ -93,12 +91,12 @@
 .toolName {
   font-size: $font-size-base;
   font-weight: $font-weight-bold;
-  color: $neutral-100;
+  color: var(--color-text-main);
 }
 
 .toolDesc {
   font-size: $font-size-xs;
-  color: $neutral-400;
+  color: var(--color-text-muted);
   line-height: $line-height-normal;
   @include line-clamp(2);
 }
@@ -108,7 +106,7 @@
   align-items: center;
   justify-content: space-between;
   padding-top: $space-3;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--color-border);
   font-size: $font-size-xs;
 }
 
@@ -117,5 +115,5 @@
 }
 
 .formatsInfo {
-  color: $neutral-500;
+  color: var(--color-text-faint);
 }

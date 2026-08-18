@@ -14,7 +14,10 @@ const inter = Inter({
 });
 
 export const viewport: Viewport = {
-  themeColor: '#0b0f19',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b0f19' },
+  ],
   width: 'device-width',
   initialScale: 1,
 };
@@ -76,8 +79,13 @@ export default function RootLayout({
   const websiteJsonLd = generateWebsiteJsonLd();
 
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={inter.variable} data-theme="light" suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('docswala-theme')||localStorage.getItem('utilitybox-theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');document.documentElement.classList.add('dark');}else{document.documentElement.setAttribute('data-theme','light');document.documentElement.classList.remove('dark');}}catch(e){}})();`,
+          }}
+        />
         <JsonLd schema={websiteJsonLd} />
       </head>
       <body>

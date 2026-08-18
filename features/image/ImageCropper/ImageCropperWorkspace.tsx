@@ -20,7 +20,7 @@ import { Select } from '@/components/common/Select/Select';
 import { FileDropzone } from '@/components/file-upload/FileDropzone/FileDropzone';
 import { ToolHeader } from '@/components/tool/ToolHeader/ToolHeader';
 import { NormalizedCropBox, CropResult, cropImageFile } from '@/lib/image/canvasCropper';
-import { formatBytes, downloadBlob } from '@/lib/file/fileUtils';
+import { formatBytes, downloadBlob, generateDownloadFilename } from '@/lib/file/fileUtils';
 import styles from './ImageCropper.module.scss';
 
 export interface ImageCropperWorkspaceProps {
@@ -319,10 +319,8 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
                     : outputFormat === 'image/webp'
                       ? 'webp'
                       : 'png';
-                downloadBlob(
-                  cropResult.blob,
-                  `cropped-${selectedFile.name.replace(/\.[^/.]+$/, '')}.${ext}`
-                );
+                const filename = generateDownloadFilename(selectedFile.name, 'cropped', ext);
+                downloadBlob(cropResult.blob, filename);
               }}
             >
               Download Cropped Image

@@ -1,0 +1,142 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.themeToggleBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-md;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all $transition-fast;
+  position: relative;
+  overflow: hidden;
+
+  @include focus-ring;
+
+  &:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-hover);
+    color: var(--color-text-main);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform $transition-smooth;
+}
+
+.sunIcon {
+  color: #f59e0b;
+  animation: rotateIn 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.moonIcon {
+  color: #6366f1;
+  animation: rotateIn 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+// ----------------------------------------------------------------------------
+// Switch Row Variant (Used in Mobile Drawer / Settings)
+// ----------------------------------------------------------------------------
+.themeToggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: $space-3;
+  border-radius: $radius-md;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-hover);
+  }
+}
+
+.rowLabelGroup {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.rowIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: $radius-sm;
+  background: var(--color-surface);
+  color: var(--color-primary);
+}
+
+.rowText {
+  display: flex;
+  flex-direction: column;
+}
+
+.rowTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--color-text-main);
+}
+
+.rowSubtitle {
+  font-size: $font-size-xs;
+  color: var(--color-text-muted);
+}
+
+.switchTrack {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border-radius: $radius-full;
+  background: var(--color-border);
+  transition: background $transition-fast;
+}
+
+.switchTrackActive {
+  background: var(--color-primary);
+}
+
+.switchThumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: $radius-full;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform $transition-fast;
+}
+
+.switchThumbActive {
+  transform: translateX(20px);
+}
+
+@keyframes rotateIn {
+  from {
+    opacity: 0;
+    transform: rotate(-45deg) scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+}

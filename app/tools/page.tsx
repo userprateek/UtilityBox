@@ -10,14 +10,14 @@ import { generateBreadcrumbJsonLd } from '@/lib/seo/schema';
 import styles from './page.module.scss';
 
 export const metadata: Metadata = {
-  title: 'All In-Browser File Utilities | UtilityBox',
+  title: `All In-Browser File Utilities | ${siteConfig.name}`,
   description:
     'Browse our comprehensive catalog of 100% private, client-side tools for images, PDFs, converters, and developer utilities.',
   alternates: {
     canonical: `${siteConfig.url}/tools`,
   },
   openGraph: {
-    title: 'All In-Browser File Utilities | UtilityBox',
+    title: `All In-Browser File Utilities | ${siteConfig.name}`,
     description:
       'Browse our comprehensive catalog of 100% private, client-side tools for images, PDFs, converters, and developer utilities.',
     url: `${siteConfig.url}/tools`,

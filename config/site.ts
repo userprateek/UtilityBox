@@ -1,13 +1,13 @@
 export const siteConfig = {
-  name: 'UtilityBox',
-  shortName: 'UtilityBox',
+  name: 'DocsWala',
+  shortName: 'DocsWala',
   description:
     '100% Free online tools to resize photos for government forms, merge PDFs, crop signatures, and make shop UPI QR codes. No signup, no limits, instant and safe.',
-  url: 'https://utilitybox.pp9.uk',
+  url: 'https://docswala.net',
   ogImage: '/og-image.png',
-  creator: 'UtilityBox Team',
+  creator: 'DocsWala Team',
   links: {
-    github: 'https://github.com/utilitybox/utilitybox',
+    github: 'https://github.com/docswala/docswala',
     docs: '/about',
     privacy: '/privacy',
     terms: '/terms',

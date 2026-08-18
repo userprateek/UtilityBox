@@ -1,4 +1,11 @@
-import { formatBytes, calculateSavings, getFileExtension, changeFileExtension } from './fileUtils';
+import {
+  formatBytes,
+  calculateSavings,
+  getFileExtension,
+  changeFileExtension,
+  getSiteDomain,
+  generateDownloadFilename,
+} from './fileUtils';
 
 describe('fileUtils', () => {
   describe('formatBytes', () => {
@@ -52,6 +59,34 @@ describe('fileUtils', () => {
       expect(changeFileExtension('photo.jpg', 'webp')).toBe('photo.webp');
       expect(changeFileExtension('photo.jpg', '.png')).toBe('photo.png');
       expect(changeFileExtension('document', 'pdf')).toBe('document.pdf');
+    });
+  });
+
+  describe('getSiteDomain', () => {
+    it('extracts the domain host cleanly', () => {
+      expect(getSiteDomain()).toBe('docswala.net');
+    });
+  });
+
+  describe('generateDownloadFilename', () => {
+    it('generates filename in format uploadedfilename_action_siteurl.extension', () => {
+      const filename = generateDownloadFilename('passport-photo.jpg', 'compressed');
+      expect(filename).toBe('passport-photo_compressed_docswala.net.jpg');
+    });
+
+    it('handles custom extension correctly', () => {
+      const filename = generateDownloadFilename('my_image.png', 'cropped', 'webp');
+      expect(filename).toBe('my_image_cropped_docswala.net.webp');
+    });
+
+    it('maps tool slug action strings properly', () => {
+      const filename = generateDownloadFilename('document.pdf', 'pdf-merger');
+      expect(filename).toBe('document_merged_docswala.net.pdf');
+    });
+
+    it('handles filenames with special characters safely', () => {
+      const filename = generateDownloadFilename('my file (1) [final].jpg', 'image-compressor');
+      expect(filename).toBe('my_file_1_final_compressed_docswala.net.jpg');
     });
   });
 });

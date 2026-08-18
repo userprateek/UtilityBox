@@ -16,7 +16,7 @@ describe('SEO Structured Data (JSON-LD) Engine', () => {
     expect(jsonLd['@context']).toBe('https://schema.org');
     expect(jsonLd['@type']).toBe('WebApplication');
     expect(jsonLd.name).toBe('Image Cropper');
-    expect(jsonLd.url).toContain('/tools/image-cropper');
+    expect(jsonLd.url).toContain('/image-cropper');
     expect(jsonLd.offers['@type']).toBe('Offer');
     expect(jsonLd.offers.price).toBe('0');
     expect(jsonLd.offers.priceCurrency).toBe('USD');
@@ -41,9 +41,9 @@ describe('SEO Structured Data (JSON-LD) Engine', () => {
 
   it('generates valid Schema.org BreadcrumbList markup with ordered positions', () => {
     const crumbs = [
-      { name: 'Home', url: 'https://utilitybox.pp9.uk' },
-      { name: 'All Tools', url: 'https://utilitybox.pp9.uk/tools' },
-      { name: 'Image Cropper', url: 'https://utilitybox.pp9.uk/tools/image-cropper' },
+      { name: 'Home', url: 'https://docswala.net' },
+      { name: 'All Tools', url: 'https://docswala.net/tools' },
+      { name: 'Image Cropper', url: 'https://docswala.net/image-cropper' },
     ];
 
     const jsonLd = generateBreadcrumbJsonLd(crumbs);
@@ -61,7 +61,7 @@ describe('SEO Structured Data (JSON-LD) Engine', () => {
 
     expect(jsonLd['@context']).toBe('https://schema.org');
     expect(jsonLd['@type']).toBe('WebSite');
-    expect(jsonLd.url).toBe('https://utilitybox.pp9.uk');
+    expect(jsonLd.url).toBe('https://docswala.net');
     expect(jsonLd.potentialAction['@type']).toBe('SearchAction');
     expect(jsonLd.potentialAction.target.urlTemplate).toContain('/tools?q=');
   });

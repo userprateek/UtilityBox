@@ -4,7 +4,7 @@
 .guideSection {
   margin-top: $space-16;
   padding-top: $space-12;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--color-border);
 }
 
 .guideHeader {
@@ -16,7 +16,7 @@
 .guideOverline {
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
-  color: $primary-400;
+  color: var(--color-primary);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   display: block;
@@ -27,7 +27,7 @@
   font-size: $font-size-2xl;
   font-weight: $font-weight-extrabold;
   letter-spacing: -0.03em;
-  color: #ffffff;
+  color: var(--color-text-main);
   margin-bottom: $space-2;
 
   @include respond-to('md') {
@@ -37,7 +37,7 @@
 
 .guideSubtitle {
   font-size: $font-size-sm;
-  color: $neutral-400;
+  color: var(--color-text-muted);
 }
 
 .stepsGrid {
@@ -56,14 +56,15 @@
   align-items: flex-start;
   padding: $space-6;
   border-radius: $radius-xl;
-  background: rgba(15, 23, 42, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
   position: relative;
   transition: all $transition-smooth;
 
   &:hover {
-    border-color: rgba(255, 255, 255, 0.16);
-    background: rgba(15, 23, 42, 0.7);
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-card-hover);
     transform: translateY(-2px);
   }
 }
@@ -74,15 +75,15 @@
   right: $space-4;
   font-size: $font-size-xs;
   font-weight: $font-weight-bold;
-  color: $primary-300;
-  background: rgba(79, 70, 229, 0.15);
+  color: var(--color-primary);
+  background: var(--color-primary-subtle);
   width: 28px;
   height: 28px;
   border-radius: $radius-full;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(79, 70, 229, 0.3);
+  border: 1px solid var(--color-primary-glow);
 }
 
 .iconWrapper {
@@ -92,20 +93,21 @@
   width: 48px;
   height: 48px;
   border-radius: $radius-lg;
-  background: rgba(255, 255, 255, 0.05);
-  color: $primary-400;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  color: var(--color-primary);
   margin-bottom: $space-4;
 }
 
 .stepTitle {
   font-size: $font-size-base;
   font-weight: $font-weight-bold;
-  color: #ffffff;
+  color: var(--color-text-main);
   margin-bottom: $space-2;
 }
 
 .stepDesc {
   font-size: $font-size-sm;
-  color: $neutral-400;
+  color: var(--color-text-muted);
   line-height: $line-height-normal;
 }

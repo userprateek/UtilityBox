@@ -24,24 +24,25 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: $neutral-400;
+  color: var(--color-text-muted);
+  text-decoration: none;
   transition: color $transition-fast;
 
   &:hover {
-    color: #ffffff;
+    color: var(--color-primary);
   }
 }
 
 .homeIcon {
-  color: $neutral-400;
+  color: var(--color-text-muted);
 }
 
 .separator {
-  color: $neutral-600;
+  color: var(--color-text-faint);
   flex-shrink: 0;
 }
 
 .current {
-  color: $primary-300;
+  color: var(--color-primary);
   font-weight: $font-weight-medium;
 }
