@@ -1,0 +1,121 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.cardLink {
+  text-decoration: none;
+  display: block;
+  height: 100%;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: $space-5;
+  border-radius: $radius-xl;
+  @include glass-surface(0.55, 14px, rgba(255, 255, 255, 0.08));
+  box-shadow: $shadow-sm;
+  transition: all $transition-smooth;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    opacity: 0;
+    transition: opacity $transition-smooth;
+  }
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+    background: rgba(15, 23, 42, 0.85);
+    box-shadow:
+      $shadow-xl,
+      0 0 24px -6px hsla(230, 80%, 56%, 0.25);
+    transform: translateY(-3px);
+
+    &::before {
+      opacity: 1;
+    }
+
+    .arrowIcon {
+      color: #ffffff;
+      transform: translate(2px, -2px);
+    }
+  }
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $space-3;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: $radius-lg;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all $transition-fast;
+}
+
+.headerBadges {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.arrowIcon {
+  color: $neutral-500;
+  transition: all $transition-fast;
+  display: flex;
+  align-items: center;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  flex: 1;
+  margin-bottom: $space-4;
+}
+
+.toolName {
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  color: $neutral-100;
+}
+
+.toolDesc {
+  font-size: $font-size-xs;
+  color: $neutral-400;
+  line-height: $line-height-normal;
+  @include line-clamp(2);
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: $space-3;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: $font-size-xs;
+}
+
+.categoryName {
+  font-weight: $font-weight-medium;
+}
+
+.formatsInfo {
+  color: $neutral-500;
+}

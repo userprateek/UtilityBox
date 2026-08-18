@@ -1,0 +1,135 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.pageContainer {
+  padding: $space-10 0 $space-16 0;
+}
+
+.pageHeader {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto $space-10 auto;
+}
+
+.pageTitle {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-extrabold;
+  letter-spacing: -0.03em;
+  margin-bottom: $space-2;
+  @include brand-gradient-text;
+
+  @include respond-to('md') {
+    font-size: $font-size-4xl;
+  }
+}
+
+.pageSubtitle {
+  font-size: $font-size-base;
+  color: $neutral-300;
+}
+
+// ----------------------------------------------------------------------------
+// Controls & Search
+// ----------------------------------------------------------------------------
+.directoryWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.controlsBar {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.searchWrapper {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.categoryTabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  flex-wrap: wrap;
+}
+
+.tabBtn {
+  padding: 6px $space-4;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $neutral-400;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: $radius-full;
+  transition: all $transition-fast;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: $neutral-100;
+  }
+}
+
+.activeTab {
+  background: $primary-500;
+  color: #ffffff !important;
+  border-color: $primary-500;
+  box-shadow: 0 0 12px hsla(230, 80%, 56%, 0.4);
+}
+
+.resultsInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: $space-2;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.resultsCount {
+  font-size: $font-size-xs;
+  color: $neutral-400;
+
+  strong {
+    color: $neutral-100;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Tools Grid
+// ----------------------------------------------------------------------------
+.toolsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+
+  @include respond-to('sm') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to('lg') {
+    grid-template-columns: repeat(3, 1fr);
+    gap: $space-6;
+  }
+}
+
+.resetSearchBtn {
+  margin-top: $space-3;
+  padding: $space-2 $space-4;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $primary-400;
+  background: rgba(79, 70, 229, 0.1);
+  border: 1px solid rgba(79, 70, 229, 0.3);
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: rgba(79, 70, 229, 0.2);
+    color: $primary-300;
+  }
+}

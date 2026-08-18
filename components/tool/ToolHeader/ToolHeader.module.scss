@@ -1,0 +1,60 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.headerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: $space-8;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.topRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-3;
+  margin-bottom: $space-4;
+}
+
+.iconBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: $radius-xl;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: $primary-300;
+  box-shadow: 0 0 24px -4px hsla(230, 80%, 56%, 0.3);
+}
+
+.badgesGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-extrabold;
+  letter-spacing: -0.03em;
+  margin-bottom: $space-2;
+  @include brand-gradient-text;
+
+  @include respond-to('md') {
+    font-size: $font-size-4xl;
+  }
+}
+
+.description {
+  font-size: $font-size-base;
+  color: $neutral-300;
+  line-height: $line-height-relaxed;
+}

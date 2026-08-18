@@ -1,0 +1,166 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+// ----------------------------------------------------------------------------
+// General State Containers (Empty, Loading, Error)
+// ----------------------------------------------------------------------------
+.stateContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: $space-8 $space-4;
+  border-radius: $radius-xl;
+  width: 100%;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: $radius-full;
+  background: rgba(255, 255, 255, 0.05);
+  color: $neutral-400;
+  margin-bottom: $space-4;
+}
+
+.errorIcon {
+  background: $color-error-bg;
+  color: $color-error;
+  border: 1px solid $color-error-border;
+}
+
+.spinnerWrapper {
+  margin-bottom: $space-4;
+  color: $primary-400;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+.title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $neutral-100;
+  margin-bottom: $space-1;
+}
+
+.description {
+  font-size: $font-size-sm;
+  color: $neutral-400;
+  max-width: 480px;
+}
+
+.actionContainer {
+  margin-top: $space-4;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Inline Alerts / Toast Styles
+// ----------------------------------------------------------------------------
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  border-radius: $radius-md;
+  border: 1px solid transparent;
+  font-size: $font-size-sm;
+  line-height: $line-height-normal;
+  width: 100%;
+}
+
+.alertIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.alertContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.alertTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  margin-bottom: 2px;
+}
+
+.alertMessage {
+  font-size: $font-size-xs;
+  opacity: 0.95;
+}
+
+.alertClose {
+  background: transparent;
+  border: none;
+  color: currentColor;
+  opacity: 0.7;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-sm;
+  transition: opacity $transition-fast;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.alert-info {
+  background: $color-info-bg;
+  border-color: $color-info-border;
+  color: hsl(210, 95%, 70%);
+
+  .alertTitle {
+    color: hsl(210, 100%, 85%);
+  }
+}
+
+.alert-success {
+  background: $color-success-bg;
+  border-color: $color-success-border;
+  color: hsl(152, 75%, 65%);
+
+  .alertTitle {
+    color: hsl(152, 90%, 80%);
+  }
+}
+
+.alert-warning {
+  background: $color-warning-bg;
+  border-color: $color-warning-border;
+  color: hsl(38, 95%, 65%);
+
+  .alertTitle {
+    color: hsl(38, 100%, 80%);
+  }
+}
+
+.alert-error {
+  background: $color-error-bg;
+  border-color: $color-error-border;
+  color: hsl(354, 85%, 70%);
+
+  .alertTitle {
+    color: hsl(354, 95%, 85%);
+  }
+}

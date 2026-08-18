@@ -1,0 +1,185 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.fileListWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  width: 100%;
+}
+
+.listHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-4;
+  padding-bottom: $space-2;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.titleInfo {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.listTitle {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: #ffffff;
+}
+
+.countBadge {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $neutral-400;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 2px 8px;
+  border-radius: $radius-full;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+// ----------------------------------------------------------------------------
+// Grid & Cards
+// ----------------------------------------------------------------------------
+.cardsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-3;
+
+  @include respond-to('md') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.fileCard {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  padding: $space-3 $space-4;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: $radius-lg;
+  transition: all $transition-fast;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.16);
+    background: rgba(15, 23, 42, 0.85);
+  }
+}
+
+.thumbnailWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: $radius-md;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.thumbnailImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pdfIcon {
+  color: $accent-rose;
+}
+
+.genericIcon {
+  color: $primary-400;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+}
+
+.fileName {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $neutral-100;
+  @include truncate;
+}
+
+.removeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $neutral-400;
+  padding: 4px;
+  border-radius: $radius-sm;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: $color-error;
+    background: $color-error-bg;
+  }
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-wrap: wrap;
+}
+
+.fileSize {
+  font-size: $font-size-xs;
+  color: $neutral-400;
+}
+
+.savingsBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $color-success;
+  background: $color-success-bg;
+  padding: 1px 6px;
+  border-radius: $radius-sm;
+}
+
+.progressContainer {
+  margin-top: $space-1;
+}
+
+.errorMessage {
+  font-size: $font-size-xs;
+  color: $color-error;
+  @include truncate;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

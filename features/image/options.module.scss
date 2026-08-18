@@ -1,0 +1,90 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.optionsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
+
+.optionGroup {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.sliderHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $neutral-200;
+}
+
+.valueBadge {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $primary-300;
+  background: rgba(79, 70, 229, 0.15);
+  padding: 2px 8px;
+  border-radius: $radius-full;
+}
+
+.rangeInput {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: $radius-full;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: $radius-full;
+    background: $primary-400;
+    box-shadow: 0 0 10px hsla(230, 80%, 56%, 0.5);
+    cursor: pointer;
+    transition: transform $transition-fast;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+}
+
+.sliderLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: $font-size-xs;
+  color: $neutral-400;
+}
+
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  color: $neutral-300;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: $primary-500;
+  cursor: pointer;
+}

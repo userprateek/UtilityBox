@@ -1,0 +1,343 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: $z-header;
+  height: 72px;
+  @include glass-surface(0.8, 20px, rgba(255, 255, 255, 0.08));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-4;
+  height: 100%;
+}
+
+// ----------------------------------------------------------------------------
+// Brand Logo
+// ----------------------------------------------------------------------------
+.logo {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  text-decoration: none;
+  user-select: none;
+}
+
+.logoIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: $radius-md;
+  background: linear-gradient(135deg, $primary-500 0%, $accent-violet 100%);
+  color: #ffffff;
+  box-shadow: 0 0 16px hsla(230, 80%, 56%, 0.45);
+}
+
+.logoIcon {
+  transform: rotate(-5deg);
+  transition: transform $transition-fast;
+}
+
+.logo:hover .logoIcon {
+  transform: rotate(0deg) scale(1.05);
+}
+
+.brandName {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-extrabold;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+}
+
+.brandAccent {
+  color: $primary-400;
+}
+
+// ----------------------------------------------------------------------------
+// Desktop Navigation
+// ----------------------------------------------------------------------------
+.desktopNav {
+  display: none;
+  align-items: center;
+  gap: $space-1;
+
+  @include respond-to('md') {
+    display: flex;
+  }
+}
+
+.navLink {
+  padding: $space-2 $space-3;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $neutral-300;
+  border-radius: $radius-md;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+
+.active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+// ----------------------------------------------------------------------------
+// Categories Dropdown
+// ----------------------------------------------------------------------------
+.dropdownWrapper {
+  position: relative;
+}
+
+.dropdownButton {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+  padding: $space-2 $space-3;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $neutral-300;
+  border-radius: $radius-md;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+
+.chevron {
+  transition: transform $transition-fast;
+}
+
+.chevronRotated {
+  transform: rotate(180deg);
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 320px;
+  padding: $space-2;
+  @include glass-surface(0.95, 24px, rgba(255, 255, 255, 0.12));
+  border-radius: $radius-lg;
+  box-shadow: $shadow-xl;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  animation: fadeIn 150ms ease-out;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  padding: $space-2 $space-3;
+  border-radius: $radius-md;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.itemIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: $radius-sm;
+  background: rgba(255, 255, 255, 0.08);
+  color: $primary-400;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.itemContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.itemTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $neutral-100;
+}
+
+.itemDesc {
+  font-size: $font-size-xs;
+  color: $neutral-400;
+  line-height: $line-height-tight;
+  margin-top: 2px;
+}
+
+// ----------------------------------------------------------------------------
+// Right Actions
+// ----------------------------------------------------------------------------
+.rightActions {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.privacyBadge {
+  display: none;
+
+  @include respond-to('lg') {
+    display: block;
+  }
+}
+
+.searchButton {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  height: 36px;
+  padding: 0 $space-3;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: $radius-md;
+  color: $neutral-400;
+  font-size: $font-size-xs;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.18);
+    color: $neutral-200;
+  }
+}
+
+.searchLabel {
+  display: none;
+
+  @include respond-to('sm') {
+    display: inline;
+  }
+}
+
+.searchKbd {
+  display: none;
+  font-size: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1px 4px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  @include respond-to('md') {
+    display: inline;
+  }
+}
+
+.mobileMenuButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: $radius-md;
+  color: $neutral-200;
+  background: rgba(255, 255, 255, 0.05);
+
+  @include respond-to('md') {
+    display: none;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Mobile Drawer
+// ----------------------------------------------------------------------------
+.mobileDrawer {
+  position: fixed;
+  top: 72px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $neutral-950;
+  padding: $space-4;
+  overflow-y: auto;
+  z-index: $z-overlay;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+  @include respond-to('md') {
+    display: none;
+  }
+}
+
+.mobileNav {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.mobileNavLink {
+  padding: $space-3;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  color: $neutral-200;
+  border-radius: $radius-md;
+  background: rgba(255, 255, 255, 0.03);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.mobileCategorySection {
+  margin-top: $space-4;
+  padding-top: $space-4;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mobileCategoryTitle {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $neutral-400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: $space-3;
+  display: block;
+}
+
+.mobileCategoryGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-2;
+}
+
+.mobileCategoryItem {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-2 $space-3;
+  font-size: $font-size-sm;
+  color: $neutral-300;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: $radius-md;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

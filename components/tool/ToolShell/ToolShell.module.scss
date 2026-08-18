@@ -1,0 +1,221 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.toolShell {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: $space-4 0 $space-16 0;
+}
+
+.notificationsArea {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  width: 100%;
+}
+
+.stageContainer {
+  width: 100%;
+}
+
+// ----------------------------------------------------------------------------
+// Upload Section
+// ----------------------------------------------------------------------------
+.uploadSection {
+  display: flex;
+  flex-direction: column;
+  gap: $space-8;
+}
+
+.featuresCard {
+  padding: $space-5;
+  border-radius: $radius-xl;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.featuresHeader {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin-bottom: $space-3;
+}
+
+.featuresIcon {
+  color: $primary-400;
+}
+
+.featuresTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $neutral-200;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.featuresList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-2;
+
+  @include respond-to('md') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  color: $neutral-300;
+}
+
+.featureCheck {
+  color: $color-success;
+  font-weight: $font-weight-bold;
+}
+
+// ----------------------------------------------------------------------------
+// Workspace Stage (After files uploaded)
+// ----------------------------------------------------------------------------
+.workspaceSection {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.filesCard {
+  width: 100%;
+}
+
+.optionsCard {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.optionsTitle {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: #ffffff;
+  padding-bottom: $space-2;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.optionsContent {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.progressCard {
+  width: 100%;
+}
+
+.resultCard {
+  width: 100%;
+}
+
+.defaultResult {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+  text-align: center;
+  align-items: center;
+}
+
+.resultHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-3;
+}
+
+.successIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: $radius-full;
+  background: rgba(16, 185, 129, 0.15);
+  color: $color-success;
+  box-shadow: 0 0 20px -2px hsla(152, 69%, 45%, 0.4);
+}
+
+.resultTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: #ffffff;
+}
+
+.resultDesc {
+  font-size: $font-size-sm;
+  color: $neutral-300;
+  max-width: 480px;
+}
+
+.resultActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-4;
+  flex-wrap: wrap;
+}
+
+.actionBar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: $space-4;
+  padding-top: $space-2;
+}
+
+// ----------------------------------------------------------------------------
+// Bottom Privacy Trust Banner
+// ----------------------------------------------------------------------------
+.privacyTrustBanner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+  padding: $space-6;
+  border-radius: $radius-xl;
+  background: rgba(15, 23, 42, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: $space-4;
+
+  @include respond-to('md') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.trustItem {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+}
+
+.trustIcon {
+  color: $primary-400;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.trustTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $neutral-200;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.trustText {
+  font-size: $font-size-xs;
+  color: $neutral-400;
+  line-height: $line-height-snug;
+}

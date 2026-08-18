@@ -1,0 +1,297 @@
+import React from 'react';
+import Link from 'next/link';
+import {
+  ShieldCheck,
+  Zap,
+  ArrowRight,
+  Sparkles,
+  CheckCircle2,
+  FileCheck2,
+  Scissors,
+  Layers,
+  QrCode,
+  FileMinus,
+  FileUp,
+  Store,
+  UserCheck,
+} from 'lucide-react';
+import { Container } from '@/components/layout/Container/Container';
+import { ToolCard } from '@/components/tool/ToolCard/ToolCard';
+import { Badge } from '@/components/common/Badge/Badge';
+import { Button } from '@/components/common/Button/Button';
+import { AdSlot } from '@/components/ads/AdSlot';
+import { getPopularTools, getAllTools } from '@/config/tools/registry';
+import { TOOL_CATEGORIES_LIST } from '@/config/tools/categories';
+import styles from './page.module.scss';
+
+export default function HomePage() {
+  const popularTools = getPopularTools();
+  const allTools = getAllTools();
+
+  return (
+    <div className={styles.homePage}>
+      {/* Hero Section */}
+      <section className={styles.heroSection}>
+        <Container size="lg" className={styles.heroContainer}>
+          <div className={styles.heroBadgeWrapper}>
+            <Badge variant="success" size="md" icon={<Sparkles size={14} />}>
+              100% Free • No Sign-up Required
+            </Badge>
+          </div>
+
+          <h1 className={styles.heroTitle}>
+            Fast, Free File Tools for <br />
+            <span className={styles.heroGradientText}>Forms, PDFs & Shop Daily Tasks</span>
+          </h1>
+
+          <p className={styles.heroSubtitle}>
+            Compress photos under 50KB for online exam portals, merge ID cards & marksheets into 1
+            PDF, crop signatures, or make shop UPI QR codes. Everything runs instantly in your
+            browser.
+          </p>
+
+          <div className={styles.heroActions}>
+            <Link href="/tools">
+              <Button size="lg" variant="primary" rightIcon={<ArrowRight size={18} />}>
+                Explore All {allTools.length} Tools
+              </Button>
+            </Link>
+            <Link href="/tools/image-compressor">
+              <Button size="lg" variant="secondary">
+                Compress Photo for Forms
+              </Button>
+            </Link>
+            <Link href="/tools/qr-code-generator">
+              <Button size="lg" variant="ghost" leftIcon={<QrCode size={16} />}>
+                Create Shop QR Code
+              </Button>
+            </Link>
+          </div>
+
+          {/* Value Highlights Pill Bar */}
+          <div className={styles.trustBadgesRow}>
+            <div className={styles.trustItem}>
+              <CheckCircle2 size={16} className={styles.trustIcon} />
+              <span>No Account or Sign-up</span>
+            </div>
+            <div className={styles.trustItem}>
+              <CheckCircle2 size={16} className={styles.trustIcon} />
+              <span>No Watermarks</span>
+            </div>
+            <div className={styles.trustItem}>
+              <CheckCircle2 size={16} className={styles.trustIcon} />
+              <span>Unlimited Daily Usage</span>
+            </div>
+            <div className={styles.trustItem}>
+              <CheckCircle2 size={16} className={styles.trustIcon} />
+              <span>100% Private (Runs on Device)</span>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Common Tasks Quick-Launch for Cyber Cafes & Form Fillers */}
+      <section className={styles.tasksSection}>
+        <Container size="lg">
+          <div className={styles.sectionHeaderCenter}>
+            <span className={styles.sectionOverline}>Easy Shortcuts</span>
+            <h2 className={styles.sectionTitle}>Common Tasks for Online Forms & Cyber Cafes</h2>
+            <p className={styles.sectionSubtitle}>
+              One-click access to the most frequent daily tasks for shop counters, CSCs, and
+              students.
+            </p>
+          </div>
+
+          <div className={styles.tasksGrid}>
+            {/* Task 1 */}
+            <Link href="/tools/image-compressor" className={styles.taskCard}>
+              <div className={styles.taskIconWrapper}>
+                <FileCheck2 size={24} />
+              </div>
+              <h3 className={styles.taskTitle}>Photo Under 50KB / 100KB</h3>
+              <p className={styles.taskDesc}>
+                Shrink photos to fit strict government job, exam, and college admission upload
+                limits.
+              </p>
+              <div className={styles.taskBadge}>Sarkari & Exam Forms</div>
+            </Link>
+
+            {/* Task 2 */}
+            <Link href="/tools/image-cropper" className={styles.taskCard}>
+              <div className={styles.taskIconWrapper}>
+                <Scissors size={24} />
+              </div>
+              <h3 className={styles.taskTitle}>Crop Passport Photo & Sign</h3>
+              <p className={styles.taskDesc}>
+                Easily crop passport size photos and clear signatures to exact dimensions.
+              </p>
+              <div className={styles.taskBadge}>Passport & Signature</div>
+            </Link>
+
+            {/* Task 3 */}
+            <Link href="/tools/pdf-merger" className={styles.taskCard}>
+              <div className={styles.taskIconWrapper}>
+                <Layers size={24} />
+              </div>
+              <h3 className={styles.taskTitle}>Merge Marksheets & IDs</h3>
+              <p className={styles.taskDesc}>
+                Combine Front + Back of Aadhaar/Voter ID or multiple marksheets into a single PDF.
+              </p>
+              <div className={styles.taskBadge}>Multi-Page Documents</div>
+            </Link>
+
+            {/* Task 4 */}
+            <Link href="/tools/qr-code-generator" className={styles.taskCard}>
+              <div className={styles.taskIconWrapper}>
+                <QrCode size={24} />
+              </div>
+              <h3 className={styles.taskTitle}>Shop UPI & WhatsApp QR</h3>
+              <p className={styles.taskDesc}>
+                Generate printable GPay, PhonePe, Paytm payment QR or customer WhatsApp chat link.
+              </p>
+              <div className={styles.taskBadge}>Shop Counters</div>
+            </Link>
+
+            {/* Task 5 */}
+            <Link href="/tools/pdf-compressor" className={styles.taskCard}>
+              <div className={styles.taskIconWrapper}>
+                <FileMinus size={24} />
+              </div>
+              <h3 className={styles.taskTitle}>Compress PDF Under 200KB</h3>
+              <p className={styles.taskDesc}>
+                Reduce heavy scanned document files to upload easily without error warnings.
+              </p>
+              <div className={styles.taskBadge}>Scanned Files</div>
+            </Link>
+
+            {/* Task 6 */}
+            <Link href="/tools/image-to-pdf" className={styles.taskCard}>
+              <div className={styles.taskIconWrapper}>
+                <FileUp size={24} />
+              </div>
+              <h3 className={styles.taskTitle}>Photos to Clean PDF</h3>
+              <p className={styles.taskDesc}>
+                Convert phone camera photos of certificates and bills into a clean, formatted PDF.
+              </p>
+              <div className={styles.taskBadge}>A4 PDF Maker</div>
+            </Link>
+          </div>
+        </Container>
+      </section>
+
+      {/* AdSense Placement Space (Leaderboard / Responsive Banner) */}
+      <Container size="lg">
+        <AdSlot format="leaderboard" />
+      </Container>
+
+      {/* Popular Tools Grid Section */}
+      <section className={styles.popularSection}>
+        <Container size="lg">
+          <div className={styles.sectionHeader}>
+            <div>
+              <span className={styles.sectionOverline}>All Popular Tools</span>
+              <h2 className={styles.sectionTitle}>Browse Utilities Catalogue</h2>
+            </div>
+            <Link href="/tools" className={styles.viewAllLink}>
+              <span>View all {allTools.length} tools</span>
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+
+          <div className={styles.toolsGrid}>
+            {popularTools.map((tool) => (
+              <ToolCard key={tool.slug} tool={tool} />
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Cyber Cafe & Shopkeeper Value Section */}
+      <section className={styles.valueSection}>
+        <Container size="lg">
+          <div className={styles.valueHeader}>
+            <span className={styles.sectionOverline}>Why People Choose UtilityBox</span>
+            <h2 className={styles.sectionTitle}>Built for Cyber Cafes, Shopkeepers & Students</h2>
+            <p className={styles.valueSubtitle}>
+              Unlike other websites that force you to register, add watermarks, or make you pay
+              after 2 files, UtilityBox is made for fast everyday work.
+            </p>
+          </div>
+
+          <div className={styles.valueGrid}>
+            <div className={styles.valueCard}>
+              <div className={styles.valueIconWrapper}>
+                <UserCheck size={28} className={styles.valueIcon} />
+              </div>
+              <h3 className={styles.valueTitle}>Zero Sign-Up Friction</h3>
+              <p className={styles.valueDesc}>
+                Open the website and start working immediately. No emails to enter, no OTPs, and no
+                password setups.
+              </p>
+            </div>
+
+            <div className={styles.valueCard}>
+              <div className={styles.valueIconWrapper}>
+                <ShieldCheck size={28} className={styles.valueIcon} />
+              </div>
+              <h3 className={styles.valueTitle}>Safe for Customer Documents</h3>
+              <p className={styles.valueDesc}>
+                Customer IDs, marksheets, and personal photos stay on your computer. Nothing is
+                uploaded to any cloud server.
+              </p>
+            </div>
+
+            <div className={styles.valueCard}>
+              <div className={styles.valueIconWrapper}>
+                <Zap size={28} className={styles.valueIcon} />
+              </div>
+              <h3 className={styles.valueTitle}>Lightning Fast Local Speed</h3>
+              <p className={styles.valueDesc}>
+                Runs instantly using your computer’s processor. No waiting for slow uploads even on
+                slow shop internet.
+              </p>
+            </div>
+
+            <div className={styles.valueCard}>
+              <div className={styles.valueIconWrapper}>
+                <Store size={28} className={styles.valueIcon} />
+              </div>
+              <h3 className={styles.valueTitle}>Always 100% Free</h3>
+              <p className={styles.valueDesc}>
+                Unlimited daily use with zero subscription fees, hidden watermarks, or file
+                lockouts.
+              </p>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Categories Catalog Showcase */}
+      <section className={styles.catalogSection}>
+        <Container size="lg">
+          <div className={styles.sectionHeader}>
+            <div>
+              <span className={styles.sectionOverline}>Categories</span>
+              <h2 className={styles.sectionTitle}>Browse by Category</h2>
+            </div>
+          </div>
+
+          <div className={styles.categoriesGrid}>
+            {TOOL_CATEGORIES_LIST.map((cat) => (
+              <Link key={cat.id} href={`/tools?category=${cat.id}`} className={styles.categoryCard}>
+                <div className={styles.catCardContent}>
+                  <h3 className={styles.catCardTitle}>{cat.label}</h3>
+                  <p className={styles.catCardDesc}>{cat.description}</p>
+                </div>
+                <div className={styles.catCardFooter}>
+                  <span>Browse {cat.label}</span>
+                  <ArrowRight size={16} />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </Container>
+      </section>
+    </div>
+  );
+}

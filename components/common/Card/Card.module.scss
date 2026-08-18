@@ -1,0 +1,63 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.card {
+  border-radius: $radius-xl;
+  transition: all $transition-smooth;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass {
+  @include glass-surface(0.55, 16px, rgba(255, 255, 255, 0.08));
+  box-shadow: $shadow-md;
+}
+
+.default {
+  background: $neutral-900;
+  border: 1px solid $neutral-800;
+}
+
+.bordered {
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.subtle {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.hoverable {
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow:
+      $shadow-xl,
+      0 0 24px -6px hsla(230, 80%, 56%, 0.18);
+    transform: translateY(-3px);
+  }
+}
+
+.padding-none {
+  padding: 0;
+}
+
+.padding-sm {
+  padding: $space-3;
+}
+
+.padding-md {
+  padding: $space-5;
+
+  @include respond-to('md') {
+    padding: $space-6;
+  }
+}
+
+.padding-lg {
+  padding: $space-6;
+
+  @include respond-to('md') {
+    padding: $space-8;
+  }
+}

@@ -1,0 +1,395 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.homePage {
+  display: flex;
+  flex-direction: column;
+  gap: $space-16;
+  padding-bottom: $space-16;
+}
+
+// ----------------------------------------------------------------------------
+// Hero Section
+// ----------------------------------------------------------------------------
+.heroSection {
+  padding-top: $space-12;
+  padding-bottom: $space-10;
+  text-align: center;
+  position: relative;
+
+  @include respond-to('md') {
+    padding-top: $space-16;
+    padding-bottom: $space-12;
+  }
+}
+
+.heroContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 880px;
+}
+
+.heroBadgeWrapper {
+  margin-bottom: $space-4;
+}
+
+.heroTitle {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-extrabold;
+  letter-spacing: -0.04em;
+  line-height: $line-height-tight;
+  margin-bottom: $space-4;
+
+  @include respond-to('md') {
+    font-size: $font-size-5xl;
+  }
+}
+
+.heroGradientText {
+  @include brand-gradient-text;
+}
+
+.heroSubtitle {
+  font-size: $font-size-base;
+  color: $neutral-300;
+  max-width: 660px;
+  line-height: $line-height-relaxed;
+  margin-bottom: $space-8;
+
+  @include respond-to('md') {
+    font-size: $font-size-lg;
+  }
+}
+
+.heroActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-4;
+  flex-wrap: wrap;
+  margin-bottom: $space-8;
+}
+
+.trustBadgesRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-4;
+  flex-wrap: wrap;
+  padding-top: $space-4;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  width: 100%;
+}
+
+.trustItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $neutral-300;
+}
+
+.trustIcon {
+  color: $color-success;
+}
+
+// ----------------------------------------------------------------------------
+// Common Tasks Section
+// ----------------------------------------------------------------------------
+.tasksSection {
+  padding: $space-4 0;
+}
+
+.sectionHeaderCenter {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto $space-10 auto;
+}
+
+.sectionSubtitle {
+  font-size: $font-size-sm;
+  color: $neutral-400;
+  margin-top: $space-2;
+}
+
+.tasksGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+
+  @include respond-to('sm') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to('lg') {
+    grid-template-columns: repeat(3, 1fr);
+    gap: $space-6;
+  }
+}
+
+.taskCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: $space-6;
+  border-radius: $radius-xl;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+  transition: all $transition-smooth;
+  position: relative;
+
+  &:hover {
+    border-color: $primary-400;
+    background: rgba(15, 23, 42, 0.9);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px -5px hsla(230, 80%, 56%, 0.25);
+  }
+}
+
+.taskIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: $radius-lg;
+  background: rgba(79, 70, 229, 0.12);
+  color: $primary-400;
+  margin-bottom: $space-4;
+}
+
+.taskTitle {
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  color: #ffffff;
+  margin-bottom: $space-2;
+}
+
+.taskDesc {
+  font-size: $font-size-xs;
+  color: $neutral-400;
+  line-height: $line-height-relaxed;
+  margin-bottom: $space-4;
+}
+
+.taskBadge {
+  font-size: 11px;
+  font-weight: $font-weight-semibold;
+  color: $primary-300;
+  background: rgba(79, 70, 229, 0.15);
+  padding: 3px 8px;
+  border-radius: $radius-full;
+  border: 1px solid rgba(79, 70, 229, 0.25);
+}
+
+// ----------------------------------------------------------------------------
+// Section Headers
+// ----------------------------------------------------------------------------
+.sectionHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: $space-8;
+}
+
+.sectionOverline {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $primary-400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.sectionTitle {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-extrabold;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+
+  @include respond-to('md') {
+    font-size: $font-size-3xl;
+  }
+}
+
+.viewAllLink {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $primary-400;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: $primary-300;
+    gap: $space-2;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Popular Tools Grid
+// ----------------------------------------------------------------------------
+.toolsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+
+  @include respond-to('sm') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to('lg') {
+    grid-template-columns: repeat(3, 1fr);
+    gap: $space-6;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Value Props / Privacy Section
+// ----------------------------------------------------------------------------
+.valueSection {
+  padding: $space-12 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: radial-gradient(circle at 50% 50%, rgba(79, 70, 229, 0.06), transparent 70%);
+}
+
+.valueHeader {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto $space-12 auto;
+}
+
+.valueSubtitle {
+  font-size: $font-size-base;
+  color: $neutral-300;
+  margin-top: $space-3;
+}
+
+.valueGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-6;
+
+  @include respond-to('sm') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to('lg') {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.valueCard {
+  display: flex;
+  flex-direction: column;
+  padding: $space-6;
+  border-radius: $radius-xl;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all $transition-smooth;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.16);
+    background: rgba(15, 23, 42, 0.7);
+    transform: translateY(-2px);
+  }
+}
+
+.valueIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: $radius-lg;
+  background: rgba(79, 70, 229, 0.12);
+  color: $primary-400;
+  margin-bottom: $space-4;
+}
+
+.valueTitle {
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  color: #ffffff;
+  margin-bottom: $space-2;
+}
+
+.valueDesc {
+  font-size: $font-size-sm;
+  color: $neutral-400;
+  line-height: $line-height-normal;
+}
+
+// ----------------------------------------------------------------------------
+// Categories Catalog Showcase
+// ----------------------------------------------------------------------------
+.catalogSection {
+  padding-top: $space-4;
+}
+
+.categoriesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+
+  @include respond-to('sm') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to('lg') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.categoryCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: $space-6;
+  padding: $space-6;
+  border-radius: $radius-xl;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+  transition: all $transition-smooth;
+
+  &:hover {
+    border-color: $primary-400;
+    background: rgba(15, 23, 42, 0.85);
+    box-shadow: 0 4px 20px -2px hsla(230, 80%, 56%, 0.2);
+    transform: translateY(-2px);
+
+    .catCardFooter {
+      color: $primary-300;
+    }
+  }
+}
+
+.catCardTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: #ffffff;
+  margin-bottom: $space-1;
+}
+
+.catCardDesc {
+  font-size: $font-size-sm;
+  color: $neutral-400;
+  line-height: $line-height-normal;
+}
+
+.catCardFooter {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $neutral-300;
+  transition: color $transition-fast;
+}

@@ -1,0 +1,211 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.footer {
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 13, 26, 0.85);
+  padding: $space-12 0 $space-6 0;
+}
+
+// ----------------------------------------------------------------------------
+// Privacy Banner
+// ----------------------------------------------------------------------------
+.privacyBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-4;
+  padding: $space-5;
+  border-radius: $radius-lg;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(15, 23, 42, 0.6) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  margin-bottom: $space-10;
+
+  @include respond-to('md') {
+    padding: $space-6;
+    align-items: center;
+  }
+}
+
+.privacyIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: $radius-md;
+  background: rgba(16, 185, 129, 0.15);
+  color: $color-success;
+  flex-shrink: 0;
+}
+
+.privacyContent {
+  flex: 1;
+}
+
+.privacyTitle {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.privacyDesc {
+  font-size: $font-size-sm;
+  color: $neutral-300;
+  line-height: $line-height-normal;
+
+  strong {
+    color: #ffffff;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Grid Layout
+// ----------------------------------------------------------------------------
+.footerGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-8;
+  padding-bottom: $space-8;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+  @include respond-to('sm') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to('lg') {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: $space-10;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Brand Column
+// ----------------------------------------------------------------------------
+.brandCol {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  text-decoration: none;
+}
+
+.logoIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-sm;
+  background: linear-gradient(135deg, $primary-500 0%, $accent-violet 100%);
+  color: #ffffff;
+}
+
+.brandName {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: #ffffff;
+}
+
+.brandAccent {
+  color: $primary-400;
+}
+
+.brandTagline {
+  font-size: $font-size-sm;
+  color: $neutral-400;
+  line-height: $line-height-normal;
+  max-width: 320px;
+}
+
+.badgePill {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-xs;
+  color: $color-success;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 4px 10px;
+  border-radius: $radius-full;
+  width: fit-content;
+  margin-top: $space-2;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: $radius-full;
+  background: $color-success;
+  box-shadow: 0 0 6px $color-success;
+}
+
+// ----------------------------------------------------------------------------
+// Link Columns
+// ----------------------------------------------------------------------------
+.linksCol {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.colTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $neutral-200;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.linksList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.footerLink {
+  font-size: $font-size-sm;
+  color: $neutral-400;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: #ffffff;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Bottom Bar
+// ----------------------------------------------------------------------------
+.bottomBar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-4;
+  padding-top: $space-6;
+  font-size: $font-size-xs;
+  color: $neutral-500;
+
+  @include respond-to('md') {
+    flex-direction: row;
+  }
+}
+
+.copyright {
+  color: $neutral-400;
+}
+
+.madeWith {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+}
+
+.heartIcon {
+  color: $accent-rose;
+}

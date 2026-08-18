@@ -1,0 +1,143 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.dropzone {
+  position: relative;
+  width: 100%;
+  border-radius: $radius-2xl;
+  border: 2px dashed rgba(255, 255, 255, 0.16);
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: $space-10 $space-6;
+  text-align: center;
+  cursor: pointer;
+  transition: all $transition-smooth;
+  outline: none;
+
+  @include respond-to('md') {
+    padding: $space-12 $space-8;
+  }
+
+  @include focus-ring;
+
+  &:hover:not(.disabled) {
+    border-color: $primary-400;
+    background: rgba(79, 70, 229, 0.05);
+    box-shadow: 0 0 30px -5px hsla(230, 80%, 56%, 0.2);
+
+    .iconContainer {
+      transform: scale(1.08) translateY(-2px);
+      border-color: $primary-400;
+      color: $primary-300;
+    }
+  }
+}
+
+.dragging {
+  border-color: $accent-cyan !important;
+  background: rgba(6, 182, 212, 0.1) !important;
+  box-shadow: 0 0 40px -5px hsla(190, 90%, 50%, 0.3) !important;
+  transform: scale(1.01);
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $space-4;
+  pointer-events: none;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: $radius-xl;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: $primary-400;
+  transition: all $transition-smooth;
+}
+
+.uploadIcon {
+  stroke-width: 1.75;
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.mainTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: #ffffff;
+
+  @include respond-to('md') {
+    font-size: $font-size-xl;
+  }
+}
+
+.browseText {
+  color: $primary-400;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.subtitle {
+  font-size: $font-size-sm;
+  color: $neutral-400;
+}
+
+.actions {
+  pointer-events: auto;
+  margin-top: $space-1;
+}
+
+.formatBadges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: $space-1;
+  margin-top: $space-2;
+}
+
+.supportsLabel {
+  font-size: $font-size-xs;
+  color: $neutral-500;
+  margin-right: $space-1;
+}
+
+.securityNote {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-xs;
+  color: $color-success;
+  background: rgba(16, 185, 129, 0.08);
+  padding: 4px $space-3;
+  border-radius: $radius-full;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  margin-top: $space-2;
+}
+
+.shieldIcon {
+  color: $color-success;
+  flex-shrink: 0;
+}

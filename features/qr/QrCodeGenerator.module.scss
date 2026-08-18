@@ -1,0 +1,430 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.qrWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-6;
+
+  @include respond-to('lg') {
+    grid-template-columns: 1fr 380px;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+// ----------------------------------------------------------------------------
+// Type Selector Pills
+// ----------------------------------------------------------------------------
+.typeNav {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-wrap: wrap;
+  padding-bottom: $space-4;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.typeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  padding: 8px $space-3;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $neutral-300;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: $radius-lg;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+  }
+}
+
+.typeBtnActive {
+  background: $primary-500 !important;
+  color: #ffffff !important;
+  border-color: $primary-500 !important;
+  box-shadow: 0 0 14px hsla(230, 80%, 56%, 0.4);
+}
+
+// ----------------------------------------------------------------------------
+// Inputs
+// ----------------------------------------------------------------------------
+.inputsSection {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.fieldStack {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.label {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $neutral-200;
+}
+
+.textarea {
+  width: 100%;
+  padding: $space-3 $space-4;
+  font-size: $font-size-sm;
+  color: #ffffff;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: $radius-lg;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+  transition: border-color $transition-fast;
+
+  &:focus {
+    border-color: $primary-400;
+    box-shadow: 0 0 0 3px hsla(230, 80%, 56%, 0.2);
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Center Logo Section
+// ----------------------------------------------------------------------------
+.logoSection {
+  padding-top: $space-4;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.sectionTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sectionIcon {
+  color: $primary-400;
+}
+
+.logoPillsRow {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-wrap: wrap;
+}
+
+.logoPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $neutral-300;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: $radius-full;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+  }
+}
+
+.logoPillActive {
+  background: rgba(79, 70, 229, 0.25) !important;
+  color: #ffffff !important;
+  border-color: $primary-400 !important;
+  box-shadow: 0 0 10px hsla(230, 80%, 56%, 0.3);
+}
+
+.logoPillIcon {
+  width: 16px;
+  height: 16px;
+  border-radius: $radius-full;
+}
+
+.customLogoPreviewRow {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-2 $space-3;
+  border-radius: $radius-lg;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: fit-content;
+}
+
+.customPreviewImg {
+  width: 28px;
+  height: 28px;
+  border-radius: $radius-full;
+  object-fit: cover;
+}
+
+.customLogoName {
+  font-size: $font-size-xs;
+  color: $neutral-200;
+}
+
+.removeLogoBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: $radius-full;
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(239, 68, 68, 0.4);
+  }
+}
+
+.logoScaleRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 280px;
+  margin-top: $space-2;
+}
+
+.sliderHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.valueBadge {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $primary-300;
+  background: rgba(79, 70, 229, 0.15);
+  padding: 2px 8px;
+  border-radius: $radius-full;
+}
+
+.rangeInput {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: $radius-full;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: $radius-full;
+    background: $primary-400;
+    cursor: pointer;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Styling Customization
+// ----------------------------------------------------------------------------
+.styleOptions {
+  padding-top: $space-4;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.styleTitle {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $neutral-400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.colorRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: $space-4;
+}
+
+.colorItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.subLabel {
+  font-size: $font-size-xs;
+  color: $neutral-400;
+}
+
+.pickerBox {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px $space-2;
+  border-radius: $radius-md;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.colorInput {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background: none;
+
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+  &::-webkit-color-swatch {
+    border: none;
+    border-radius: 4px;
+  }
+}
+
+.colorHex {
+  font-size: $font-size-xs;
+  color: $neutral-300;
+  font-family: monospace;
+}
+
+.select {
+  padding: 6px $space-2;
+  font-size: $font-size-xs;
+  color: #ffffff;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: $radius-md;
+  outline: none;
+  cursor: pointer;
+
+  &:focus {
+    border-color: $primary-400;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// Preview Column
+// ----------------------------------------------------------------------------
+.previewCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: $space-5;
+}
+
+.previewHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: $space-3;
+}
+
+.previewTitle {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: #ffffff;
+}
+
+.liveBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: $font-size-xs;
+  color: $primary-300;
+  background: rgba(79, 70, 229, 0.15);
+  padding: 2px 8px;
+  border-radius: $radius-full;
+}
+
+// Strictly Square Preview Box
+.canvasContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-4;
+  border-radius: $radius-2xl;
+  box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.6);
+  width: 100%;
+  max-width: 270px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.qrCanvas {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  display: block;
+}
+
+.captionText {
+  font-size: $font-size-xs;
+  color: $neutral-400;
+  word-break: break-all;
+  max-width: 280px;
+}
+
+.actionBtnStack {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  width: 100%;
+}
+
+.secondaryActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-2;
+}
+
+.freeBadge {
+  font-size: $font-size-xs;
+  color: $color-success;
+  background: rgba(16, 185, 129, 0.08);
+  padding: 6px $space-3;
+  border-radius: $radius-md;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  width: 100%;
+}

@@ -1,0 +1,47 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.breadcrumbsNav {
+  margin-bottom: $space-6;
+}
+
+.breadcrumbsList {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+.crumbItem {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-xs;
+}
+
+.crumbLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: $neutral-400;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: #ffffff;
+  }
+}
+
+.homeIcon {
+  color: $neutral-400;
+}
+
+.separator {
+  color: $neutral-600;
+  flex-shrink: 0;
+}
+
+.current {
+  color: $primary-300;
+  font-weight: $font-weight-medium;
+}
