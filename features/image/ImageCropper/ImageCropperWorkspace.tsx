@@ -21,13 +21,22 @@ import { FileDropzone } from '@/components/file-upload/FileDropzone/FileDropzone
 import { ToolHeader } from '@/components/tool/ToolHeader/ToolHeader';
 import { NormalizedCropBox, CropResult, cropImageFile } from '@/lib/image/canvasCropper';
 import { formatBytes, downloadBlob, generateDownloadFilename } from '@/lib/file/fileUtils';
+import { trackToolUse, trackToolDownload } from '@/lib/analytics/gtag';
 import styles from './ImageCropper.module.scss';
 
 export interface ImageCropperWorkspaceProps {
   tool: ToolMetadata;
 }
 
-type AspectRatioPreset = 'free' | '1:1' | '16:9' | '4:3' | '3:2' | '9:16';
+type AspectRatioPreset =
+  | 'free'
+  | 'passport'
+  | 'signature'
+  | '1:1'
+  | '16:9'
+  | '4:3'
+  | '3:2'
+  | '9:16';
 
 type HandleType = 'move' | 'nw' | 'ne' | 'sw' | 'se' | 'n' | 's' | 'w' | 'e';
 
@@ -39,6 +48,14 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
     height: 0,
   });
 
+  // Default initial aspect ratio based on tool intent
+  const initialRatio: AspectRatioPreset =
+    tool.slug === 'passport-photo-maker'
+      ? 'passport'
+      : tool.slug === 'signature-cropper'
+        ? 'signature'
+        : 'free';
+
   // Crop box in normalized percentages (0 to 1)
   const [cropBox, setCropBox] = useState<NormalizedCropBox>({
     x: 0.1,
@@ -47,7 +64,7 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
     height: 0.8,
   });
 
-  const [aspectRatio, setAspectRatio] = useState<AspectRatioPreset>('free');
+  const [aspectRatio, setAspectRatio] = useState<AspectRatioPreset>(initialRatio);
   const [rotation, setRotation] = useState<number>(0);
   const [flipH, setFlipH] = useState<boolean>(false);
   const [flipV, setFlipV] = useState<boolean>(false);
@@ -106,6 +123,12 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
 
       let targetRatio = 1;
       switch (ratio) {
+        case 'passport':
+          targetRatio = 35 / 45; // Standard 35x45mm passport ratio (~0.777)
+          break;
+        case 'signature':
+          targetRatio = 3 / 1; // Standard 3:1 signature ratio
+          break;
         case '1:1':
           targetRatio = 1;
           break;
@@ -243,6 +266,13 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
         quality: quality / 100,
       });
 
+      trackToolUse(tool.slug, 'crop_execute', {
+        aspect_ratio: aspectRatio,
+        output_format: outputFormat,
+        width: result.width,
+        height: result.height,
+      });
+
       setCropResult(result);
     } catch (err: unknown) {
       alert(err instanceof Error ? err.message : 'Crop failed.');
@@ -320,6 +350,12 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
                       ? 'webp'
                       : 'png';
                 const filename = generateDownloadFilename(selectedFile.name, 'cropped', ext);
+                trackToolDownload(tool.slug, {
+                  fileName: filename,
+                  fileExtension: ext,
+                  fileSize: cropResult.size,
+                  toolName: tool.name,
+                });
                 downloadBlob(cropResult.blob, filename);
               }}
             >
@@ -352,18 +388,31 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
             <div className={styles.toolbarHeader}>
               <div className={styles.aspectPills}>
                 <span className={styles.aspectLabel}>Ratio:</span>
-                {(['free', '1:1', '16:9', '4:3', '3:2', '9:16'] as AspectRatioPreset[]).map(
-                  (preset) => (
-                    <button
-                      key={preset}
-                      type="button"
-                      className={`${styles.ratioBtn} ${aspectRatio === preset ? styles.ratioActive : ''}`}
-                      onClick={() => applyAspectRatio(preset)}
-                    >
-                      {preset === 'free' ? 'Freeform' : preset}
-                    </button>
-                  )
-                )}
+                {(
+                  [
+                    'free',
+                    'passport',
+                    'signature',
+                    '1:1',
+                    '4:3',
+                    '16:9',
+                  ] as AspectRatioPreset[]
+                ).map((preset) => (
+                  <button
+                    key={preset}
+                    type="button"
+                    className={`${styles.ratioBtn} ${aspectRatio === preset ? styles.ratioActive : ''}`}
+                    onClick={() => applyAspectRatio(preset)}
+                  >
+                    {preset === 'free'
+                      ? 'Freeform'
+                      : preset === 'passport'
+                        ? 'Passport 35×45'
+                        : preset === 'signature'
+                          ? 'Signature 3:1'
+                          : preset}
+                  </button>
+                ))}
               </div>
 
               <div className={styles.transformActions}>

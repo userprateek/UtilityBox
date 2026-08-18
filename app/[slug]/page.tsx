@@ -7,8 +7,15 @@ import { ToolPageClient } from './ToolPageClient';
 import { Breadcrumbs } from '@/components/navigation/Breadcrumbs/Breadcrumbs';
 import { ToolGuide } from '@/components/tool/ToolGuide/ToolGuide';
 import { ToolFaq } from '@/components/tool/ToolFaq/ToolFaq';
+import { RelatedTools } from '@/components/tool/RelatedTools/RelatedTools';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { generateToolJsonLd, generateBreadcrumbJsonLd, getDefaultToolFaqs } from '@/lib/seo/schema';
+import {
+  generateToolJsonLd,
+  generateHowToJsonLd,
+  generateFaqJsonLd,
+  generateBreadcrumbJsonLd,
+  getDefaultToolFaqs,
+} from '@/lib/seo/schema';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -72,18 +79,22 @@ export default async function ToolPage({ params }: Props) {
   ];
 
   const toolJsonLd = generateToolJsonLd(tool);
+  const howToJsonLd = generateHowToJsonLd(tool);
   const breadcrumbJsonLd = generateBreadcrumbJsonLd([
     { name: 'Home', url: siteConfig.url },
     { name: 'All Tools', url: `${siteConfig.url}/tools` },
     { name: tool.name, url: pageUrl },
   ]);
   const faqs = getDefaultToolFaqs(tool);
+  const faqJsonLd = generateFaqJsonLd(faqs);
 
   return (
     <>
       {/* Structured Data (JSON-LD) for Search Engines */}
       <JsonLd schema={toolJsonLd} />
+      <JsonLd schema={howToJsonLd} />
       <JsonLd schema={breadcrumbJsonLd} />
+      <JsonLd schema={faqJsonLd} />
 
       <Container size="lg" style={{ paddingTop: '1.5rem', paddingBottom: '5rem' }}>
         {/* Semantic Breadcrumbs Navigation */}
@@ -97,6 +108,9 @@ export default async function ToolPage({ params }: Props) {
 
         {/* Semantic FAQ Section with FAQPage Schema */}
         <ToolFaq toolName={tool.name} faqs={faqs} />
+
+        {/* Internal Linking SEO & Discovery Matrix */}
+        <RelatedTools currentSlug={tool.slug} />
       </Container>
     </>
   );

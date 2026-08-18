@@ -23,6 +23,7 @@ import { Card } from '@/components/common/Card/Card';
 import { ProgressBar } from '@/components/common/ProgressBar/ProgressBar';
 import { Alert } from '@/components/common/States/Alert';
 import { downloadBlob, downloadUrl, generateDownloadFilename } from '@/lib/file/fileUtils';
+import { trackToolUse, trackToolDownload } from '@/lib/analytics/gtag';
 import styles from './ToolShell.module.scss';
 
 export interface ToolShellProps {
@@ -73,6 +74,9 @@ export const ToolShell: React.FC<ToolShellProps> = ({
     execute,
     reset: resetProcessor,
   } = useFileProcessor<ManagedFile[], ManagedFile[] | void>({
+    onSuccess: () => {
+      trackToolUse(tool.slug, 'process_complete', { file_count: files.length });
+    },
     processFn: onProcess
       ? async (inputFiles, onProg) => {
           return await onProcess(inputFiles, onProg);
@@ -99,6 +103,7 @@ export const ToolShell: React.FC<ToolShellProps> = ({
 
   const handleStartProcessing = async () => {
     if (files.length === 0) return;
+    trackToolUse(tool.slug, 'process_start', { file_count: files.length });
     await execute(files);
   };
 
@@ -108,6 +113,11 @@ export const ToolShell: React.FC<ToolShellProps> = ({
   };
 
   const handleDownloadAll = () => {
+    trackToolDownload(tool.slug, {
+      fileCount: files.length,
+      toolName: tool.name,
+      fileName: files.length === 1 ? files[0]?.name : `batch_${tool.slug}`,
+    });
     files.forEach((file) => {
       const filename = generateDownloadFilename(file.name, tool.slug);
       if (file.processedBlob) {

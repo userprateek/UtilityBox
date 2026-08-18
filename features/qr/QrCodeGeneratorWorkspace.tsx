@@ -23,6 +23,7 @@ import { Card } from '@/components/common/Card/Card';
 import { Input } from '@/components/common/Input/Input';
 import { ToolHeader } from '@/components/tool/ToolHeader/ToolHeader';
 import { generateDownloadFilename } from '@/lib/file/fileUtils';
+import { trackToolUse, trackToolDownload } from '@/lib/analytics/gtag';
 import { siteConfig } from '@/config/site';
 import styles from './QrCodeGenerator.module.scss';
 
@@ -59,7 +60,9 @@ const PRESET_LOGOS: Record<string, { label: string; iconUri: string }> = {
 };
 
 export const QrCodeGeneratorWorkspace: React.FC<QrCodeGeneratorWorkspaceProps> = ({ tool }) => {
-  const [qrType, setQrType] = useState<QrType>('url');
+  const [qrType, setQrType] = useState<QrType>(
+    tool.slug === 'upi-qr-code-generator' ? 'upi' : 'url'
+  );
 
   // Fields for URL / Text
   const [textContent, setTextContent] = useState<string>(siteConfig.url);
@@ -70,7 +73,7 @@ export const QrCodeGeneratorWorkspace: React.FC<QrCodeGeneratorWorkspaceProps> =
   const [upiAmount, setUpiAmount] = useState<string>('');
 
   // Fields for WhatsApp
-  const [waPhone, setWaPhone] = useState<string>('919876543210');
+  const [waPhone, setWaPhone] = useState<string>('919036593930');
   const [waMessage, setWaMessage] = useState<string>(
     'Hello! I would like to inquire about your services.'
   );
@@ -88,7 +91,9 @@ export const QrCodeGeneratorWorkspace: React.FC<QrCodeGeneratorWorkspaceProps> =
   const [size, setSize] = useState<number>(500);
 
   // Center Image / Logo Option
-  const [selectedPresetLogo, setSelectedPresetLogo] = useState<PresetLogoId>('none');
+  const [selectedPresetLogo, setSelectedPresetLogo] = useState<PresetLogoId>(
+    tool.slug === 'upi-qr-code-generator' ? 'rupee' : 'none'
+  );
   const [customLogoUrl, setCustomLogoUrl] = useState<string | null>(null);
   const [logoScale, setLogoScale] = useState<number>(22); // percent of QR width (15% to 26%)
 
@@ -96,19 +101,25 @@ export const QrCodeGeneratorWorkspace: React.FC<QrCodeGeneratorWorkspaceProps> =
   const [copied, setCopied] = useState<boolean>(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const prevQrTypeRef = useRef<QrType>(qrType);
 
-  // Automatically pick suitable default center logo based on type tab
+  // Automatically pick suitable default center logo when user switches type tab
   useEffect(() => {
-    if (selectedPresetLogo === 'custom' && customLogoUrl) return;
-
-    if (qrType === 'upi') {
-      setSelectedPresetLogo('rupee');
-    } else if (qrType === 'whatsapp') {
-      setSelectedPresetLogo('whatsapp');
-    } else if (qrType === 'wifi') {
-      setSelectedPresetLogo('wifi');
+    if (prevQrTypeRef.current !== qrType) {
+      prevQrTypeRef.current = qrType;
+      if (selectedPresetLogo !== 'custom') {
+        if (qrType === 'upi') {
+          setSelectedPresetLogo('rupee');
+        } else if (qrType === 'whatsapp') {
+          setSelectedPresetLogo('whatsapp');
+        } else if (qrType === 'wifi') {
+          setSelectedPresetLogo('wifi');
+        } else {
+          setSelectedPresetLogo('none');
+        }
+      }
     }
-  }, [qrType, selectedPresetLogo, customLogoUrl]);
+  }, [qrType, selectedPresetLogo]);
 
   // Compute actual payload string based on active tab
   const getComputedPayload = useCallback((): string => {
@@ -240,9 +251,15 @@ export const QrCodeGeneratorWorkspace: React.FC<QrCodeGeneratorWorkspaceProps> =
 
   const handleDownloadPng = () => {
     if (!dataUrl) return;
+    const filename = generateDownloadFilename(`qrcode-${qrType}`, 'qr', 'png');
+    trackToolDownload(tool.slug, {
+      fileName: filename,
+      fileExtension: 'png',
+      toolName: tool.name,
+    });
     const a = document.createElement('a');
     a.href = dataUrl;
-    a.download = generateDownloadFilename(`qrcode-${qrType}`, 'qr', 'png');
+    a.download = filename;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -250,6 +267,7 @@ export const QrCodeGeneratorWorkspace: React.FC<QrCodeGeneratorWorkspaceProps> =
 
   const handlePrint = () => {
     if (!dataUrl) return;
+    trackToolUse(tool.slug, 'print_standee', { qr_type: qrType });
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
 
@@ -286,6 +304,7 @@ export const QrCodeGeneratorWorkspace: React.FC<QrCodeGeneratorWorkspaceProps> =
 
   const handleCopyImage = async () => {
     if (!canvasRef.current) return;
+    trackToolUse(tool.slug, 'copy_qr_image', { qr_type: qrType });
     try {
       canvasRef.current.toBlob(async (blob) => {
         if (!blob) return;
@@ -412,10 +431,10 @@ export const QrCodeGeneratorWorkspace: React.FC<QrCodeGeneratorWorkspaceProps> =
                 <div className={styles.fieldStack}>
                   <Input
                     label="WhatsApp Mobile Number (With country code) *"
-                    placeholder="e.g. 919876543210"
+                    placeholder="e.g. 919036593930"
                     value={waPhone}
                     onChange={(e) => setWaPhone(e.target.value)}
-                    helperText="Do not include + or spaces (e.g. 919876543210 for India)"
+                    helperText="Do not include + or spaces (e.g. 919036593930 for India)"
                   />
                   <div className={styles.fieldGroup}>
                     <label htmlFor="wa-message" className={styles.label}>

@@ -43,7 +43,7 @@ export default function ToolsPage() {
           <div className={styles.pageHeader}>
             <h1 className={styles.pageTitle}>All Utilities</h1>
             <p className={styles.pageSubtitle}>
-              Fast, free, and privacy-friendly tools executing directly in your browser.
+              Free, Fast, and privacy-friendly tools executing directly in your browser.
             </p>
           </div>
 

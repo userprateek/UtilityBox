@@ -10,7 +10,6 @@ import {
   Scissors,
   Layers,
   QrCode,
-  FileMinus,
   FileUp,
   Store,
   UserCheck,
@@ -40,7 +39,7 @@ export default function HomePage() {
           </div>
 
           <h1 className={styles.heroTitle}>
-            Fast, Free File Tools for <br />
+            Free, Fast File Tools for <br />
             <span className={styles.heroGradientText}>Forms, PDFs & Shop Daily Tasks</span>
           </h1>
 
@@ -104,7 +103,7 @@ export default function HomePage() {
 
           <div className={styles.tasksGrid}>
             {/* Task 1 */}
-            <Link href="/image-compressor" className={styles.taskCard}>
+            <Link href="/compress-image-to-50kb" className={styles.taskCard}>
               <div className={styles.taskIconWrapper}>
                 <FileCheck2 size={24} />
               </div>
@@ -117,51 +116,51 @@ export default function HomePage() {
             </Link>
 
             {/* Task 2 */}
-            <Link href="/image-cropper" className={styles.taskCard}>
+            <Link href="/passport-photo-maker" className={styles.taskCard}>
               <div className={styles.taskIconWrapper}>
                 <Scissors size={24} />
               </div>
-              <h3 className={styles.taskTitle}>Crop Passport Photo & Sign</h3>
+              <h3 className={styles.taskTitle}>Passport Photo (35×45mm)</h3>
               <p className={styles.taskDesc}>
-                Easily crop passport size photos and clear signatures to exact dimensions.
+                Crop portrait photos to standard 35×45mm and 2×2 inch official dimensions.
               </p>
-              <div className={styles.taskBadge}>Passport & Signature</div>
+              <div className={styles.taskBadge}>Passport & Visa</div>
             </Link>
 
             {/* Task 3 */}
-            <Link href="/pdf-merger" className={styles.taskCard}>
+            <Link href="/signature-cropper" className={styles.taskCard}>
               <div className={styles.taskIconWrapper}>
-                <Layers size={24} />
+                <Scissors size={24} />
               </div>
-              <h3 className={styles.taskTitle}>Merge Marksheets & IDs</h3>
+              <h3 className={styles.taskTitle}>Crop Signature (3:1)</h3>
               <p className={styles.taskDesc}>
-                Combine Front + Back of Aadhaar/Voter ID or multiple marksheets into a single PDF.
+                Extract crisp, clear signatures for SSC, UPSC, and banking portal upload.
               </p>
-              <div className={styles.taskBadge}>Multi-Page Documents</div>
+              <div className={styles.taskBadge}>3:1 Aspect Ratio</div>
             </Link>
 
             {/* Task 4 */}
-            <Link href="/qr-code-generator" className={styles.taskCard}>
+            <Link href="/upi-qr-code-generator" className={styles.taskCard}>
               <div className={styles.taskIconWrapper}>
                 <QrCode size={24} />
               </div>
-              <h3 className={styles.taskTitle}>Shop UPI & WhatsApp QR</h3>
+              <h3 className={styles.taskTitle}>Shop UPI QR Standee</h3>
               <p className={styles.taskDesc}>
-                Generate printable GPay, PhonePe, Paytm payment QR or customer WhatsApp chat link.
+                Generate printable GPay, PhonePe, Paytm payment QR standees for shop counters.
               </p>
               <div className={styles.taskBadge}>Shop Counters</div>
             </Link>
 
             {/* Task 5 */}
-            <Link href="/pdf-compressor" className={styles.taskCard}>
+            <Link href="/pdf-merger" className={styles.taskCard}>
               <div className={styles.taskIconWrapper}>
-                <FileMinus size={24} />
+                <Layers size={24} />
               </div>
-              <h3 className={styles.taskTitle}>Compress PDF Under 200KB</h3>
+              <h3 className={styles.taskTitle}>Merge IDs & Marksheets</h3>
               <p className={styles.taskDesc}>
-                Reduce heavy scanned document files to upload easily without error warnings.
+                Combine Front + Back of Aadhaar/Voter ID or multiple marksheets into a single PDF.
               </p>
-              <div className={styles.taskBadge}>Scanned Files</div>
+              <div className={styles.taskBadge}>Multi-Page Documents</div>
             </Link>
 
             {/* Task 6 */}

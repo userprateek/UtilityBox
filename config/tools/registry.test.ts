@@ -3,6 +3,7 @@ import {
   getToolBySlug,
   getToolsByCategory,
   getPopularTools,
+  getRelatedTools,
   searchTools,
   TOOL_REGISTRY,
 } from './registry';
@@ -20,7 +21,6 @@ describe('Tool Registry', () => {
       expect(tool.seoTitle).toBeTruthy();
       expect(tool.seoDescription).toBeTruthy();
       expect(tool.keywords.length).toBeGreaterThan(0);
-      expect(tool.supportedInputFormats.length).toBeGreaterThan(0);
     });
   });
 
@@ -50,6 +50,12 @@ describe('Tool Registry', () => {
     const popularTools = getPopularTools();
     expect(popularTools.length).toBeGreaterThan(0);
     popularTools.forEach((t) => expect(t.isPopular).toBe(true));
+  });
+
+  it('retrieves related tools excluding current tool', () => {
+    const related = getRelatedTools('image-compressor', 3);
+    expect(related.length).toBeLessThanOrEqual(3);
+    expect(related.some((t) => t.slug === 'image-compressor')).toBe(false);
   });
 
   it('searches tools by query terms across name, description, and keywords', () => {

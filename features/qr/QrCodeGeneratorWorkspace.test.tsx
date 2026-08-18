@@ -66,4 +66,15 @@ describe('QrCodeGeneratorWorkspace Component', () => {
     expect(screen.getByRole('button', { name: /print standee/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /copy image/i })).toBeInTheDocument();
   });
+
+  it('renders with UPI tab pre-selected for upi-qr-code-generator tool slug', () => {
+    const upiTool: ToolMetadata = {
+      ...mockQrTool,
+      slug: 'upi-qr-code-generator',
+      name: 'Shop UPI QR Code Generator',
+    };
+    render(<QrCodeGeneratorWorkspace tool={upiTool} />);
+
+    expect(screen.getByLabelText(/Your Shop UPI ID/i)).toBeInTheDocument();
+  });
 });

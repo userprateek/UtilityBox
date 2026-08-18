@@ -40,7 +40,7 @@ export const Footer: React.FC = () => {
               </span>
             </Link>
             <p className={styles.brandTagline}>
-              Fast, free in-browser file tools built for cyber cafes, small shops, students, and
+              Free, Fast in-browser file tools built for cyber cafes, small shops, students, and
               daily online form filling.
             </p>
             <div className={styles.badgePill}>

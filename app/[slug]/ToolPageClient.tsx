@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { ToolMetadata, ProcessingProgress } from '@/types/tool';
 import { ManagedFile } from '@/types/file';
@@ -8,6 +8,7 @@ import { ToolShell } from '@/components/tool/ToolShell/ToolShell';
 import { LoadingState } from '@/components/common/States/LoadingState';
 import { ImageCompressorSettings } from '@/features/image/ImageCompressorOptions';
 import { compressImageFile } from '@/lib/image/canvasCompressor';
+import { trackToolView } from '@/lib/analytics/gtag';
 
 // Dynamically import heavy tool workspaces for optimal code splitting & minimal initial bundle
 const ImageCropperWorkspace = dynamic(
@@ -47,37 +48,60 @@ export interface ToolPageClientProps {
 }
 
 export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
+  // Track individual tool route visit in Google Analytics
+  useEffect(() => {
+    trackToolView(tool.slug, tool.name, tool.category);
+  }, [tool.slug, tool.name, tool.category]);
+
   // Option states for tools with options
+  const defaultQuality =
+    tool.slug === 'compress-image-to-50kb'
+      ? 55
+      : tool.slug === 'compress-image-to-100kb'
+        ? 75
+        : 80;
+
   const [compressorSettings, setCompressorSettings] = useState<ImageCompressorSettings>({
-    quality: 80,
+    quality: defaultQuality,
     outputFormat: 'original',
     removeMetadata: true,
   });
 
   // Dedicated standalone interactive workspaces
-  if (tool.slug === 'image-cropper') {
+  const isCropper =
+    tool.slug === 'image-cropper' ||
+    tool.slug === 'passport-photo-maker' ||
+    tool.slug === 'signature-cropper';
+
+  if (isCropper) {
     return <ImageCropperWorkspace tool={tool} />;
   }
 
-  if (tool.slug === 'qr-code-generator') {
+  const isQr =
+    tool.slug === 'qr-code-generator' || tool.slug === 'upi-qr-code-generator';
+
+  if (isQr) {
     return <QrCodeGeneratorWorkspace tool={tool} />;
   }
 
+  const isCompressor =
+    tool.slug === 'image-compressor' ||
+    tool.slug === 'compress-image-to-50kb' ||
+    tool.slug === 'compress-image-to-100kb';
+
   // Render tool options slot connected to settings state
   const renderOptionsSlot = () => {
-    switch (tool.slug) {
-      case 'image-compressor':
-        return <ImageCompressorOptions onChange={setCompressorSettings} />;
-      default:
-        return null;
+    if (isCompressor) {
+      return <ImageCompressorOptions onChange={setCompressorSettings} />;
     }
+    return null;
   };
 
   const handleProcess = async (
     files: ManagedFile[],
     onProgress: (progress: ProcessingProgress) => void
   ): Promise<ManagedFile[] | void> => {
-    if (tool.slug === 'image-compressor') {
+    if (isCompressor) {
       const total = files.length;
       for (let i = 0; i < total; i++) {
         const file = files[i];
@@ -117,9 +141,9 @@ export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
     <ToolShell
       tool={tool}
       optionsSlot={renderOptionsSlot()}
-      onProcess={tool.slug === 'image-compressor' ? handleProcess : undefined}
+      onProcess={isCompressor ? handleProcess : undefined}
       processButtonLabel={
-        tool.slug === 'image-compressor'
+        isCompressor
           ? 'Compress Images'
           : tool.slug === 'pdf-merger'
             ? 'Merge PDFs'

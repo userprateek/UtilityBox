@@ -99,7 +99,7 @@ export const TOOL_REGISTRY: Record<string, ToolMetadata> = {
     maxFileSizeMB: 50,
     seoTitle: 'Free Image Converter - Convert JPG, PNG, WebP Online',
     seoDescription:
-      'Convert image formats instantly with zero server uploads. Fast, free, and confidential image conversion.',
+      'Convert image formats instantly with zero server uploads. Free, Fast, and confidential image conversion.',
     keywords: ['image converter', 'jpg to png', 'png to webp', 'convert photo format'],
     isPopular: true,
     features: [
@@ -303,6 +303,158 @@ export const TOOL_REGISTRY: Record<string, ToolMetadata> = {
       'Instant copy to clipboard',
     ],
   },
+  'compress-image-to-50kb': {
+    slug: 'compress-image-to-50kb',
+    name: 'Compress Image to 50KB',
+    shortDescription:
+      'Compress photos and documents under 50KB for Sarkari, UPSC, SSC, and state exam portals.',
+    description:
+      'Quickly shrink image file sizes strictly under 50KB without losing readability. 100% private in-browser compression with zero server upload.',
+    category: 'image',
+    iconName: 'Minimize2',
+    supportedInputFormats: ['image/jpeg', 'image/png', 'image/webp'],
+    supportedOutputFormats: ['image/jpeg', 'image/png', 'image/webp'],
+    maxFiles: 20,
+    maxFileSizeMB: 50,
+    seoTitle: 'Compress Image to 50KB Online Free - Sarkari & Exam Form Photo Reducer',
+    seoDescription:
+      'Compress photos and certificates under 50KB for online government job forms, college admissions, and exam portals with zero quality loss.',
+    keywords: [
+      'compress image to 50kb',
+      'reduce photo size to 50kb',
+      '50kb photo converter',
+      'sarkari form photo 50kb',
+      'online photo compressor 50kb',
+    ],
+    isPopular: true,
+    features: [
+      'Preset 50KB target reduction',
+      'Side-by-side live quality preview',
+      '100% Client-side privacy: customer photos stay on device',
+      'Instant batch download',
+    ],
+  },
+  'compress-image-to-100kb': {
+    slug: 'compress-image-to-100kb',
+    name: 'Compress Image to 100KB',
+    shortDescription:
+      'Reduce photo and scan sizes under 100KB for online registrations and job portals.',
+    description:
+      'Compress photos, marksheets, and identity scans to under 100KB in seconds directly in your web browser.',
+    category: 'image',
+    iconName: 'Minimize2',
+    supportedInputFormats: ['image/jpeg', 'image/png', 'image/webp'],
+    supportedOutputFormats: ['image/jpeg', 'image/png', 'image/webp'],
+    maxFiles: 20,
+    maxFileSizeMB: 50,
+    seoTitle: 'Compress Image to 100KB Online Free - Fast Photo Size Reducer',
+    seoDescription:
+      'Shrink your image file size under 100KB directly in your browser. Free, fast, and no server uploads.',
+    keywords: [
+      'compress image to 100kb',
+      'photo compressor 100kb',
+      'reduce image size to 100kb',
+      '100kb photo converter',
+    ],
+    isPopular: true,
+    features: [
+      'Target 100KB optimization preset',
+      'Visual clarity indicator',
+      'Safe for customer identity documents',
+      'No registration required',
+    ],
+  },
+  'passport-photo-maker': {
+    slug: 'passport-photo-maker',
+    name: 'Passport Size Photo Maker',
+    shortDescription: 'Crop and format photos to standard 35×45mm passport dimensions online.',
+    description:
+      'Easily crop your selfies and portrait photos into official 35×45mm and 2×2 inch passport size specifications with interactive handles.',
+    category: 'image',
+    iconName: 'Crop',
+    supportedInputFormats: ['image/jpeg', 'image/png', 'image/webp'],
+    supportedOutputFormats: ['image/jpeg', 'image/png', 'image/webp'],
+    maxFiles: 1,
+    maxFileSizeMB: 50,
+    seoTitle: 'Passport Size Photo Maker Online Free - 35x45 mm & 2x2 Inch Crop Tool',
+    seoDescription:
+      'Create passport size photos online for free. Official 35x45mm and 2x2 inch aspect ratio presets with instant high-res download.',
+    keywords: [
+      'passport photo maker',
+      '35x45 mm photo crop',
+      'passport size photo maker online',
+      'visa photo maker',
+      'online passport photo creator',
+    ],
+    isPopular: true,
+    features: [
+      'Official 35x45mm (7:9) and 2x2 in (1:1) presets',
+      'Precise boundary drag handles',
+      'Rotation and flip adjustment tools',
+      'High-res printable download',
+    ],
+  },
+  'signature-cropper': {
+    slug: 'signature-cropper',
+    name: 'Online Signature Cropper',
+    shortDescription: 'Crop signatures to standard 3:1 aspect ratio for government and exam forms.',
+    description:
+      'Extract clean, high-clarity signatures from scanned pages and camera photos. Crop to exact 3:1 and 2:1 form specifications in seconds.',
+    category: 'image',
+    iconName: 'Crop',
+    supportedInputFormats: ['image/jpeg', 'image/png', 'image/webp'],
+    supportedOutputFormats: ['image/jpeg', 'image/png', 'image/webp'],
+    maxFiles: 1,
+    maxFileSizeMB: 50,
+    seoTitle: 'Signature Cropper Online - Crop Signature for Online Forms Free',
+    seoDescription:
+      'Crop signatures online to exact dimensions (3:1, 2:1) for government job, university, and banking form uploads.',
+    keywords: [
+      'signature cropper',
+      'crop signature online',
+      'signature resizer for exam form',
+      'signature crop tool',
+      'online signature editor',
+    ],
+    isPopular: true,
+    features: [
+      '3:1 & 2:1 signature aspect ratio presets',
+      'Zoom & rotation correction for crooked scans',
+      'Lossless pixel extraction',
+      'Instant PNG/JPG download',
+    ],
+  },
+  'upi-qr-code-generator': {
+    slug: 'upi-qr-code-generator',
+    name: 'Shop UPI QR Code Generator',
+    shortDescription:
+      'Generate instant shop counter UPI payment QR codes for GPay, PhonePe, and Paytm.',
+    description:
+      'Create custom printable UPI QR codes with your Shop UPI ID, Payee Name, center logo, and optional fixed amount. Ready for counter standees.',
+    category: 'utilities',
+    iconName: 'QrCode',
+    supportedInputFormats: ['text/plain'],
+    supportedOutputFormats: ['image/png', 'image/svg+xml'],
+    maxFiles: 0,
+    seoTitle: 'Shop UPI QR Code Generator - Free Printable Standee QR Maker Online',
+    seoDescription:
+      'Generate printable UPI payment QR codes for your shop counter. Supports Google Pay, PhonePe, Paytm, and BHIM. 100% free with no watermark.',
+    keywords: [
+      'upi qr code generator',
+      'shop qr code maker',
+      'gpay qr code',
+      'phonepe qr code generator',
+      'print upi standee qr',
+    ],
+    isPopular: true,
+    features: [
+      'Shop UPI ID and custom Payee Name configuration',
+      'Built-in ₹ Rupee / UPI center logo embedding',
+      'Upload custom shop logo with contrast shield',
+      '1-Click counter standee print layout',
+      'No account & no payment fees',
+    ],
+  },
 };
 
 // ----------------------------------------------------------------------------
@@ -323,6 +475,26 @@ export function getToolsByCategory(categoryId: ToolCategoryId): ToolMetadata[] {
 
 export function getPopularTools(): ToolMetadata[] {
   return Object.values(TOOL_REGISTRY).filter((tool) => tool.isPopular);
+}
+
+export function getRelatedTools(currentSlug: string, limit: number = 3): ToolMetadata[] {
+  const currentTool = TOOL_REGISTRY[currentSlug];
+  if (!currentTool) {
+    return getPopularTools().slice(0, limit);
+  }
+
+  // 1. Same category tools
+  const sameCategory = Object.values(TOOL_REGISTRY).filter(
+    (t) => t.slug !== currentSlug && t.category === currentTool.category
+  );
+
+  // 2. Popular tools from other categories
+  const otherPopular = Object.values(TOOL_REGISTRY).filter(
+    (t) => t.slug !== currentSlug && t.category !== currentTool.category && t.isPopular
+  );
+
+  const combined = [...sameCategory, ...otherPopular];
+  return combined.slice(0, limit);
 }
 
 export function searchTools(query: string): ToolMetadata[] {

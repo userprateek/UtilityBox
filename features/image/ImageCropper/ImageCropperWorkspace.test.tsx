@@ -56,4 +56,18 @@ describe('ImageCropperWorkspace Component', () => {
 
     expect(ratio169Btn).toBeInTheDocument();
   });
+
+  it('renders Passport 35x45 and Signature 3:1 preset buttons', () => {
+    const { container } = render(<ImageCropperWorkspace tool={mockCropperTool} />);
+
+    const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+    const file = new File(['fake-png-data'], 'sample.png', { type: 'image/png' });
+
+    act(() => {
+      fireEvent.change(input, { target: { files: [file] } });
+    });
+
+    expect(screen.getByText(/Passport 35×45/i)).toBeInTheDocument();
+    expect(screen.getByText(/Signature 3:1/i)).toBeInTheDocument();
+  });
 });

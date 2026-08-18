@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import '@/styles/globals.scss';
 import { Header } from '@/components/layout/Header/Header';
 import { Footer } from '@/components/layout/Footer/Footer';
+import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import { siteConfig } from '@/config/site';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { generateWebsiteJsonLd } from '@/lib/seo/schema';
@@ -89,6 +90,7 @@ export default function RootLayout({
         <JsonLd schema={websiteJsonLd} />
       </head>
       <body>
+        <GoogleAnalytics />
         <Header />
         <main className="main-content">{children}</main>
         <Footer />

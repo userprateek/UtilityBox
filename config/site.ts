@@ -12,6 +12,7 @@ export const siteConfig = {
     privacy: '/privacy',
     terms: '/terms',
   },
+  gaMeasurementId: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-7V2289REP4',
   privacyGuarantee: {
     title: '100% Free & No Sign-up Required',
     description:

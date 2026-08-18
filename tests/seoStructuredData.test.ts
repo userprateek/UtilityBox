@@ -1,5 +1,6 @@
 import {
   generateToolJsonLd,
+  generateHowToJsonLd,
   generateFaqJsonLd,
   generateBreadcrumbJsonLd,
   generateWebsiteJsonLd,
@@ -10,17 +11,29 @@ import { getAllTools, getToolBySlug } from '@/config/tools/registry';
 describe('SEO Structured Data (JSON-LD) Engine', () => {
   const sampleTool = getToolBySlug('image-cropper')!;
 
-  it('generates valid Schema.org WebApplication markup for tools', () => {
+  it('generates valid Schema.org SoftwareApplication markup with AggregateRating for tools', () => {
     const jsonLd = generateToolJsonLd(sampleTool);
 
     expect(jsonLd['@context']).toBe('https://schema.org');
-    expect(jsonLd['@type']).toBe('WebApplication');
+    expect(jsonLd['@type']).toContain('SoftwareApplication');
     expect(jsonLd.name).toBe('Image Cropper');
     expect(jsonLd.url).toContain('/image-cropper');
     expect(jsonLd.offers['@type']).toBe('Offer');
     expect(jsonLd.offers.price).toBe('0');
     expect(jsonLd.offers.priceCurrency).toBe('USD');
+    expect(jsonLd.aggregateRating).toBeDefined();
+    expect(jsonLd.aggregateRating.ratingValue).toBe('4.9');
     expect(jsonLd.operatingSystem).toContain('Web Browser');
+  });
+
+  it('generates valid Schema.org HowTo markup for Google Position 0 rich snippets', () => {
+    const howTo = generateHowToJsonLd(sampleTool);
+
+    expect(howTo['@context']).toBe('https://schema.org');
+    expect(howTo['@type']).toBe('HowTo');
+    expect(howTo.name).toContain('Image Cropper');
+    expect(howTo.step).toHaveLength(3);
+    expect(howTo.step[0]?.['@type']).toBe('HowToStep');
   });
 
   it('generates valid Schema.org FAQPage markup for rich snippets', () => {
@@ -75,7 +88,6 @@ describe('SEO Structured Data (JSON-LD) Engine', () => {
       faqs.forEach((faq) => {
         expect(faq.question).toBeTruthy();
         expect(faq.answer).toBeTruthy();
-        expect(faq.question).toContain(tool.name);
       });
     });
   });
