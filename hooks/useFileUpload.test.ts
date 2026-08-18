@@ -95,4 +95,29 @@ describe('useFileUpload hook integration', () => {
 
     expect(result.current.files).toHaveLength(0);
   });
+
+  it('reorders files between slots correctly', () => {
+    const { result } = renderHook(() => useFileUpload());
+
+    const file1 = createMockFile('page1.pdf', 100, 'application/pdf');
+    const file2 = createMockFile('page2.pdf', 200, 'application/pdf');
+    const file3 = createMockFile('page3.pdf', 300, 'application/pdf');
+
+    act(() => {
+      result.current.addFiles([file1, file2, file3]);
+    });
+
+    expect(result.current.files[0]?.name).toBe('page1.pdf');
+    expect(result.current.files[1]?.name).toBe('page2.pdf');
+    expect(result.current.files[2]?.name).toBe('page3.pdf');
+
+    // Move page3 to slot 0
+    act(() => {
+      result.current.reorderFiles(2, 0);
+    });
+
+    expect(result.current.files[0]?.name).toBe('page3.pdf');
+    expect(result.current.files[1]?.name).toBe('page1.pdf');
+    expect(result.current.files[2]?.name).toBe('page2.pdf');
+  });
 });

@@ -69,10 +69,11 @@ describe('ToolShell Workflow Integration', () => {
 
     // Completion state
     expect(screen.getByText('Processing Complete!')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /download files/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /download processed file/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /adjust options & retry/i })).toBeInTheDocument();
 
-    // Reset workflow
-    const resetBtn = screen.getByRole('button', { name: /process another/i });
+    // Reset workflow with Upload New Files
+    const resetBtn = screen.getByRole('button', { name: /upload new files/i });
     act(() => {
       fireEvent.click(resetBtn);
     });

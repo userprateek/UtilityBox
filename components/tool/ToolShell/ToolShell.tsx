@@ -10,6 +10,8 @@ import {
   CheckCircle2,
   Lock,
   Zap,
+  Sliders,
+  FileText,
 } from 'lucide-react';
 import { ToolMetadata, ProcessingProgress } from '@/types/tool';
 import { ManagedFile } from '@/types/file';
@@ -22,7 +24,13 @@ import { Button } from '@/components/common/Button/Button';
 import { Card } from '@/components/common/Card/Card';
 import { ProgressBar } from '@/components/common/ProgressBar/ProgressBar';
 import { Alert } from '@/components/common/States/Alert';
-import { downloadBlob, downloadUrl, generateDownloadFilename } from '@/lib/file/fileUtils';
+import {
+  downloadBlob,
+  downloadUrl,
+  generateDownloadFilename,
+  formatBytes,
+  calculateSavings,
+} from '@/lib/file/fileUtils';
 import { trackToolUse, trackToolDownload } from '@/lib/analytics/gtag';
 import styles from './ToolShell.module.scss';
 
@@ -53,6 +61,8 @@ export const ToolShell: React.FC<ToolShellProps> = ({
     addFiles,
     removeFile,
     updateFile,
+    reorderFiles,
+    replaceFiles,
     clearFiles,
     clearErrors,
     dragProps,
@@ -74,8 +84,11 @@ export const ToolShell: React.FC<ToolShellProps> = ({
     execute,
     reset: resetProcessor,
   } = useFileProcessor<ManagedFile[], ManagedFile[] | void>({
-    onSuccess: () => {
+    onSuccess: (output) => {
       trackToolUse(tool.slug, 'process_complete', { file_count: files.length });
+      if (Array.isArray(output) && output.length > 0) {
+        replaceFiles(output);
+      }
     },
     processFn: onProcess
       ? async (inputFiles, onProg) => {
@@ -126,6 +139,21 @@ export const ToolShell: React.FC<ToolShellProps> = ({
         downloadUrl(file.previewUrl, filename);
       }
     });
+  };
+
+  const handleDownloadSingle = (file: ManagedFile) => {
+    trackToolDownload(tool.slug, {
+      fileCount: 1,
+      toolName: tool.name,
+      fileName: file.name,
+      fileSize: file.processedSize || file.size,
+    });
+    const filename = generateDownloadFilename(file.name, tool.slug);
+    if (file.processedBlob) {
+      downloadBlob(file.processedBlob, filename);
+    } else if (file.previewUrl) {
+      downloadUrl(file.previewUrl, filename);
+    }
   };
 
   const hasFiles = files.length > 0;
@@ -194,6 +222,7 @@ export const ToolShell: React.FC<ToolShellProps> = ({
                 files={files}
                 onRemoveFile={removeFile}
                 onClearAll={handleResetAll}
+                onReorderFiles={reorderFiles}
                 onAddMoreClick={() => {
                   const input = document.createElement('input');
                   input.type = 'file';
@@ -253,6 +282,66 @@ export const ToolShell: React.FC<ToolShellProps> = ({
                       </div>
                     </div>
 
+                    {/* Live File Result Preview Gallery & Size Savings */}
+                    <div className={styles.processedFilesList}>
+                      {files.map((file) => {
+                        const savings =
+                          file.processedSize && file.originalFile.size
+                            ? calculateSavings(file.originalFile.size, file.processedSize)
+                            : null;
+
+                        return (
+                          <div key={file.id} className={styles.processedFileItem}>
+                            <div className={styles.previewThumbWrapper}>
+                              {file.previewUrl ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img
+                                  src={file.previewUrl}
+                                  alt={file.name}
+                                  className={styles.previewThumbImg}
+                                />
+                              ) : (
+                                <div className={styles.previewThumbFallback}>
+                                  <FileText size={22} />
+                                </div>
+                              )}
+                            </div>
+
+                            <div className={styles.processedFileInfo}>
+                              <span className={styles.processedFileName}>{file.name}</span>
+                              <div className={styles.sizeComparisonRow}>
+                                <span className={styles.origSize}>
+                                  {formatBytes(file.originalFile.size)}
+                                </span>
+                                {file.processedSize ? (
+                                  <>
+                                    <span className={styles.arrowIcon}>→</span>
+                                    <span className={styles.newSize}>
+                                      {formatBytes(file.processedSize)}
+                                    </span>
+                                    {savings && savings.isReduced && (
+                                      <span className={styles.savingsBadge}>
+                                        -{savings.percentage}%
+                                      </span>
+                                    )}
+                                  </>
+                                ) : null}
+                              </div>
+                            </div>
+
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              leftIcon={<Download size={14} />}
+                              onClick={() => handleDownloadSingle(file)}
+                            >
+                              Download
+                            </Button>
+                          </div>
+                        );
+                      })}
+                    </div>
+
                     <div className={styles.resultActions}>
                       <Button
                         variant="primary"
@@ -260,15 +349,25 @@ export const ToolShell: React.FC<ToolShellProps> = ({
                         leftIcon={<Download size={18} />}
                         onClick={handleDownloadAll}
                       >
-                        Download Files
+                        {files.length > 1
+                          ? `Download All (${files.length} Files)`
+                          : 'Download Processed File'}
                       </Button>
                       <Button
                         variant="secondary"
                         size="lg"
+                        leftIcon={<Sliders size={16} />}
+                        onClick={() => resetProcessor()}
+                      >
+                        Adjust Options & Retry
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="lg"
                         leftIcon={<RotateCcw size={16} />}
                         onClick={handleResetAll}
                       >
-                        Process Another
+                        Upload New Files
                       </Button>
                     </div>
                   </Card>

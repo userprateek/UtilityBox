@@ -70,4 +70,26 @@ describe('ImageCropperWorkspace Component', () => {
     expect(screen.getByText(/Passport 35×45/i)).toBeInTheDocument();
     expect(screen.getByText(/Signature 3:1/i)).toBeInTheDocument();
   });
+
+  it('toggles target file size limit and shows KB options', () => {
+    const { container } = render(<ImageCropperWorkspace tool={mockCropperTool} />);
+
+    const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+    const file = new File(['fake-png-data'], 'sample.png', { type: 'image/png' });
+
+    act(() => {
+      fireEvent.change(input, { target: { files: [file] } });
+    });
+
+    const toggle = screen.getByLabelText(/Limit Target File Size/i);
+    expect(toggle).not.toBeChecked();
+
+    act(() => {
+      fireEvent.click(toggle);
+    });
+
+    expect(toggle).toBeChecked();
+    expect(screen.getByText(/≤ 20KB \(Sign\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/≤ 50KB \(Photo\)/i)).toBeInTheDocument();
+  });
 });

@@ -46,6 +46,73 @@
 }
 
 // ----------------------------------------------------------------------------
+// Visual Merge Order Strip
+// ----------------------------------------------------------------------------
+.orderSequenceBar {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-2 $space-3;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-md;
+  flex-wrap: wrap;
+}
+
+.orderSequenceLabel {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.orderSequenceList {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.orderSequenceItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: 2px 8px;
+  border-radius: $radius-sm;
+  font-size: 11px;
+}
+
+.orderIndexBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: $radius-full;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: $font-weight-bold;
+}
+
+.orderFileName {
+  color: var(--color-text-main);
+  font-weight: $font-weight-medium;
+  max-width: 140px;
+  @include truncate;
+}
+
+.orderArrow {
+  color: var(--color-text-muted);
+  font-size: 10px;
+}
+
+// ----------------------------------------------------------------------------
 // Grid & Cards
 // ----------------------------------------------------------------------------
 .cardsGrid {
@@ -123,6 +190,59 @@
   font-weight: $font-weight-medium;
   color: var(--color-text-main);
   @include truncate;
+}
+
+.fileCardDragging {
+  opacity: 0.4;
+  border: 2px dashed var(--color-primary);
+}
+
+.fileCardDragOver {
+  border-color: var(--color-primary);
+  background: var(--color-primary-subtle);
+}
+
+.slotBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: $radius-full;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: $font-weight-bold;
+  flex-shrink: 0;
+}
+
+.reorderBtnGroup {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.reorderBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  padding: 4px;
+  border-radius: $radius-sm;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover:not(:disabled) {
+    color: var(--color-primary);
+    background: var(--color-surface-hover);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
 }
 
 .removeBtn {

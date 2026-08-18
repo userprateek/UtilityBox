@@ -1,8 +1,25 @@
+export type DimensionScaleMode = 'original' | 'percentage' | 'custom' | 'preset';
+export type DimensionPreset =
+  | 'passport' // 350 x 450 px (35x45mm)
+  | 'passport_sq' // 600 x 600 px (2x2 inch)
+  | 'signature' // 300 x 100 px (3:1)
+  | 'signature_large' // 560 x 160 px (3.5:1)
+  | 'postcard' // 1200 x 800 px (4x6)
+  | 'hd' // 1280 x 720 px
+  | 'fhd'; // 1920 x 1080 px
+
 export interface ImageCompressionOptions {
-  quality: number; // 0.1 to 1.0
+  quality?: number; // 0.05 to 1.0
+  scaleMode?: DimensionScaleMode;
+  scalePercentage?: number; // 10 to 100
+  customWidth?: number;
+  customHeight?: number;
+  maintainAspectRatio?: boolean;
+  dimensionPreset?: DimensionPreset;
   maxWidth?: number;
   maxHeight?: number;
-  outputFormat?: 'image/jpeg' | 'image/png' | 'image/webp' | 'image/avif';
+  outputFormat?: 'original' | 'image/jpeg' | 'image/png' | 'image/webp' | 'image/avif';
+  targetMaxSizeBytes?: number; // e.g. 20KB, 50KB, 100KB, 200KB, 500KB
   keepMetadata?: boolean;
 }
 

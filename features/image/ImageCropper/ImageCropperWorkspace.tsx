@@ -12,6 +12,8 @@ import {
   Sparkles,
   Maximize2,
   Image as ImageIcon,
+  Sliders,
+  TrendingDown,
 } from 'lucide-react';
 import { ToolMetadata } from '@/types/tool';
 import { Button } from '@/components/common/Button/Button';
@@ -20,7 +22,8 @@ import { Select } from '@/components/common/Select/Select';
 import { FileDropzone } from '@/components/file-upload/FileDropzone/FileDropzone';
 import { ToolHeader } from '@/components/tool/ToolHeader/ToolHeader';
 import { NormalizedCropBox, CropResult, cropImageFile } from '@/lib/image/canvasCropper';
-import { formatBytes, downloadBlob, generateDownloadFilename } from '@/lib/file/fileUtils';
+import { compressImageAdvanced } from '@/lib/image/clientImageCompressor';
+import { formatBytes, calculateSavings, downloadBlob, generateDownloadFilename } from '@/lib/file/fileUtils';
 import { trackToolUse, trackToolDownload } from '@/lib/analytics/gtag';
 import styles from './ImageCropper.module.scss';
 
@@ -28,7 +31,7 @@ export interface ImageCropperWorkspaceProps {
   tool: ToolMetadata;
 }
 
-type AspectRatioPreset =
+export type AspectRatioPreset =
   | 'free'
   | 'passport'
   | 'signature'
@@ -39,6 +42,63 @@ type AspectRatioPreset =
   | '9:16';
 
 type HandleType = 'move' | 'nw' | 'ne' | 'sw' | 'se' | 'n' | 's' | 'w' | 'e';
+
+/**
+ * Calculates a centered crop box in normalized percentages (0 to 1) for a given aspect ratio preset.
+ */
+function computeCropBoxForRatio(
+  ratio: AspectRatioPreset,
+  naturalW: number,
+  naturalH: number
+): NormalizedCropBox {
+  if (ratio === 'free' || naturalW === 0 || naturalH === 0) {
+    return { x: 0.1, y: 0.1, width: 0.8, height: 0.8 };
+  }
+
+  let targetRatio = 1;
+  switch (ratio) {
+    case 'passport':
+      targetRatio = 35 / 45; // ~0.777 standard passport photo
+      break;
+    case 'signature':
+      targetRatio = 3 / 1; // 3:1 signature banner
+      break;
+    case '1:1':
+      targetRatio = 1;
+      break;
+    case '16:9':
+      targetRatio = 16 / 9;
+      break;
+    case '4:3':
+      targetRatio = 4 / 3;
+      break;
+    case '3:2':
+      targetRatio = 3 / 2;
+      break;
+    case '9:16':
+      targetRatio = 9 / 16;
+      break;
+  }
+
+  const imgAspect = naturalW / naturalH;
+  let newW = 0.85;
+  let newH = (newW * imgAspect) / targetRatio;
+
+  if (newH > 0.85) {
+    newH = 0.85;
+    newW = (newH * targetRatio) / imgAspect;
+  }
+
+  newW = Math.min(0.95, Math.max(0.05, newW));
+  newH = Math.min(0.95, Math.max(0.05, newH));
+
+  return {
+    x: Math.max(0, (1 - newW) / 2),
+    y: Math.max(0, (1 - newH) / 2),
+    width: newW,
+    height: newH,
+  };
+}
 
 export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ tool }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -56,6 +116,13 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
         ? 'signature'
         : 'free';
 
+  const defaultTargetKb =
+    tool.slug === 'signature-cropper'
+      ? 20
+      : tool.slug === 'passport-photo-maker'
+        ? 50
+        : 100;
+
   // Crop box in normalized percentages (0 to 1)
   const [cropBox, setCropBox] = useState<NormalizedCropBox>({
     x: 0.1,
@@ -69,9 +136,15 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
   const [flipH, setFlipH] = useState<boolean>(false);
   const [flipV, setFlipV] = useState<boolean>(false);
   const [outputFormat, setOutputFormat] = useState<'image/png' | 'image/jpeg' | 'image/webp'>(
-    'image/png'
+    'image/jpeg'
   );
   const [quality, setQuality] = useState<number>(90);
+
+  // Optional target file size compression in same panel (enabled by default for signature & passport)
+  const [targetSizeEnabled, setTargetSizeEnabled] = useState<boolean>(
+    tool.slug === 'signature-cropper' || tool.slug === 'passport-photo-maker'
+  );
+  const [targetKb, setTargetKb] = useState<number>(defaultTargetKb);
 
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [cropResult, setCropResult] = useState<CropResult | null>(null);
@@ -110,65 +183,23 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
 
   const handleImageLoaded = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
-    setNaturalSize({ width: img.naturalWidth, height: img.naturalHeight });
-    // Center crop box to 80%
-    setCropBox({ x: 0.1, y: 0.1, width: 0.8, height: 0.8 });
+    const nw = img.naturalWidth;
+    const nh = img.naturalHeight;
+    setNaturalSize({ width: nw, height: nh });
+
+    // Set initial crop box matching tool's selected aspect ratio (e.g. 3:1 signature or 35:45 passport)
+    const initialBox = computeCropBoxForRatio(aspectRatio, nw, nh);
+    setCropBox(initialBox);
   };
 
   // Adjust crop box when aspect ratio preset changes
   const applyAspectRatio = useCallback(
     (ratio: AspectRatioPreset) => {
       setAspectRatio(ratio);
-      if (ratio === 'free') return;
-
-      let targetRatio = 1;
-      switch (ratio) {
-        case 'passport':
-          targetRatio = 35 / 45; // Standard 35x45mm passport ratio (~0.777)
-          break;
-        case 'signature':
-          targetRatio = 3 / 1; // Standard 3:1 signature ratio
-          break;
-        case '1:1':
-          targetRatio = 1;
-          break;
-        case '16:9':
-          targetRatio = 16 / 9;
-          break;
-        case '4:3':
-          targetRatio = 4 / 3;
-          break;
-        case '3:2':
-          targetRatio = 3 / 2;
-          break;
-        case '9:16':
-          targetRatio = 9 / 16;
-          break;
+      if (naturalSize.width > 0 && naturalSize.height > 0) {
+        const newBox = computeCropBoxForRatio(ratio, naturalSize.width, naturalSize.height);
+        setCropBox(newBox);
       }
-
-      setCropBox((prev) => {
-        if (naturalSize.width === 0 || naturalSize.height === 0) return prev;
-        const imgAspect = naturalSize.width / naturalSize.height;
-
-        // Calculate normalized width and height to match aspect ratio
-        let newW = 0.8;
-        let newH = (newW * imgAspect) / targetRatio;
-
-        if (newH > 0.9) {
-          newH = 0.8;
-          newW = (newH * targetRatio) / imgAspect;
-        }
-
-        newW = Math.min(0.95, Math.max(0.05, newW));
-        newH = Math.min(0.95, Math.max(0.05, newH));
-
-        return {
-          x: Math.max(0, (1 - newW) / 2),
-          y: Math.max(0, (1 - newH) / 2),
-          width: newW,
-          height: newH,
-        };
-      });
     },
     [naturalSize]
   );
@@ -195,30 +226,100 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
           return { x, y, width, height };
         }
 
+        // When a fixed aspect ratio preset is active (e.g. signature 3:1, passport 35:45, 1:1, etc.)
+        if (aspectRatio !== 'free' && naturalSize.width > 0 && naturalSize.height > 0) {
+          let targetRatio = 1;
+          switch (aspectRatio) {
+            case 'signature':
+              targetRatio = 3 / 1;
+              break;
+            case 'passport':
+              targetRatio = 35 / 45;
+              break;
+            case '1:1':
+              targetRatio = 1;
+              break;
+            case '16:9':
+              targetRatio = 16 / 9;
+              break;
+            case '4:3':
+              targetRatio = 4 / 3;
+              break;
+            case '3:2':
+              targetRatio = 3 / 2;
+              break;
+            case '9:16':
+              targetRatio = 9 / 16;
+              break;
+          }
+
+          const imgAspect = naturalSize.width / naturalSize.height;
+
+          if (handle === 'se' || handle === 'e' || handle === 's') {
+            let newW = Math.max(0.05, Math.min(1 - startCrop.x, startCrop.width + deltaX));
+            let newH = (newW * imgAspect) / targetRatio;
+            if (startCrop.y + newH > 1) {
+              newH = 1 - startCrop.y;
+              newW = (newH * targetRatio) / imgAspect;
+            }
+            width = newW;
+            height = newH;
+          } else if (handle === 'sw' || handle === 'w') {
+            let newW = Math.max(0.05, Math.min(startCrop.x + startCrop.width, startCrop.width - deltaX));
+            let newH = (newW * imgAspect) / targetRatio;
+            if (startCrop.y + newH > 1) {
+              newH = 1 - startCrop.y;
+              newW = (newH * targetRatio) / imgAspect;
+            }
+            x = startCrop.x + (startCrop.width - newW);
+            width = newW;
+            height = newH;
+          } else if (handle === 'ne') {
+            let newW = Math.max(0.05, Math.min(1 - startCrop.x, startCrop.width + deltaX));
+            let newH = (newW * imgAspect) / targetRatio;
+            if (startCrop.y + startCrop.height - newH < 0) {
+              newH = startCrop.y + startCrop.height;
+              newW = (newH * targetRatio) / imgAspect;
+            }
+            y = startCrop.y + (startCrop.height - newH);
+            width = newW;
+            height = newH;
+          } else if (handle === 'nw' || handle === 'n') {
+            let newW = Math.max(0.05, Math.min(startCrop.x + startCrop.width, startCrop.width - deltaX));
+            let newH = (newW * imgAspect) / targetRatio;
+            if (startCrop.y + startCrop.height - newH < 0) {
+              newH = startCrop.y + startCrop.height;
+              newW = (newH * targetRatio) / imgAspect;
+            }
+            x = startCrop.x + (startCrop.width - newW);
+            y = startCrop.y + (startCrop.height - newH);
+            width = newW;
+            height = newH;
+          }
+
+          return { x, y, width, height };
+        }
+
+        // Freeform Dragging
         // East (Right side)
         if (handle.includes('e')) {
           width = Math.max(0.05, Math.min(1 - startCrop.x, startCrop.width + deltaX));
         }
-
+        // West (Left side)
+        if (handle.includes('w')) {
+          const maxLeftShift = startCrop.x + startCrop.width - 0.05;
+          x = Math.max(0, Math.min(maxLeftShift, startCrop.x + deltaX));
+          width = startCrop.width + (startCrop.x - x);
+        }
         // South (Bottom side)
         if (handle.includes('s')) {
           height = Math.max(0.05, Math.min(1 - startCrop.y, startCrop.height + deltaY));
         }
-
-        // West (Left side)
-        if (handle.includes('w')) {
-          const maxLeft = startCrop.x + startCrop.width - 0.05;
-          const newX = Math.max(0, Math.min(maxLeft, startCrop.x + deltaX));
-          width = startCrop.width + (startCrop.x - newX);
-          x = newX;
-        }
-
         // North (Top side)
         if (handle.includes('n')) {
-          const maxTop = startCrop.y + startCrop.height - 0.05;
-          const newY = Math.max(0, Math.min(maxTop, startCrop.y + deltaY));
-          height = startCrop.height + (startCrop.y - newY);
-          y = newY;
+          const maxTopShift = startCrop.y + startCrop.height - 0.05;
+          y = Math.max(0, Math.min(maxTopShift, startCrop.y + deltaY));
+          height = startCrop.height + (startCrop.y - y);
         }
 
         return { x, y, width, height };
@@ -236,9 +337,8 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
       window.removeEventListener('pointermove', handleGlobalPointerMove);
       window.removeEventListener('pointerup', handleGlobalPointerUp);
     };
-  }, []);
+  }, [aspectRatio, naturalSize]);
 
-  // Pointer start on handle or side line
   const handlePointerDown = (e: React.PointerEvent, handle: HandleType) => {
     e.preventDefault();
     e.stopPropagation();
@@ -251,13 +351,14 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
     };
   };
 
-  // Perform crop action
+  // Perform crop action + optional Target KB compression
   const handleExecuteCrop = async () => {
     if (!selectedFile) return;
     setIsProcessing(true);
 
     try {
-      const result = await cropImageFile(selectedFile, {
+      // 1. Perform lossless canvas cropping & rotation
+      const croppedResult = await cropImageFile(selectedFile, {
         cropBox,
         rotation,
         flipHorizontal: flipH,
@@ -266,14 +367,43 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
         quality: quality / 100,
       });
 
+      let finalBlob = croppedResult.blob;
+      let finalSize = croppedResult.size;
+
+      // 2. If user requested Target KB size constraint, compress in same flow
+      if (targetSizeEnabled && targetKb > 0) {
+        const croppedFile = new File([croppedResult.blob], selectedFile.name, {
+          type: outputFormat,
+        });
+
+        const compressed = await compressImageAdvanced(croppedFile, {
+          targetMaxSizeBytes: targetKb * 1024,
+          outputFormat,
+          quality: quality / 100,
+        });
+
+        finalBlob = compressed.blob;
+        finalSize = compressed.size;
+      }
+
+      const finalUrl = URL.createObjectURL(finalBlob);
+
       trackToolUse(tool.slug, 'crop_execute', {
         aspect_ratio: aspectRatio,
         output_format: outputFormat,
-        width: result.width,
-        height: result.height,
+        target_kb: targetSizeEnabled ? targetKb : undefined,
+        width: croppedResult.width,
+        height: croppedResult.height,
+        final_size: finalSize,
       });
 
-      setCropResult(result);
+      setCropResult({
+        blob: finalBlob,
+        url: finalUrl,
+        width: croppedResult.width,
+        height: croppedResult.height,
+        size: finalSize,
+      });
     } catch (err: unknown) {
       alert(err instanceof Error ? err.message : 'Crop failed.');
     } finally {
@@ -288,12 +418,16 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
     setRotation(0);
     setFlipH(false);
     setFlipV(false);
-    setAspectRatio('free');
+    setAspectRatio(initialRatio);
+    setTargetSizeEnabled(false);
   };
 
   // Projected pixel dimensions
   const approxCroppedWidth = Math.round(cropBox.width * naturalSize.width);
   const approxCroppedHeight = Math.round(cropBox.height * naturalSize.height);
+
+  const savings =
+    selectedFile && cropResult ? calculateSavings(selectedFile.size, cropResult.size) : null;
 
   return (
     <div className={styles.cropperWrapper}>
@@ -324,10 +458,29 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
             </div>
             <div>
               <h2 className={styles.resultTitle}>Image Cropped Successfully!</h2>
-              <p className={styles.resultMeta}>
-                {cropResult.width} × {cropResult.height} px • {formatBytes(cropResult.size)} •{' '}
-                {outputFormat.replace('image/', '').toUpperCase()}
-              </p>
+              <div className={styles.resultMeta} style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginTop: '4px' }}>
+                <span>
+                  {cropResult.width} × {cropResult.height} px • {formatBytes(cropResult.size)} •{' '}
+                  {outputFormat.replace('image/', '').toUpperCase()}
+                </span>
+                {savings && savings.isReduced && (
+                  <span
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '3px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      color: 'var(--color-success)',
+                      background: 'var(--color-success-bg)',
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                    }}
+                  >
+                    <TrendingDown size={13} /> -{savings.percentage}% (from {formatBytes(selectedFile.size)})
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 
@@ -364,10 +517,10 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
             <Button
               variant="secondary"
               size="lg"
-              leftIcon={<Crop size={16} />}
+              leftIcon={<Sliders size={16} />}
               onClick={() => setCropResult(null)}
             >
-              Adjust Crop
+              Adjust Crop / Size
             </Button>
             <Button
               variant="ghost"
@@ -391,8 +544,8 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
                 {(
                   [
                     'free',
-                    'passport',
                     'signature',
+                    'passport',
                     '1:1',
                     '4:3',
                     '16:9',
@@ -449,9 +602,9 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   ref={imgRef}
-                  src={imageSrc!}
+                  src={imageSrc || ''}
                   alt="Original to crop"
-                  className={styles.sourceImg}
+                  className={styles.sourceImage}
                   style={{
                     transform: `rotate(${rotation}deg) scaleX(${flipH ? -1 : 1}) scaleY(${flipV ? -1 : 1})`,
                   }}
@@ -459,9 +612,39 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
                   draggable={false}
                 />
 
-                {/* Dark Vignette Overlay Mask & Crop Boundary */}
+                {/* Dark Mask Overlays Outside Crop Box */}
                 <div
-                  className={styles.cropBox}
+                  className={`${styles.maskOverlay} ${styles.maskTop}`}
+                  style={{ height: `${cropBox.y * 100}%` }}
+                />
+                <div
+                  className={`${styles.maskOverlay} ${styles.maskBottom}`}
+                  style={{
+                    top: `${(cropBox.y + cropBox.height) * 100}%`,
+                    height: `${(1 - cropBox.y - cropBox.height) * 100}%`,
+                  }}
+                />
+                <div
+                  className={`${styles.maskOverlay} ${styles.maskLeft}`}
+                  style={{
+                    top: `${cropBox.y * 100}%`,
+                    height: `${cropBox.height * 100}%`,
+                    width: `${cropBox.x * 100}%`,
+                  }}
+                />
+                <div
+                  className={`${styles.maskOverlay} ${styles.maskRight}`}
+                  style={{
+                    top: `${cropBox.y * 100}%`,
+                    height: `${cropBox.height * 100}%`,
+                    left: `${(cropBox.x + cropBox.width) * 100}%`,
+                    width: `${(1 - cropBox.x - cropBox.width) * 100}%`,
+                  }}
+                />
+
+                {/* Interactive Crop Box Window */}
+                <div
+                  className={styles.cropWindow}
                   style={{
                     left: `${cropBox.x * 100}%`,
                     top: `${cropBox.y * 100}%`,
@@ -469,20 +652,20 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
                     height: `${cropBox.height * 100}%`,
                   }}
                 >
-                  {/* Center Move Area */}
+                  {/* Drag Window Area */}
                   <div
                     className={styles.moveArea}
                     onPointerDown={(e) => handlePointerDown(e, 'move')}
                     title="Drag to reposition crop area"
                   />
 
-                  {/* Rule of Thirds Guidelines */}
+                  {/* Grid Lines (Rule of Thirds) */}
                   <div className={styles.gridLineH1} />
                   <div className={styles.gridLineH2} />
                   <div className={styles.gridLineV1} />
                   <div className={styles.gridLineV2} />
 
-                  {/* Full Edge Drag Hitboxes */}
+                  {/* 4 Interactive Edge Lines */}
                   <div
                     className={`${styles.edgeLine} ${styles.edgeTop}`}
                     onPointerDown={(e) => handlePointerDown(e, 'n')}
@@ -595,7 +778,7 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
                   variant="ghost"
                   size="sm"
                   leftIcon={<RotateCcw size={14} />}
-                  onClick={() => setCropBox({ x: 0.1, y: 0.1, width: 0.8, height: 0.8 })}
+                  onClick={() => applyAspectRatio(aspectRatio)}
                 >
                   Reset Box
                 </Button>
@@ -606,22 +789,97 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
           {/* Options & Execute Sidebar */}
           <div className={styles.sidebar}>
             <Card variant="glass" padding="md" className={styles.settingsCard}>
-              <h3 className={styles.sidebarTitle}>Export Settings</h3>
+              <h3 className={styles.sidebarTitle}>Crop & Compression Settings</h3>
 
+              {/* Format Selection */}
               <div className={styles.settingsGroup}>
                 <Select
                   label="Target Format"
                   value={outputFormat}
                   onChange={(e) => setOutputFormat(e.target.value as typeof outputFormat)}
                   options={[
+                    { value: 'image/jpeg', label: 'JPEG (Standard Photo)' },
                     { value: 'image/png', label: 'PNG (Lossless / Transparent)' },
-                    { value: 'image/jpeg', label: 'JPEG (Standard photo)' },
-                    { value: 'image/webp', label: 'WebP (Modern, compact)' },
+                    { value: 'image/webp', label: 'WebP (Modern, Compact)' },
                   ]}
                 />
               </div>
 
-              {outputFormat !== 'image/png' && (
+              {/* Target File Size Control (Optional Compression in Same Panel) */}
+              <div
+                style={{
+                  background: 'var(--color-surface-subtle)',
+                  padding: '12px',
+                  borderRadius: '8px',
+                  border: '1px solid var(--color-border)',
+                  marginBottom: '16px',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <label
+                    htmlFor="targetSizeToggle"
+                    style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-text-main)', cursor: 'pointer' }}
+                  >
+                    🎯 Limit Target File Size
+                  </label>
+                  <input
+                    id="targetSizeToggle"
+                    type="checkbox"
+                    checked={targetSizeEnabled}
+                    onChange={(e) => setTargetSizeEnabled(e.target.checked)}
+                    style={{ cursor: 'pointer', width: '16px', height: '16px' }}
+                  />
+                </div>
+
+                {targetSizeEnabled && (
+                  <div style={{ marginTop: '10px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                      <input
+                        type="number"
+                        min={5}
+                        max={5000}
+                        value={targetKb}
+                        onChange={(e) => setTargetKb(Math.max(5, parseInt(e.target.value, 10) || 5))}
+                        style={{
+                          width: '90px',
+                          padding: '6px 8px',
+                          borderRadius: '6px',
+                          border: '1px solid var(--color-border)',
+                          background: 'var(--color-surface)',
+                          color: 'var(--color-text-main)',
+                          fontSize: '13px',
+                          fontWeight: 600,
+                        }}
+                      />
+                      <span style={{ fontSize: '12px', color: 'var(--color-text-muted)' }}>KB (Strict Ceiling)</span>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                      {[20, 50, 100, 200].map((size) => (
+                        <button
+                          key={size}
+                          type="button"
+                          onClick={() => setTargetKb(size)}
+                          style={{
+                            padding: '3px 8px',
+                            fontSize: '11px',
+                            fontWeight: 500,
+                            borderRadius: '4px',
+                            border: targetKb === size ? '1px solid var(--color-primary)' : '1px solid var(--color-border)',
+                            background: targetKb === size ? 'var(--color-primary)' : 'var(--color-surface)',
+                            color: targetKb === size ? '#ffffff' : 'var(--color-text-main)',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          {size === 20 ? '≤ 20KB (Sign)' : size === 50 ? '≤ 50KB (Photo)' : `≤ ${size}KB`}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {!targetSizeEnabled && outputFormat !== 'image/png' && (
                 <div className={styles.settingsGroup}>
                   <div className={styles.sliderHeader}>
                     <label className={styles.label}>Export Quality</label>
@@ -641,7 +899,11 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
 
               <div className={styles.privacyNote}>
                 <Sparkles size={14} className={styles.sparkleIcon} />
-                <span>100% In-Browser Lossless Canvas Crop</span>
+                <span>
+                  {targetSizeEnabled
+                    ? `Auto-crops & compresses under ${targetKb} KB in browser`
+                    : '100% In-Browser Lossless Canvas Crop'}
+                </span>
               </div>
 
               <div className={styles.actionButtons}>
@@ -653,7 +915,7 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
                   isLoading={isProcessing}
                   onClick={handleExecuteCrop}
                 >
-                  Crop Image Now
+                  {targetSizeEnabled ? `Crop & Compress (≤ ${targetKb} KB)` : 'Crop Image Now'}
                 </Button>
 
                 <Button

@@ -94,6 +94,26 @@ export function useFileUpload(options: UseFileUploadOptions = {}) {
     setFiles((prev) => prev.map((file) => (file.id === id ? { ...file, ...patch } : file)));
   }, []);
 
+  const reorderFiles = useCallback((startIndex: number, endIndex: number) => {
+    setFiles((prev) => {
+      if (
+        startIndex < 0 ||
+        startIndex >= prev.length ||
+        endIndex < 0 ||
+        endIndex >= prev.length ||
+        startIndex === endIndex
+      ) {
+        return prev;
+      }
+      const result = Array.from(prev);
+      const [removed] = result.splice(startIndex, 1);
+      if (removed) {
+        result.splice(endIndex, 0, removed);
+      }
+      return result;
+    });
+  }, []);
+
   const clearFiles = useCallback(() => {
     activeUrlsRef.current.forEach((url) => {
       if (url.startsWith('blob:')) {
@@ -150,6 +170,8 @@ export function useFileUpload(options: UseFileUploadOptions = {}) {
     addFiles,
     removeFile,
     updateFile,
+    reorderFiles,
+    replaceFiles: setFiles,
     clearFiles,
     clearErrors,
     dragProps: {

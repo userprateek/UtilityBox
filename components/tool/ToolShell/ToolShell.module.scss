@@ -161,12 +161,112 @@
   max-width: 480px;
 }
 
+// ----------------------------------------------------------------------------
+// Live Processed Files Preview List & Savings Comparison
+// ----------------------------------------------------------------------------
+.processedFilesList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  width: 100%;
+  max-width: 600px;
+}
+
+.processedFileItem {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  padding: $space-3 $space-4;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-lg;
+  text-align: left;
+  transition: border-color $transition-fast;
+
+  &:hover {
+    border-color: var(--color-primary);
+  }
+}
+
+.previewThumbWrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: $radius-md;
+  overflow: hidden;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border-subtle);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.previewThumbImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.previewThumbFallback {
+  color: var(--color-text-muted);
+}
+
+.processedFileInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.processedFileName {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--color-text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sizeComparisonRow {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-xs;
+}
+
+.origSize {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+}
+
+.arrowIcon {
+  color: var(--color-text-muted);
+}
+
+.newSize {
+  color: var(--color-text-main);
+  font-weight: $font-weight-bold;
+}
+
+.savingsBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: $radius-full;
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  font-size: 11px;
+  font-weight: $font-weight-bold;
+}
+
 .resultActions {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: $space-4;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .actionBar {

@@ -12,6 +12,9 @@ export interface CropImageOptions {
   flipVertical?: boolean;
   format?: 'image/png' | 'image/jpeg' | 'image/webp';
   quality?: number; // 0.1 to 1.0 (for jpeg and webp)
+  outputWidth?: number;
+  outputHeight?: number;
+  targetMaxSizeBytes?: number;
 }
 
 export interface CropResult {
@@ -45,9 +48,7 @@ export function loadImageFromFile(file: File): Promise<HTMLImageElement> {
 }
 
 /**
- * Performs 100% in-browser lossless canvas crop with full resolution projection.
- * Projects rotation and flips onto a normalized full-resolution intermediate canvas
- * so crop bounds match visual preview coordinates with 100% fidelity.
+ * Performs in-browser crop with optional dimension scaling and target file size constraints.
  */
 export async function cropImageFile(file: File, options: CropImageOptions): Promise<CropResult> {
   const img = await loadImageFromFile(file);
@@ -60,8 +61,11 @@ export async function cropImageFile(file: File, options: CropImageOptions): Prom
     rotation = 0,
     flipHorizontal = false,
     flipVertical = false,
-    format = 'image/png',
+    format = 'image/jpeg',
     quality = 0.92,
+    outputWidth,
+    outputHeight,
+    targetMaxSizeBytes,
   } = options;
 
   const normalizedRotation = ((rotation % 360) + 360) % 360;
@@ -107,12 +111,15 @@ export async function cropImageFile(file: File, options: CropImageOptions): Prom
 
   const sourceX = Math.round(clampedX * orientedWidth);
   const sourceY = Math.round(clampedY * orientedHeight);
-  const targetWidth = Math.max(1, Math.round(clampedW * orientedWidth));
-  const targetHeight = Math.max(1, Math.round(clampedH * orientedHeight));
+  const cropSourceWidth = Math.max(1, Math.round(clampedW * orientedWidth));
+  const cropSourceHeight = Math.max(1, Math.round(clampedH * orientedHeight));
+
+  const finalWidth = outputWidth || cropSourceWidth;
+  const finalHeight = outputHeight || cropSourceHeight;
 
   const targetCanvas = document.createElement('canvas');
-  targetCanvas.width = targetWidth;
-  targetCanvas.height = targetHeight;
+  targetCanvas.width = finalWidth;
+  targetCanvas.height = finalHeight;
 
   const targetCtx = targetCanvas.getContext('2d');
   if (!targetCtx) {
@@ -122,38 +129,64 @@ export async function cropImageFile(file: File, options: CropImageOptions): Prom
   targetCtx.imageSmoothingEnabled = true;
   targetCtx.imageSmoothingQuality = 'high';
 
+  // White background for JPEG if transparency
+  if (format === 'image/jpeg') {
+    targetCtx.fillStyle = '#ffffff';
+    targetCtx.fillRect(0, 0, finalWidth, finalHeight);
+  }
+
   targetCtx.drawImage(
     orientedCanvas,
     sourceX,
     sourceY,
-    targetWidth,
-    targetHeight,
+    cropSourceWidth,
+    cropSourceHeight,
     0,
     0,
-    targetWidth,
-    targetHeight
+    finalWidth,
+    finalHeight
   );
 
-  // Step 3: Export to Blob
-  return new Promise((resolve, reject) => {
-    targetCanvas.toBlob(
-      (blob) => {
-        if (!blob) {
-          reject(new Error('Failed to generate cropped image blob.'));
-          return;
-        }
+  // Helper to export canvas to Blob
+  const exportBlob = (q: number): Promise<Blob> =>
+    new Promise((resolve, reject) => {
+      targetCanvas.toBlob(
+        (blob) => {
+          if (!blob) reject(new Error('Failed to generate cropped image blob.'));
+          else resolve(blob);
+        },
+        format,
+        Math.min(1.0, Math.max(0.05, q))
+      );
+    });
 
-        const url = URL.createObjectURL(blob);
-        resolve({
-          blob,
-          url,
-          width: targetWidth,
-          height: targetHeight,
-          size: blob.size,
-        });
-      },
-      format,
-      quality
-    );
-  });
+  let chosenBlob = await exportBlob(quality);
+
+  // If targetMaxSizeBytes is provided, do binary search optimization
+  if (targetMaxSizeBytes && targetMaxSizeBytes > 0 && chosenBlob.size > targetMaxSizeBytes) {
+    let minQ = 0.05;
+    let maxQ = 0.95;
+    let currentQ = 0.65;
+
+    for (let pass = 0; pass < 5; pass++) {
+      const b = await exportBlob(currentQ);
+      if (b.size <= targetMaxSizeBytes) {
+        chosenBlob = b;
+        minQ = currentQ;
+        currentQ = (minQ + maxQ) / 2;
+      } else {
+        maxQ = currentQ;
+        currentQ = (minQ + maxQ) / 2;
+      }
+    }
+  }
+
+  const url = URL.createObjectURL(chosenBlob);
+  return {
+    blob: chosenBlob,
+    url,
+    width: finalWidth,
+    height: finalHeight,
+    size: chosenBlob.size,
+  };
 }

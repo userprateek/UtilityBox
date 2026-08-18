@@ -13,6 +13,198 @@
   gap: $space-2;
 }
 
+.groupTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--color-text-main);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.modeToggle {
+  display: flex;
+  background: var(--color-surface-hover);
+  border: 1px solid var(--color-border);
+  padding: 4px;
+  border-radius: $radius-lg;
+  gap: 4px;
+  overflow-x: auto;
+}
+
+.modeBtn {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  border-radius: $radius-md;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: var(--color-text-main);
+  }
+}
+
+.modeBtnActive {
+  background: var(--color-surface);
+  color: var(--color-primary);
+  font-weight: $font-weight-semibold;
+  box-shadow: $shadow-sm;
+}
+
+.presetGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+
+  @include respond-to('sm') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include respond-to('md') {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.presetCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: all $transition-fast;
+  text-align: center;
+
+  &:hover {
+    border-color: var(--color-primary);
+    background: var(--color-surface-hover);
+  }
+}
+
+.presetCardActive {
+  border-color: var(--color-primary);
+  background: var(--color-primary-subtle);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.presetKb {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: var(--color-text-main);
+}
+
+.presetLabel {
+  font-size: 10px;
+  color: var(--color-text-faint);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.dimensionPresetsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+
+  @include respond-to('sm') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.dimPresetCard {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: all $transition-fast;
+  text-align: left;
+
+  &:hover {
+    border-color: var(--color-primary);
+    background: var(--color-surface-hover);
+  }
+}
+
+.dimPresetCardActive {
+  border-color: var(--color-primary);
+  background: var(--color-primary-subtle);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.dimPresetName {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: var(--color-text-main);
+}
+
+.dimPresetDims {
+  font-size: $font-size-xs;
+  color: var(--color-primary);
+  font-weight: $font-weight-medium;
+  margin-top: 2px;
+}
+
+.dimPresetDesc {
+  font-size: 11px;
+  color: var(--color-text-faint);
+  margin-top: 2px;
+}
+
+.customDimRow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+}
+
+.dimInputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dimInputLabel {
+  font-size: 11px;
+  font-weight: $font-weight-medium;
+  color: var(--color-text-faint);
+}
+
+.customInput {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: $radius-md;
+  color: var(--color-text-main);
+  font-size: $font-size-sm;
+
+  &:focus {
+    border-color: var(--color-primary);
+    outline: none;
+  }
+}
+
+.multiplyIcon {
+  color: var(--color-text-faint);
+  font-weight: $font-weight-bold;
+  margin-top: 16px;
+}
+
 .sliderHeader {
   display: flex;
   align-items: center;
@@ -65,6 +257,35 @@
   justify-content: space-between;
   font-size: $font-size-xs;
   color: var(--color-text-faint);
+}
+
+.quickPctRow {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.quickPctBtn {
+  flex: 1;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: $font-weight-medium;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  border-radius: $radius-sm;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+}
+
+.quickPctBtnActive {
+  background: var(--color-primary);
+  color: #ffffff !important;
+  border-color: var(--color-primary);
 }
 
 .checkboxGroup {
