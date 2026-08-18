@@ -60,7 +60,7 @@ export const QrCodeGeneratorWorkspace: React.FC<QrCodeGeneratorWorkspaceProps> =
   const [qrType, setQrType] = useState<QrType>('url');
 
   // Fields for URL / Text
-  const [textContent, setTextContent] = useState<string>('https://utilitybox.app');
+  const [textContent, setTextContent] = useState<string>('https://utilitybox.pp9.uk');
 
   // Fields for UPI Payment
   const [upiId, setUpiId] = useState<string>('shopname@upi');
@@ -133,7 +133,7 @@ export const QrCodeGeneratorWorkspace: React.FC<QrCodeGeneratorWorkspaceProps> =
       }
       case 'url':
       default:
-        return textContent || 'https://utilitybox.app';
+        return textContent || 'https://utilitybox.pp9.uk';
     }
   }, [
     qrType,

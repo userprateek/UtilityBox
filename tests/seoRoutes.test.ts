@@ -11,8 +11,8 @@ describe('SEO & Route Verification', () => {
     expect(sitemapEntries.length).toBeGreaterThan(allTools.length);
 
     // Root and directory
-    expect(sitemapEntries.some((e) => e.url === 'https://utilitybox.app')).toBe(true);
-    expect(sitemapEntries.some((e) => e.url === 'https://utilitybox.app/tools')).toBe(true);
+    expect(sitemapEntries.some((e) => e.url === 'https://utilitybox.pp9.uk')).toBe(true);
+    expect(sitemapEntries.some((e) => e.url === 'https://utilitybox.pp9.uk/tools')).toBe(true);
 
     // Verify every registered tool has an entry
     allTools.forEach((tool) => {
@@ -25,7 +25,7 @@ describe('SEO & Route Verification', () => {
   it('generates robots.txt with allow-all rules and sitemap location', () => {
     const robotsConfig = robots();
     expect(robotsConfig.rules).toBeDefined();
-    expect(robotsConfig.sitemap).toBe('https://utilitybox.app/sitemap.xml');
+    expect(robotsConfig.sitemap).toBe('https://utilitybox.pp9.uk/sitemap.xml');
   });
 
   it('generates rich OpenGraph and Twitter metadata for tool pages', async () => {

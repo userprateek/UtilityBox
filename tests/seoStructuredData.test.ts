@@ -41,9 +41,9 @@ describe('SEO Structured Data (JSON-LD) Engine', () => {
 
   it('generates valid Schema.org BreadcrumbList markup with ordered positions', () => {
     const crumbs = [
-      { name: 'Home', url: 'https://utilitybox.app' },
-      { name: 'All Tools', url: 'https://utilitybox.app/tools' },
-      { name: 'Image Cropper', url: 'https://utilitybox.app/tools/image-cropper' },
+      { name: 'Home', url: 'https://utilitybox.pp9.uk' },
+      { name: 'All Tools', url: 'https://utilitybox.pp9.uk/tools' },
+      { name: 'Image Cropper', url: 'https://utilitybox.pp9.uk/tools/image-cropper' },
     ];
 
     const jsonLd = generateBreadcrumbJsonLd(crumbs);
@@ -61,7 +61,7 @@ describe('SEO Structured Data (JSON-LD) Engine', () => {
 
     expect(jsonLd['@context']).toBe('https://schema.org');
     expect(jsonLd['@type']).toBe('WebSite');
-    expect(jsonLd.url).toBe('https://utilitybox.app');
+    expect(jsonLd.url).toBe('https://utilitybox.pp9.uk');
     expect(jsonLd.potentialAction['@type']).toBe('SearchAction');
     expect(jsonLd.potentialAction.target.urlTemplate).toContain('/tools?q=');
   });

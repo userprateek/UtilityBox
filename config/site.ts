@@ -3,7 +3,7 @@ export const siteConfig = {
   shortName: 'UtilityBox',
   description:
     '100% Free online tools to resize photos for government forms, merge PDFs, crop signatures, and make shop UPI QR codes. No signup, no limits, instant and safe.',
-  url: 'https://utilitybox.app',
+  url: 'https://utilitybox.pp9.uk',
   ogImage: '/og-image.png',
   creator: 'UtilityBox Team',
   links: {
