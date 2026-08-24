@@ -151,6 +151,17 @@ const DevToolsWorkspace = dynamic(
   }
 );
 
+const JsonFormatterWorkspace = dynamic(
+  () => import('@/features/developer/JsonFormatterWorkspace').then((m) => m.JsonFormatterWorkspace),
+  {
+    loading: () => (
+      <div style={{ padding: '3rem 0' }}>
+        <LoadingState message="Loading JSON Formatter..." />
+      </div>
+    ),
+  }
+);
+
 const ImageCompressorOptions = dynamic(
   () => import('@/features/image/ImageCompressorOptions').then((m) => m.ImageCompressorOptions),
   {
@@ -305,6 +316,10 @@ export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
 
   if (isDevTool) {
     return <DevToolsWorkspace tool={tool} />;
+  }
+
+  if (tool.slug === 'json-formatter') {
+    return <JsonFormatterWorkspace tool={tool} />;
   }
 
   const isCompressor =

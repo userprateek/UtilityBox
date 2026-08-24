@@ -660,6 +660,55 @@ export const TOOL_GUIDES: Record<string, ToolGuideData> = {
       },
     ],
   },
+
+  'json-formatter': {
+    title: {
+      en: 'How to Use JSON Formatter & Validator',
+      hi: 'JSON फॉर्मेट और वैलिडेटर का उपयोग कैसे करें',
+    },
+    subtitle: {
+      en: 'Prettify, validate, minify, and inspect JSON data in 3 easy steps.',
+      hi: 'JSON डेटा को प्रेटीफाई (Prettify), वैलिडेट (Validate) और मिनीफाई (Minify) करें।',
+    },
+    steps: [
+      {
+        stepNumber: 1,
+        iconName: 'FileText',
+        title: {
+          en: 'Paste Raw JSON or Upload .json File',
+          hi: 'रॉ JSON टेक्स्ट भरें या .json फाइल अपलोड करें',
+        },
+        description: {
+          en: 'Paste your unformatted JSON string into the box or click "Upload .json File".',
+          hi: 'अपना बिना फॉर्मेट किया हुआ JSON कोड बॉक्स में पेस्ट करें या फाइल अपलोड करें।',
+        },
+      },
+      {
+        stepNumber: 2,
+        iconName: 'Sliders',
+        title: {
+          en: 'Format, Prettify or Minify',
+          hi: 'फॉर्मेट (Format) या मिनीफाई (Minify) करें',
+        },
+        description: {
+          en: 'Choose 2 spaces, 4 spaces, or Tab indentation, or click Minify for single-line JSON.',
+          hi: '2 स्पेस, 4 स्पेस या टैब चुनें या एक लाइन के कोड के लिए Minify दबाएं।',
+        },
+      },
+      {
+        stepNumber: 3,
+        iconName: 'CheckCircle',
+        title: {
+          en: 'Check Syntax & Copy / Download',
+          hi: 'सिंटेक्स चेक करें और कॉपी/डाउनलोड करें',
+        },
+        description: {
+          en: 'Verify the green "Valid JSON" indicator, inspect key stats, and copy or download JSON.',
+          hi: '"Valid JSON" हरा इंडिकेटर चेक करें और 1-क्लिक में कॉपी या डाउनलोड करें।',
+        },
+      },
+    ],
+  },
 };
 
 export function getToolGuide(toolSlug: string): ToolGuideData {
