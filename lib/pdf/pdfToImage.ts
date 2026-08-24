@@ -70,7 +70,9 @@ export async function convertPdfToImages(
   options: PdfToImageOptions = {},
   onProgress?: (current: number, total: number, message: string) => void
 ): Promise<PdfToImageResultItem[]> {
-  const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs').catch(() => import('pdfjs-dist'));
+  const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs').catch(
+    () => import('pdfjs-dist')
+  );
 
   // Configure PDF.js worker
   if (!pdfjsLib.GlobalWorkerOptions.workerSrc) {

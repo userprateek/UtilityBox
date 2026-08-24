@@ -31,8 +31,8 @@ export default function PrivacyPage() {
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>2. Zero Personal Data Retention</h2>
             <p className={styles.text}>
-              DocsWala does not require an account, does not ask for personal information, and
-              does not build identifiable user profiles.
+              DocsWala does not require an account, does not ask for personal information, and does
+              not build identifiable user profiles.
             </p>
           </section>
 

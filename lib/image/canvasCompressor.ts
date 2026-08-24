@@ -5,11 +5,36 @@ export const DIMENSION_PRESETS: Record<
   DimensionPreset,
   { width: number; height: number; name: string; desc: string }
 > = {
-  passport: { width: 350, height: 450, name: 'Passport Size (35×45mm)', desc: 'Standard Photo for Visa/Forms' },
-  passport_sq: { width: 600, height: 600, name: 'Passport Square (2×2 inch)', desc: 'US Visa & OCI Card' },
-  signature: { width: 300, height: 100, name: 'Signature Standard (3:1)', desc: 'SSC, UPSC, Govt Exams' },
-  signature_large: { width: 560, height: 160, name: 'Signature Large (3.5:1)', desc: 'Banking & High-Res Forms' },
-  postcard: { width: 1200, height: 800, name: 'Postcard Photo (4×6 inch)', desc: 'NEET / Admit Card Postcard' },
+  passport: {
+    width: 350,
+    height: 450,
+    name: 'Passport Size (35×45mm)',
+    desc: 'Standard Photo for Visa/Forms',
+  },
+  passport_sq: {
+    width: 600,
+    height: 600,
+    name: 'Passport Square (2×2 inch)',
+    desc: 'US Visa & OCI Card',
+  },
+  signature: {
+    width: 300,
+    height: 100,
+    name: 'Signature Standard (3:1)',
+    desc: 'SSC, UPSC, Govt Exams',
+  },
+  signature_large: {
+    width: 560,
+    height: 160,
+    name: 'Signature Large (3.5:1)',
+    desc: 'Banking & High-Res Forms',
+  },
+  postcard: {
+    width: 1200,
+    height: 800,
+    name: 'Postcard Photo (4×6 inch)',
+    desc: 'NEET / Admit Card Postcard',
+  },
   hd: { width: 1280, height: 720, name: 'HD Resolution (720p)', desc: 'Web & Mobile optimized' },
   fhd: { width: 1920, height: 1080, name: 'Full HD (1080p)', desc: 'Desktop & Document Display' },
 };
@@ -188,12 +213,17 @@ export async function compressImageFile(
     let curWidth = Math.min(targetWidth, Math.round(naturalWidth * scale));
     let curHeight = Math.min(targetHeight, Math.round(naturalHeight * scale));
 
-    let bestResult: { blob: Blob; size: number; width: number; height: number; quality: number } | null =
-      null;
+    let bestResult: {
+      blob: Blob;
+      size: number;
+      width: number;
+      height: number;
+      quality: number;
+    } | null = null;
 
     let minQ = 0.05;
     let maxQ = 0.95;
-    let currentQ = 0.70;
+    let currentQ = 0.7;
 
     // Iterative binary search for the highest visual clarity that stays strictly <= targetMaxSizeBytes
     for (let pass = 0; pass < 8; pass++) {
@@ -215,13 +245,17 @@ export async function compressImageFile(
           curHeight = Math.round(curHeight * 0.8);
           minQ = 0.1;
           maxQ = 0.85;
-          currentQ = 0.60;
+          currentQ = 0.6;
         }
       }
     }
 
     // Guaranteed fallback: loop down until size is strictly <= targetMaxSizeBytes
-    while ((!bestResult || bestResult.size > targetMaxSizeBytes) && curWidth > 60 && curHeight > 30) {
+    while (
+      (!bestResult || bestResult.size > targetMaxSizeBytes) &&
+      curWidth > 60 &&
+      curHeight > 30
+    ) {
       curWidth = Math.round(curWidth * 0.8);
       curHeight = Math.round(curHeight * 0.8);
       const res = await renderCanvasToBlob(img, curWidth, curHeight, format, 0.45);

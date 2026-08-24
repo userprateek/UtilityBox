@@ -19,21 +19,38 @@ describe('canvasCompressor', () => {
     });
 
     // 2. Percentage
-    expect(calculateTargetDimensions(4000, 3000, { scaleMode: 'percentage', scalePercentage: 50 })).toEqual({
+    expect(
+      calculateTargetDimensions(4000, 3000, { scaleMode: 'percentage', scalePercentage: 50 })
+    ).toEqual({
       width: 2000,
       height: 1500,
     });
 
     // 3. Preset - Passport
-    const passportDims = calculateTargetDimensions(4000, 3000, { scaleMode: 'preset', dimensionPreset: 'passport', maintainAspectRatio: false });
+    const passportDims = calculateTargetDimensions(4000, 3000, {
+      scaleMode: 'preset',
+      dimensionPreset: 'passport',
+      maintainAspectRatio: false,
+    });
     expect(passportDims).toEqual({ width: 350, height: 450 });
 
     // 4. Preset - Signature
-    const sigDims = calculateTargetDimensions(4000, 1000, { scaleMode: 'preset', dimensionPreset: 'signature', maintainAspectRatio: false });
+    const sigDims = calculateTargetDimensions(4000, 1000, {
+      scaleMode: 'preset',
+      dimensionPreset: 'signature',
+      maintainAspectRatio: false,
+    });
     expect(sigDims).toEqual({ width: 300, height: 100 });
 
     // 5. Custom with aspect ratio lock
-    expect(calculateTargetDimensions(2000, 1000, { scaleMode: 'custom', customWidth: 1000, customHeight: 800, maintainAspectRatio: true })).toEqual({
+    expect(
+      calculateTargetDimensions(2000, 1000, {
+        scaleMode: 'custom',
+        customWidth: 1000,
+        customHeight: 800,
+        maintainAspectRatio: true,
+      })
+    ).toEqual({
       width: 1000,
       height: 500,
     });

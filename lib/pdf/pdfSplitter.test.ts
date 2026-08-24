@@ -15,7 +15,9 @@ describe('pdfSplitter', () => {
     pdfDoc.addPage([200, 200]);
     const bytes = await pdfDoc.save();
 
-    const file = new File([bytes as unknown as BlobPart], 'multipage.pdf', { type: 'application/pdf' });
+    const file = new File([bytes as unknown as BlobPart], 'multipage.pdf', {
+      type: 'application/pdf',
+    });
 
     const pageCount = await getPdfPageCount(file);
     expect(pageCount).toBe(3);
@@ -34,7 +36,9 @@ describe('pdfSplitter', () => {
     pdfDoc.addPage([200, 200]);
     const bytes = await pdfDoc.save();
 
-    const file = new File([bytes as unknown as BlobPart], 'report.pdf', { type: 'application/pdf' });
+    const file = new File([bytes as unknown as BlobPart], 'report.pdf', {
+      type: 'application/pdf',
+    });
 
     const splitResults = await splitPdfDocument(file, { mode: 'range', pageRange: '1, 3' });
     expect(splitResults).toHaveLength(1);

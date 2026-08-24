@@ -84,7 +84,9 @@ export const PdfSplitterOptions: React.FC<PdfSplitterOptionsProps> = ({
             </div>
           </div>
           <div className={styles.quickPctRow} style={{ marginTop: '8px' }}>
-            <span style={{ fontSize: '11px', color: 'var(--color-text-muted)', alignSelf: 'center' }}>
+            <span
+              style={{ fontSize: '11px', color: 'var(--color-text-muted)', alignSelf: 'center' }}
+            >
               Quick Examples:
             </span>
             {['1-2', '1-3', '1, 3, 5', '2-4'].map((example) => (
@@ -148,7 +150,9 @@ export const PdfSplitterOptions: React.FC<PdfSplitterOptionsProps> = ({
       {mode === 'all_pages' && (
         <div className={styles.optionGroup}>
           <p className={styles.dimPresetDesc}>
-            📄 <strong>Extract All Pages</strong>: Every single page of your PDF will be extracted into its own separate PDF document (e.g. <code>page_1.pdf</code>, <code>page_2.pdf</code>), ready for individual or batch download.
+            📄 <strong>Extract All Pages</strong>: Every single page of your PDF will be extracted
+            into its own separate PDF document (e.g. <code>page_1.pdf</code>,{' '}
+            <code>page_2.pdf</code>), ready for individual or batch download.
           </p>
         </div>
       )}

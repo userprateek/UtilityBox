@@ -455,6 +455,129 @@ export const TOOL_REGISTRY: Record<string, ToolMetadata> = {
       'No account & no payment fees',
     ],
   },
+  'gst-calculator': {
+    slug: 'gst-calculator',
+    name: 'GST & Shopkeeper Profit Calculator',
+    shortDescription:
+      'Calculate GST tax, net profit margin, and required MRP / Selling Price for shopkeepers and businesses.',
+    description:
+      'Simplified GST calculator designed for shopkeepers, traders, and small businesses. Calculate exact MRP needed to make your desired net profit, or add/remove 5%, 12%, 18%, 28% GST tax easily.',
+    category: 'calculators',
+    iconName: 'Calculator',
+    supportedInputFormats: ['text/plain'],
+    supportedOutputFormats: ['text/plain'],
+    maxFiles: 0,
+    seoTitle: 'GST Calculator Online - Shopkeeper Profit & Tax MRP Calculator',
+    seoDescription:
+      'Free GST calculator for shopkeepers & traders. Calculate MRP to keep exact net profit, add or extract 5%, 12%, 18%, 28% GST with CGST & SGST splits.',
+    keywords: [
+      'gst calculator',
+      'shopkeeper profit calculator',
+      'gst tax calculator',
+      'mrp calculator with gst',
+      'gst calculator india',
+      'cgst sgst calculator',
+    ],
+    isPopular: true,
+    isNew: true,
+    features: [
+      'Shopkeeper Profit Mode: Calculate MRP to keep exact desired net profit in pocket',
+      'Add GST (Exclusive) & Remove GST (Inclusive) modes',
+      'Supports 5%, 12%, 18%, 28%, and custom GST rates',
+      'Automatic CGST and SGST 50% split breakdown',
+      '100% Free & private in-browser calculation',
+    ],
+  },
+  'emi-calculator': {
+    slug: 'emi-calculator',
+    name: 'Loan & Shop EMI Calculator',
+    shortDescription:
+      'Calculate monthly EMI, total interest payable, and repayment schedule for loans.',
+    description:
+      'Free loan EMI calculator for personal loans, shop business loans, home loans, and vehicle loans. Get instant monthly EMI breakdowns with interest vs principal distribution.',
+    category: 'calculators',
+    iconName: 'Coins',
+    supportedInputFormats: ['text/plain'],
+    supportedOutputFormats: ['text/plain'],
+    maxFiles: 0,
+    seoTitle: 'Loan EMI Calculator - Calculate Monthly EMI & Interest Payable Free',
+    seoDescription:
+      'Calculate monthly loan EMI, total interest payable, and repayment schedules instantly. Ideal for business, personal, and home loans.',
+    keywords: [
+      'emi calculator',
+      'loan emi calculator',
+      'business loan emi',
+      'monthly emi calculator',
+      'interest calculator',
+    ],
+    isPopular: true,
+    isNew: true,
+    features: [
+      'Calculate monthly EMI, total interest, and total payable amount',
+      'Supports tenure in months or years',
+      'Visual Principal vs Interest distribution bar',
+      'Instant calculation with no signup',
+    ],
+  },
+  'gratuity-calculator': {
+    slug: 'gratuity-calculator',
+    name: 'Gratuity Settlement Calculator',
+    shortDescription:
+      'Calculate employee gratuity amount based on basic salary and completed service years.',
+    description:
+      'Calculate gratuity payout for employees retiring or leaving a company under the Payment of Gratuity Act. Check 5-year minimum eligibility and tax exemption details.',
+    category: 'calculators',
+    iconName: 'Briefcase',
+    supportedInputFormats: ['text/plain'],
+    supportedOutputFormats: ['text/plain'],
+    maxFiles: 0,
+    seoTitle: 'Gratuity Calculator Online - Calculate Employee Gratuity Payout',
+    seoDescription:
+      'Calculate gratuity settlement online based on basic salary + DA and service years. Check 5-year eligibility and tax exemption guidelines.',
+    keywords: [
+      'gratuity calculator',
+      'gratuity calculation formula',
+      'employee gratuity calculator',
+      'salary gratuity online',
+    ],
+    isPopular: false,
+    isNew: true,
+    features: [
+      'Official Gratuity Formula: (15 × Basic Salary × Tenure) / 26',
+      '5-Year minimum continuous service eligibility checker',
+      'Tax exemption threshold information (Up to ₹20 Lakhs)',
+      'Instant settlement summary',
+    ],
+  },
+  'discount-calculator': {
+    slug: 'discount-calculator',
+    name: 'Discount & Shop Margin Calculator',
+    shortDescription:
+      'Calculate final sale price, total savings, and shopkeeper profit percentage.',
+    description:
+      'Quickly calculate discounted prices during sales or determine profit margins for products. Enter MRP and discount rate to see your final price and total savings.',
+    category: 'calculators',
+    iconName: 'Percent',
+    supportedInputFormats: ['text/plain'],
+    supportedOutputFormats: ['text/plain'],
+    maxFiles: 0,
+    seoTitle: 'Discount Calculator - Calculate Sale Price & Money Saved Online',
+    seoDescription:
+      'Free discount calculator to find sale prices, total savings, and profit margins. Simple, instant, and mobile-friendly.',
+    keywords: [
+      'discount calculator',
+      'sale price calculator',
+      'calculate discount percentage',
+      'shop discount calculator',
+    ],
+    isPopular: false,
+    isNew: true,
+    features: [
+      'Calculate by percentage discount or fixed amount off',
+      'Shows Final Price, Money Saved, and Effective Rate',
+      'Simple & fast shop counter tool',
+    ],
+  },
 };
 
 // ----------------------------------------------------------------------------

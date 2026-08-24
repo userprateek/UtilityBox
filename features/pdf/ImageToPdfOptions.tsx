@@ -77,9 +77,12 @@ export const ImageToPdfOptionsComponent: React.FC<ImageToPdfOptionsProps> = ({
           </button>
         </div>
         <p className={styles.dimPresetDesc} style={{ marginTop: '6px' }}>
-          {imagesPerPage === 1 && '📄 Each image gets its own clean, centered page in the output PDF.'}
-          {imagesPerPage === 2 && '📑 Fits 2 images per page without cutting or cropping (ideal for ID cards / receipts).'}
-          {imagesPerPage === 4 && '📑 Fits 4 images in a 2×2 grid per page without cutting or cropping.'}
+          {imagesPerPage === 1 &&
+            '📄 Each image gets its own clean, centered page in the output PDF.'}
+          {imagesPerPage === 2 &&
+            '📑 Fits 2 images per page without cutting or cropping (ideal for ID cards / receipts).'}
+          {imagesPerPage === 4 &&
+            '📑 Fits 4 images in a 2×2 grid per page without cutting or cropping.'}
         </p>
       </div>
 

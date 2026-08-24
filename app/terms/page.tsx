@@ -20,8 +20,8 @@ export default function TermsPage() {
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>1. Acceptance of Terms</h2>
             <p className={styles.text}>
-              By accessing and using DocsWala, you agree to comply with and be bound by these
-              Terms of Service.
+              By accessing and using DocsWala, you agree to comply with and be bound by these Terms
+              of Service.
             </p>
           </section>
 

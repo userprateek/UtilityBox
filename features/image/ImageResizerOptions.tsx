@@ -38,8 +38,12 @@ export const ImageResizerOptions: React.FC<ImageResizerOptionsProps> = ({
   onChange,
 }) => {
   const [unit, setUnit] = useState<ResizeUnit>(initialSettings?.unit || 'px');
-  const [width, setWidth] = useState<string>(initialSettings?.width ? String(initialSettings.width) : '1080');
-  const [height, setHeight] = useState<string>(initialSettings?.height ? String(initialSettings.height) : '1080');
+  const [width, setWidth] = useState<string>(
+    initialSettings?.width ? String(initialSettings.width) : '1080'
+  );
+  const [height, setHeight] = useState<string>(
+    initialSettings?.height ? String(initialSettings.height) : '1080'
+  );
   const [percentage, setPercentage] = useState<number>(initialSettings?.percentage || 100);
   const [maintainAspectRatio, setMaintainAspectRatio] = useState<boolean>(
     initialSettings?.maintainAspectRatio ?? true
@@ -52,8 +56,10 @@ export const ImageResizerOptions: React.FC<ImageResizerOptionsProps> = ({
   const [quality, setQuality] = useState<number>(initialSettings?.quality || 90);
 
   const notifyChange = (updated: Partial<ImageResizerSettings>) => {
-    const parsedW = parseInt(updated.width !== undefined ? String(updated.width) : width, 10) || 1080;
-    const parsedH = parseInt(updated.height !== undefined ? String(updated.height) : height, 10) || 1080;
+    const parsedW =
+      parseInt(updated.width !== undefined ? String(updated.width) : width, 10) || 1080;
+    const parsedH =
+      parseInt(updated.height !== undefined ? String(updated.height) : height, 10) || 1080;
 
     const current: ImageResizerSettings = {
       unit: updated.unit ?? unit,
@@ -69,7 +75,7 @@ export const ImageResizerOptions: React.FC<ImageResizerOptionsProps> = ({
     onChange?.(current);
   };
 
-  const handlePresetSelect = (preset: typeof RESIZE_PRESETS[0]) => {
+  const handlePresetSelect = (preset: (typeof RESIZE_PRESETS)[0]) => {
     setSelectedPreset(preset.id);
     setUnit('px');
     setWidth(String(preset.w));

@@ -1,0 +1,451 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.calcWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-6;
+
+  @include respond-to('lg') {
+    grid-template-columns: 1fr 400px;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+// ----------------------------------------------------------------------------
+// Mode Navigation Pills
+// ----------------------------------------------------------------------------
+.modeNav {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-wrap: wrap;
+  padding-bottom: $space-4;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  padding: 8px $space-3;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $neutral-300;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: $radius-lg;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+  }
+}
+
+.modeBtnActive {
+  background: $primary-500 !important;
+  color: #ffffff !important;
+  border-color: $primary-500 !important;
+  box-shadow: 0 0 14px hsla(230, 80%, 56%, 0.4);
+}
+
+.infoBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  border-radius: $radius-lg;
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  font-size: $font-size-xs;
+  color: $neutral-200;
+  line-height: $line-height-relaxed;
+}
+
+.infoIcon {
+  color: $accent-cyan;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+// ----------------------------------------------------------------------------
+// Rate Selector Section
+// ----------------------------------------------------------------------------
+.rateSection {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.inputLabel {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $neutral-200;
+}
+
+.ratePills {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-wrap: wrap;
+}
+
+.ratePill {
+  padding: 6px 14px;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $neutral-300;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: $radius-full;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+  }
+}
+
+.ratePillActive {
+  background: $accent-cyan !important;
+  color: #0b0f19 !important;
+  border-color: $accent-cyan !important;
+  font-weight: $font-weight-bold !important;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+}
+
+.customRateInput {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px $space-2;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  color: $neutral-400;
+}
+
+.miniRateInput {
+  width: 44px;
+  padding: 2px 4px;
+  font-size: $font-size-xs;
+  color: #ffffff;
+  background: transparent;
+  border: none;
+  outline: none;
+  text-align: center;
+  font-weight: $font-weight-semibold;
+}
+
+.inputStack {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.tenureGroup {
+  display: grid;
+  grid-template-columns: 1fr 100px;
+  gap: $space-3;
+  align-items: flex-end;
+}
+
+.tenureSwitch {
+  display: flex;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: $radius-lg;
+  padding: 3px;
+  height: 42px;
+}
+
+.tenureBtn {
+  flex: 1;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: $neutral-400;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: all $transition-fast;
+}
+
+.tenureBtnActive {
+  background: $primary-500;
+  color: #ffffff;
+}
+
+.formulaNoteBox {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-3 $space-4;
+  border-radius: $radius-lg;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  font-size: $font-size-xs;
+  color: $neutral-300;
+}
+
+// ----------------------------------------------------------------------------
+// Output Summary Column
+// ----------------------------------------------------------------------------
+.summaryCard {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
+
+.summaryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: $space-3;
+}
+
+.summaryTitle {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: #ffffff;
+}
+
+.headerIcon {
+  color: $accent-cyan;
+}
+
+.mrpHighlightCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  padding: $space-5 $space-4;
+  border-radius: $radius-xl;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 30px -5px rgba(0, 0, 0, 0.5);
+}
+
+.mrpLabel {
+  font-size: 0.7rem;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.08em;
+  color: $neutral-300;
+  text-transform: uppercase;
+}
+
+.mrpValue {
+  font-size: 2.2rem;
+  font-weight: $font-weight-extrabold;
+  color: #ffffff;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.mrpSubtext {
+  font-size: $font-size-xs;
+  color: $neutral-200;
+
+  strong {
+    color: $color-success;
+  }
+}
+
+// Visual Distribution Bar
+.barSection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.barHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: $font-size-xs;
+  color: $neutral-300;
+}
+
+.trackBar {
+  display: flex;
+  height: 10px;
+  width: 100%;
+  border-radius: $radius-full;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.principalFill {
+  background: $primary-500;
+  height: 100%;
+  transition: width $transition-base;
+}
+
+.interestFill {
+  background: $accent-cyan;
+  height: 100%;
+  transition: width $transition-base;
+}
+
+// Details Table
+.detailsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.detailRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: $font-size-xs;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.detailLabel {
+  color: $neutral-400;
+}
+
+.detailValue {
+  color: $neutral-200;
+  font-weight: $font-weight-medium;
+}
+
+.detailValueHighlight {
+  color: $accent-cyan;
+  font-weight: $font-weight-semibold;
+}
+
+.detailValueBold {
+  color: #ffffff;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-sm;
+}
+
+.splitRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-3;
+}
+
+.splitBox {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: $space-2 $space-3;
+  border-radius: $radius-md;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.splitLabel {
+  font-size: 0.68rem;
+  color: $neutral-400;
+}
+
+.splitVal {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $neutral-200;
+}
+
+.profitResultCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-3 $space-4;
+  border-radius: $radius-lg;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.profitTitleRow {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $color-success;
+}
+
+.profitIcon {
+  color: $color-success;
+}
+
+.profitVal {
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  color: #ffffff;
+}
+
+.eligibilityWarning {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-3 $space-4;
+  border-radius: $radius-lg;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  font-size: $font-size-xs;
+  color: $accent-amber;
+}
+
+.statusSuccess {
+  color: $color-success;
+  font-weight: $font-weight-semibold;
+}
+
+.statusWarning {
+  color: $accent-amber;
+  font-weight: $font-weight-semibold;
+}
+
+.copyBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  width: 100%;
+  padding: 10px $space-4;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: $radius-lg;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

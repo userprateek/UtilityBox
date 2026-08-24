@@ -3,9 +3,7 @@ import { compressImageAdvanced } from './clientImageCompressor';
 // Mock browser-image-compression
 jest.mock('browser-image-compression', () => {
   return jest.fn().mockImplementation((_file: File) => {
-    return Promise.resolve(
-      new Blob(['advanced-compressed-bytes'], { type: 'image/jpeg' })
-    );
+    return Promise.resolve(new Blob(['advanced-compressed-bytes'], { type: 'image/jpeg' }));
   });
 });
 

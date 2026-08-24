@@ -1,6 +1,9 @@
 import imageCompression from 'browser-image-compression';
 import { ImageCompressionOptions, ImageProcessorResult } from './types';
-import { compressImageFile as canvasCompressImageFile, calculateTargetDimensions } from './canvasCompressor';
+import {
+  compressImageFile as canvasCompressImageFile,
+  calculateTargetDimensions,
+} from './canvasCompressor';
 import { loadImageFromFile } from './canvasCropper';
 
 /**

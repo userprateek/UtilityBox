@@ -46,7 +46,11 @@ export async function processImageWithSharp(
     const pct = Math.max(1, Math.min(100, scalePercentage)) / 100;
     targetWidth = Math.round(naturalWidth * pct);
     targetHeight = Math.round(naturalHeight * pct);
-  } else if (scaleMode === 'preset' && dimensionPreset && DIMENSION_PRESETS[dimensionPreset as DimensionPreset]) {
+  } else if (
+    scaleMode === 'preset' &&
+    dimensionPreset &&
+    DIMENSION_PRESETS[dimensionPreset as DimensionPreset]
+  ) {
     const preset = DIMENSION_PRESETS[dimensionPreset as DimensionPreset];
     if (maintainAspectRatio) {
       const scale = Math.min(preset.width / naturalWidth, preset.height / naturalHeight);
@@ -83,7 +87,11 @@ export async function processImageWithSharp(
     let p = sharp(inputBuffer);
 
     // Apply resize if dimensions changed
-    if (targetWidth && targetHeight && (targetWidth !== naturalWidth || targetHeight !== naturalHeight)) {
+    if (
+      targetWidth &&
+      targetHeight &&
+      (targetWidth !== naturalWidth || targetHeight !== naturalHeight)
+    ) {
       p = p.resize(targetWidth, targetHeight, {
         kernel: sharp.kernel.lanczos3,
         fit: maintainAspectRatio ? 'inside' : 'fill',

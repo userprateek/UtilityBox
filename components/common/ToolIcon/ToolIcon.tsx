@@ -12,6 +12,13 @@ import {
   Braces,
   QrCode,
   Binary,
+  Calculator,
+  Percent,
+  DollarSign,
+  Coins,
+  TrendingUp,
+  Receipt,
+  Briefcase,
   Wrench,
 } from 'lucide-react';
 
@@ -47,6 +54,20 @@ export const ToolIcon: React.FC<ToolIconProps> = ({ name, size = 24, className }
       return <QrCode size={size} className={className} />;
     case 'Binary':
       return <Binary size={size} className={className} />;
+    case 'Calculator':
+      return <Calculator size={size} className={className} />;
+    case 'Percent':
+      return <Percent size={size} className={className} />;
+    case 'DollarSign':
+      return <DollarSign size={size} className={className} />;
+    case 'Coins':
+      return <Coins size={size} className={className} />;
+    case 'TrendingUp':
+      return <TrendingUp size={size} className={className} />;
+    case 'Receipt':
+      return <Receipt size={size} className={className} />;
+    case 'Briefcase':
+      return <Briefcase size={size} className={className} />;
     default:
       return <Wrench size={size} className={className} />;
   }

@@ -13,8 +13,12 @@ describe('pdfMerger', () => {
     pdf2.addPage([200, 200]);
     const bytes2 = await pdf2.save();
 
-    const file1 = new File([bytes1 as unknown as BlobPart], 'doc1.pdf', { type: 'application/pdf' });
-    const file2 = new File([bytes2 as unknown as BlobPart], 'doc2.pdf', { type: 'application/pdf' });
+    const file1 = new File([bytes1 as unknown as BlobPart], 'doc1.pdf', {
+      type: 'application/pdf',
+    });
+    const file2 = new File([bytes2 as unknown as BlobPart], 'doc2.pdf', {
+      type: 'application/pdf',
+    });
 
     const result = await mergePdfFiles([file1, file2]);
 

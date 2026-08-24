@@ -41,6 +41,59 @@ const QrCodeGeneratorWorkspace = dynamic(
   }
 );
 
+// Calculator Workspaces
+const GstCalculatorWorkspace = dynamic(
+  () =>
+    import('@/features/calculators/GstCalculatorWorkspace').then((m) => m.GstCalculatorWorkspace),
+  {
+    loading: () => (
+      <div style={{ padding: '3rem 0' }}>
+        <LoadingState message="Loading GST Calculator..." />
+      </div>
+    ),
+  }
+);
+
+const EmiCalculatorWorkspace = dynamic(
+  () =>
+    import('@/features/calculators/EmiCalculatorWorkspace').then((m) => m.EmiCalculatorWorkspace),
+  {
+    loading: () => (
+      <div style={{ padding: '3rem 0' }}>
+        <LoadingState message="Loading EMI Calculator..." />
+      </div>
+    ),
+  }
+);
+
+const GratuityCalculatorWorkspace = dynamic(
+  () =>
+    import('@/features/calculators/GratuityCalculatorWorkspace').then(
+      (m) => m.GratuityCalculatorWorkspace
+    ),
+  {
+    loading: () => (
+      <div style={{ padding: '3rem 0' }}>
+        <LoadingState message="Loading Gratuity Calculator..." />
+      </div>
+    ),
+  }
+);
+
+const DiscountCalculatorWorkspace = dynamic(
+  () =>
+    import('@/features/calculators/DiscountCalculatorWorkspace').then(
+      (m) => m.DiscountCalculatorWorkspace
+    ),
+  {
+    loading: () => (
+      <div style={{ padding: '3rem 0' }}>
+        <LoadingState message="Loading Discount Calculator..." />
+      </div>
+    ),
+  }
+);
+
 const ImageCompressorOptions = dynamic(
   () => import('@/features/image/ImageCompressorOptions').then((m) => m.ImageCompressorOptions),
   {
@@ -146,11 +199,27 @@ export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
     return <ImageCropperWorkspace tool={tool} />;
   }
 
-  const isQr =
-    tool.slug === 'qr-code-generator' || tool.slug === 'upi-qr-code-generator';
+  const isQr = tool.slug === 'qr-code-generator' || tool.slug === 'upi-qr-code-generator';
 
   if (isQr) {
     return <QrCodeGeneratorWorkspace tool={tool} />;
+  }
+
+  // Calculator Workspaces Routing
+  if (tool.slug === 'gst-calculator') {
+    return <GstCalculatorWorkspace tool={tool} />;
+  }
+
+  if (tool.slug === 'emi-calculator') {
+    return <EmiCalculatorWorkspace tool={tool} />;
+  }
+
+  if (tool.slug === 'gratuity-calculator') {
+    return <GratuityCalculatorWorkspace tool={tool} />;
+  }
+
+  if (tool.slug === 'discount-calculator') {
+    return <DiscountCalculatorWorkspace tool={tool} />;
   }
 
   const isCompressor =
@@ -250,9 +319,7 @@ export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
         });
 
         const outputFormat =
-          resizerSettings.outputFormat === 'original'
-            ? undefined
-            : resizerSettings.outputFormat;
+          resizerSettings.outputFormat === 'original' ? undefined : resizerSettings.outputFormat;
 
         let scaleMode: 'custom' | 'percentage' = 'custom';
         let scalePercentage = 100;
@@ -396,12 +463,16 @@ export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
       const file = files[0];
       if (!file) return files;
 
-      const splitItems = await splitPdfDocument(file.originalFile, splitterSettings, (cur, tot, msg) => {
-        onProgress({
-          percentage: Math.round((cur / tot) * 100),
-          currentStep: msg,
-        });
-      });
+      const splitItems = await splitPdfDocument(
+        file.originalFile,
+        splitterSettings,
+        (cur, tot, msg) => {
+          onProgress({
+            percentage: Math.round((cur / tot) * 100),
+            currentStep: msg,
+          });
+        }
+      );
 
       const outputFiles: ManagedFile[] = splitItems.map((item, idx) => ({
         id: `split-${idx}-${Date.now()}`,
@@ -427,12 +498,16 @@ export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
       const file = files[0];
       if (!file) return files;
 
-      const imgResults = await convertPdfToImages(file.originalFile, pdfToImageSettings, (cur, tot, msg) => {
-        onProgress({
-          percentage: Math.round((cur / tot) * 100),
-          currentStep: msg,
-        });
-      });
+      const imgResults = await convertPdfToImages(
+        file.originalFile,
+        pdfToImageSettings,
+        (cur, tot, msg) => {
+          onProgress({
+            percentage: Math.round((cur / tot) * 100),
+            currentStep: msg,
+          });
+        }
+      );
 
       const outputFiles: ManagedFile[] = imgResults.map((item, idx) => ({
         id: `pdfimg-${idx}-${Date.now()}`,

@@ -110,7 +110,9 @@ export async function splitPdfDocument(
     const bytes = await newPdf.save();
     const blob = new Blob([bytes as unknown as BlobPart], { type: 'application/pdf' });
 
-    const rangeLabel = options.pageRange ? `pages_${options.pageRange.replace(/[^\w-]/g, '_')}` : 'extracted';
+    const rangeLabel = options.pageRange
+      ? `pages_${options.pageRange.replace(/[^\w-]/g, '_')}`
+      : 'extracted';
     results.push({
       blob,
       filename: `${baseName}_${rangeLabel}.pdf`,

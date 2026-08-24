@@ -71,8 +71,14 @@ export const ImageCompressorOptions: React.FC<ImageCompressorOptionsProps> = ({
   );
 
   const notifyChange = (updated: Partial<ImageCompressorSettings>) => {
-    const parsedW = parseInt(updated.customWidth !== undefined ? String(updated.customWidth) : customWidth, 10);
-    const parsedH = parseInt(updated.customHeight !== undefined ? String(updated.customHeight) : customHeight, 10);
+    const parsedW = parseInt(
+      updated.customWidth !== undefined ? String(updated.customWidth) : customWidth,
+      10
+    );
+    const parsedH = parseInt(
+      updated.customHeight !== undefined ? String(updated.customHeight) : customHeight,
+      10
+    );
 
     const current: ImageCompressorSettings = {
       targetSizeEnabled: updated.targetSizeEnabled ?? targetSizeEnabled,
@@ -149,8 +155,13 @@ export const ImageCompressorOptions: React.FC<ImageCompressorOptionsProps> = ({
         </div>
 
         {targetSizeEnabled && targetKb <= 30 && (
-          <div className={styles.dimPresetDesc} style={{ color: 'var(--color-primary)', marginTop: '4px', fontSize: '12px' }}>
-            💡 <strong>Strict ≤ {targetKb} KB Mode</strong>: Resolution will automatically be optimized to max ~400–600px to guarantee your signature or thumbnail is strictly under {targetKb} KB with clear readability.
+          <div
+            className={styles.dimPresetDesc}
+            style={{ color: 'var(--color-primary)', marginTop: '4px', fontSize: '12px' }}
+          >
+            💡 <strong>Strict ≤ {targetKb} KB Mode</strong>: Resolution will automatically be
+            optimized to max ~400–600px to guarantee your signature or thumbnail is strictly under{' '}
+            {targetKb} KB with clear readability.
           </div>
         )}
       </div>

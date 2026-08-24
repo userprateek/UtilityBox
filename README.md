@@ -48,6 +48,13 @@ Traditional file conversion websites upload your confidential documents (Aadhaar
 ### 4. 💰 Google AdSense Ready
 
 - Responsive ad slot containers (`components/ads/AdSlot.tsx`) supporting Leaderboard (728×90), Sidebar Rectangle (300×250), and In-Feed banners.
+
+### 5. 🧮 Business & Financial Calculators Suite
+
+- **GST & Shopkeeper Profit Calculator** (`/gst-calculator`): Calculate MRP to keep exact desired net profit (₹X) after paying 5%, 12%, 18%, or 28% GST tax, plus Add GST (Exclusive) and Remove GST (Inclusive) modes.
+- **Loan EMI Calculator** (`/emi-calculator`): Monthly EMI, total interest, and principal vs interest visual breakdown bar.
+- **Gratuity Settlement Calculator** (`/gratuity-calculator`): Employee gratuity payout formula with 5-year eligibility check and tax exemption details.
+- **Discount & Shop Margin Calculator** (`/discount-calculator`): Calculate final sale price, total savings, and shopkeeper margin.
 - Controlled via `NEXT_PUBLIC_ADSENSE_CLIENT` and `NEXT_PUBLIC_ADSENSE_SLOT` environment variables.
 
 ---

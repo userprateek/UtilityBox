@@ -254,7 +254,10 @@ export function getDefaultToolFaqs(tool: ToolMetadata): FaqItem[] {
       },
       {
         question: `Does this QR code work with Google Pay, PhonePe, Paytm, and BHIM?`,
-        answer: `Yes! The generated QR code uses the standard NPCI UPI protocol (` + 'upi://pay' + `) supported by Google Pay, PhonePe, Paytm, Amazon Pay, Cred, and all Indian banking apps.`,
+        answer:
+          `Yes! The generated QR code uses the standard NPCI UPI protocol (` +
+          'upi://pay' +
+          `) supported by Google Pay, PhonePe, Paytm, Amazon Pay, Cred, and all Indian banking apps.`,
       },
       {
         question: `Are there any transaction fees, merchant charges, or commissions?`,

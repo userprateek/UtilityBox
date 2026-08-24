@@ -24,14 +24,24 @@ export async function POST(req: NextRequest) {
     const inputBuffer = Buffer.from(arrayBuffer);
 
     // Extract options from form data
-    const targetKb = formData.get('targetKb') ? parseInt(formData.get('targetKb') as string, 10) : undefined;
+    const targetKb = formData.get('targetKb')
+      ? parseInt(formData.get('targetKb') as string, 10)
+      : undefined;
     const quality = formData.get('quality') ? parseFloat(formData.get('quality') as string) : 0.8;
-    const scaleMode = (formData.get('scaleMode') as ImageCompressionOptions['scaleMode']) || 'original';
-    const scalePercentage = formData.get('scalePercentage') ? parseInt(formData.get('scalePercentage') as string, 10) : 100;
+    const scaleMode =
+      (formData.get('scaleMode') as ImageCompressionOptions['scaleMode']) || 'original';
+    const scalePercentage = formData.get('scalePercentage')
+      ? parseInt(formData.get('scalePercentage') as string, 10)
+      : 100;
     const dimensionPreset = formData.get('dimensionPreset') as DimensionPreset | undefined;
-    const customWidth = formData.get('width') ? parseInt(formData.get('width') as string, 10) : undefined;
-    const customHeight = formData.get('height') ? parseInt(formData.get('height') as string, 10) : undefined;
-    const format = (formData.get('format') as ImageCompressionOptions['outputFormat']) || 'image/jpeg';
+    const customWidth = formData.get('width')
+      ? parseInt(formData.get('width') as string, 10)
+      : undefined;
+    const customHeight = formData.get('height')
+      ? parseInt(formData.get('height') as string, 10)
+      : undefined;
+    const format =
+      (formData.get('format') as ImageCompressionOptions['outputFormat']) || 'image/jpeg';
     const keepMetadata = formData.get('keepMetadata') === 'true';
 
     const result = await processImageWithSharp(inputBuffer, {

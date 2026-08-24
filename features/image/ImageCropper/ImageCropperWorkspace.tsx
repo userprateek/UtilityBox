@@ -23,7 +23,12 @@ import { FileDropzone } from '@/components/file-upload/FileDropzone/FileDropzone
 import { ToolHeader } from '@/components/tool/ToolHeader/ToolHeader';
 import { NormalizedCropBox, CropResult, cropImageFile } from '@/lib/image/canvasCropper';
 import { compressImageAdvanced } from '@/lib/image/clientImageCompressor';
-import { formatBytes, calculateSavings, downloadBlob, generateDownloadFilename } from '@/lib/file/fileUtils';
+import {
+  formatBytes,
+  calculateSavings,
+  downloadBlob,
+  generateDownloadFilename,
+} from '@/lib/file/fileUtils';
 import { trackToolUse, trackToolDownload } from '@/lib/analytics/gtag';
 import styles from './ImageCropper.module.scss';
 
@@ -32,14 +37,7 @@ export interface ImageCropperWorkspaceProps {
 }
 
 export type AspectRatioPreset =
-  | 'free'
-  | 'passport'
-  | 'signature'
-  | '1:1'
-  | '16:9'
-  | '4:3'
-  | '3:2'
-  | '9:16';
+  'free' | 'passport' | 'signature' | '1:1' | '16:9' | '4:3' | '3:2' | '9:16';
 
 type HandleType = 'move' | 'nw' | 'ne' | 'sw' | 'se' | 'n' | 's' | 'w' | 'e';
 
@@ -117,11 +115,7 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
         : 'free';
 
   const defaultTargetKb =
-    tool.slug === 'signature-cropper'
-      ? 20
-      : tool.slug === 'passport-photo-maker'
-        ? 50
-        : 100;
+    tool.slug === 'signature-cropper' ? 20 : tool.slug === 'passport-photo-maker' ? 50 : 100;
 
   // Crop box in normalized percentages (0 to 1)
   const [cropBox, setCropBox] = useState<NormalizedCropBox>({
@@ -265,7 +259,10 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
             width = newW;
             height = newH;
           } else if (handle === 'sw' || handle === 'w') {
-            let newW = Math.max(0.05, Math.min(startCrop.x + startCrop.width, startCrop.width - deltaX));
+            let newW = Math.max(
+              0.05,
+              Math.min(startCrop.x + startCrop.width, startCrop.width - deltaX)
+            );
             let newH = (newW * imgAspect) / targetRatio;
             if (startCrop.y + newH > 1) {
               newH = 1 - startCrop.y;
@@ -285,7 +282,10 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
             width = newW;
             height = newH;
           } else if (handle === 'nw' || handle === 'n') {
-            let newW = Math.max(0.05, Math.min(startCrop.x + startCrop.width, startCrop.width - deltaX));
+            let newW = Math.max(
+              0.05,
+              Math.min(startCrop.x + startCrop.width, startCrop.width - deltaX)
+            );
             let newH = (newW * imgAspect) / targetRatio;
             if (startCrop.y + startCrop.height - newH < 0) {
               newH = startCrop.y + startCrop.height;
@@ -458,7 +458,16 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
             </div>
             <div>
               <h2 className={styles.resultTitle}>Image Cropped Successfully!</h2>
-              <div className={styles.resultMeta} style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginTop: '4px' }}>
+              <div
+                className={styles.resultMeta}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  flexWrap: 'wrap',
+                  marginTop: '4px',
+                }}
+              >
                 <span>
                   {cropResult.width} × {cropResult.height} px • {formatBytes(cropResult.size)} •{' '}
                   {outputFormat.replace('image/', '').toUpperCase()}
@@ -477,7 +486,8 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
                       borderRadius: '4px',
                     }}
                   >
-                    <TrendingDown size={13} /> -{savings.percentage}% (from {formatBytes(selectedFile.size)})
+                    <TrendingDown size={13} /> -{savings.percentage}% (from{' '}
+                    {formatBytes(selectedFile.size)})
                   </span>
                 )}
               </div>
@@ -542,14 +552,7 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
               <div className={styles.aspectPills}>
                 <span className={styles.aspectLabel}>Ratio:</span>
                 {(
-                  [
-                    'free',
-                    'signature',
-                    'passport',
-                    '1:1',
-                    '4:3',
-                    '16:9',
-                  ] as AspectRatioPreset[]
+                  ['free', 'signature', 'passport', '1:1', '4:3', '16:9'] as AspectRatioPreset[]
                 ).map((preset) => (
                   <button
                     key={preset}
@@ -815,10 +818,17 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
                   marginBottom: '16px',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                >
                   <label
                     htmlFor="targetSizeToggle"
-                    style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-text-main)', cursor: 'pointer' }}
+                    style={{
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      color: 'var(--color-text-main)',
+                      cursor: 'pointer',
+                    }}
                   >
                     🎯 Limit Target File Size
                   </label>
@@ -833,13 +843,22 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
 
                 {targetSizeEnabled && (
                   <div style={{ marginTop: '10px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        marginBottom: '8px',
+                      }}
+                    >
                       <input
                         type="number"
                         min={5}
                         max={5000}
                         value={targetKb}
-                        onChange={(e) => setTargetKb(Math.max(5, parseInt(e.target.value, 10) || 5))}
+                        onChange={(e) =>
+                          setTargetKb(Math.max(5, parseInt(e.target.value, 10) || 5))
+                        }
                         style={{
                           width: '90px',
                           padding: '6px 8px',
@@ -851,7 +870,9 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
                           fontWeight: 600,
                         }}
                       />
-                      <span style={{ fontSize: '12px', color: 'var(--color-text-muted)' }}>KB (Strict Ceiling)</span>
+                      <span style={{ fontSize: '12px', color: 'var(--color-text-muted)' }}>
+                        KB (Strict Ceiling)
+                      </span>
                     </div>
 
                     <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
@@ -865,13 +886,21 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
                             fontSize: '11px',
                             fontWeight: 500,
                             borderRadius: '4px',
-                            border: targetKb === size ? '1px solid var(--color-primary)' : '1px solid var(--color-border)',
-                            background: targetKb === size ? 'var(--color-primary)' : 'var(--color-surface)',
+                            border:
+                              targetKb === size
+                                ? '1px solid var(--color-primary)'
+                                : '1px solid var(--color-border)',
+                            background:
+                              targetKb === size ? 'var(--color-primary)' : 'var(--color-surface)',
                             color: targetKb === size ? '#ffffff' : 'var(--color-text-main)',
                             cursor: 'pointer',
                           }}
                         >
-                          {size === 20 ? '≤ 20KB (Sign)' : size === 50 ? '≤ 50KB (Photo)' : `≤ ${size}KB`}
+                          {size === 20
+                            ? '≤ 20KB (Sign)'
+                            : size === 50
+                              ? '≤ 50KB (Photo)'
+                              : `≤ ${size}KB`}
                         </button>
                       ))}
                     </div>

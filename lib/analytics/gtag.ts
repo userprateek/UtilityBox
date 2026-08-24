@@ -91,11 +91,7 @@ export function trackToolDownload(
 /**
  * Tracks custom tool execution events (e.g. compression, cropping, QR creation)
  */
-export function trackToolUse(
-  toolSlug: string,
-  action: string,
-  metadata?: Record<string, unknown>
-) {
+export function trackToolUse(toolSlug: string, action: string, metadata?: Record<string, unknown>) {
   if (typeof window === 'undefined' || !window.gtag) return;
 
   window.gtag('event', 'tool_use', {
