@@ -65,14 +65,31 @@ export const DevToolsWorkspace: React.FC<DevToolsWorkspaceProps> = ({ tool }) =>
       const part0 = parts[0];
       const part1 = parts[1];
       if (parts.length >= 2 && part0 && part1) {
-        const headerJson = atob(part0.replace(/-/g, '+').replace(/_/g, '/'));
-        const payloadJson = atob(part1.replace(/-/g, '+').replace(/_/g, '/'));
+        const decodeBase64Url = (str: string) => {
+          let base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+          while (base64.length % 4 !== 0) {
+            base64 += '=';
+          }
+          try {
+            return decodeURIComponent(
+              atob(base64)
+                .split('')
+                .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                .join('')
+            );
+          } catch {
+            return atob(base64);
+          }
+        };
+
+        const headerJson = decodeBase64Url(part0);
+        const payloadJson = decodeBase64Url(part1);
         jwtHeader = JSON.parse(headerJson);
         jwtPayload = JSON.parse(payloadJson);
       } else {
         jwtError = 'Invalid JWT Token structure (Expected Header.Payload.Signature)';
       }
-    } catch (err) {
+    } catch {
       jwtError = 'Failed to decode JWT base64 JSON token string.';
     }
   }
