@@ -38,6 +38,14 @@ const nextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      {
+        source: '/:category(image|pdf|qr|text|calculators|developer|converters|utilities)/:slug',
+        destination: '/:slug',
+      },
+    ];
+  },
 };
 
 export default nextConfig;
