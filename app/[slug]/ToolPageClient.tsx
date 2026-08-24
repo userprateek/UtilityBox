@@ -41,6 +41,17 @@ const QrCodeGeneratorWorkspace = dynamic(
   }
 );
 
+const PassportSheetWorkspace = dynamic(
+  () => import('@/features/image/PassportSheetWorkspace').then((m) => m.PassportSheetWorkspace),
+  {
+    loading: () => (
+      <div style={{ padding: '3rem 0' }}>
+        <LoadingState message="Loading Passport Photo Sheet Generator..." />
+      </div>
+    ),
+  }
+);
+
 // Calculator Workspaces
 const GstCalculatorWorkspace = dynamic(
   () =>
@@ -89,6 +100,52 @@ const DiscountCalculatorWorkspace = dynamic(
     loading: () => (
       <div style={{ padding: '3rem 0' }}>
         <LoadingState message="Loading Discount Calculator..." />
+      </div>
+    ),
+  }
+);
+
+const SipCalculatorWorkspace = dynamic(
+  () =>
+    import('@/features/calculators/SipCalculatorWorkspace').then((m) => m.SipCalculatorWorkspace),
+  {
+    loading: () => (
+      <div style={{ padding: '3rem 0' }}>
+        <LoadingState message="Loading SIP Calculator..." />
+      </div>
+    ),
+  }
+);
+
+const FdCalculatorWorkspace = dynamic(
+  () =>
+    import('@/features/calculators/FdCalculatorWorkspace').then((m) => m.FdCalculatorWorkspace),
+  {
+    loading: () => (
+      <div style={{ padding: '3rem 0' }}>
+        <LoadingState message="Loading FD Calculator..." />
+      </div>
+    ),
+  }
+);
+
+const TextToolsWorkspace = dynamic(
+  () => import('@/features/text/TextToolsWorkspace').then((m) => m.TextToolsWorkspace),
+  {
+    loading: () => (
+      <div style={{ padding: '3rem 0' }}>
+        <LoadingState message="Loading Text Workspace..." />
+      </div>
+    ),
+  }
+);
+
+const DevToolsWorkspace = dynamic(
+  () => import('@/features/developer/DevToolsWorkspace').then((m) => m.DevToolsWorkspace),
+  {
+    loading: () => (
+      <div style={{ padding: '3rem 0' }}>
+        <LoadingState message="Loading Developer Utility Workspace..." />
       </div>
     ),
   }
@@ -205,6 +262,10 @@ export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
     return <QrCodeGeneratorWorkspace tool={tool} />;
   }
 
+  if (tool.slug === 'passport-sheet-maker') {
+    return <PassportSheetWorkspace tool={tool} />;
+  }
+
   // Calculator Workspaces Routing
   if (tool.slug === 'gst-calculator') {
     return <GstCalculatorWorkspace tool={tool} />;
@@ -220,6 +281,30 @@ export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
 
   if (tool.slug === 'discount-calculator') {
     return <DiscountCalculatorWorkspace tool={tool} />;
+  }
+
+  if (tool.slug === 'sip-calculator') {
+    return <SipCalculatorWorkspace tool={tool} />;
+  }
+
+  if (tool.slug === 'fd-calculator') {
+    return <FdCalculatorWorkspace tool={tool} />;
+  }
+
+  const isTextTool =
+    tool.slug === 'word-counter' ||
+    tool.slug === 'case-converter' ||
+    tool.slug === 'remove-duplicates';
+
+  if (isTextTool) {
+    return <TextToolsWorkspace tool={tool} />;
+  }
+
+  const isDevTool =
+    tool.slug === 'uuid' || tool.slug === 'url-encoder' || tool.slug === 'jwt-decoder';
+
+  if (isDevTool) {
+    return <DevToolsWorkspace tool={tool} />;
   }
 
   const isCompressor =

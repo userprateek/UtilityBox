@@ -1,5 +1,12 @@
 export type ToolCategoryId =
-  'image' | 'pdf' | 'converters' | 'utilities' | 'calculators' | 'developer';
+  | 'image'
+  | 'pdf'
+  | 'qr'
+  | 'text'
+  | 'converters'
+  | 'utilities'
+  | 'calculators'
+  | 'developer';
 
 export interface ToolCategory {
   id: ToolCategoryId;
@@ -24,6 +31,7 @@ export type FileFormat =
 
 export interface ToolMetadata {
   slug: string;
+  categoryAlias?: string;
   name: string;
   shortDescription: string;
   description: string;
@@ -43,7 +51,12 @@ export interface ToolMetadata {
 }
 
 export type ProcessingStatus =
-  'idle' | 'preparing' | 'processing' | 'completed' | 'error' | 'cancelled';
+  | 'idle'
+  | 'preparing'
+  | 'processing'
+  | 'completed'
+  | 'error'
+  | 'cancelled';
 
 export interface ProcessingProgress {
   percentage: number;

@@ -15,6 +15,20 @@ export const TOOL_CATEGORIES: Record<string, ToolCategory> = {
     iconName: 'FileText',
     accentColor: '#ef4444',
   },
+  qr: {
+    id: 'qr',
+    label: 'QR Code Generators',
+    description: 'Create UPI shop counter payment QR, WhatsApp direct chat, WiFi, and link QRs.',
+    iconName: 'QrCode',
+    accentColor: '#ec4899',
+  },
+  text: {
+    id: 'text',
+    label: 'Text Tools',
+    description: 'Count words, convert cases, clean duplicates, and compare text strings.',
+    iconName: 'Type',
+    accentColor: '#a855f7',
+  },
   converters: {
     id: 'converters',
     label: 'Converters',
@@ -25,7 +39,7 @@ export const TOOL_CATEGORIES: Record<string, ToolCategory> = {
   developer: {
     id: 'developer',
     label: 'Developer Utilities',
-    description: 'Format JSON, encode/decode Base64, inspect headers, and generate hashes.',
+    description: 'Format JSON, encode/decode Base64, decode JWT, and generate UUIDs.',
     iconName: 'Code',
     accentColor: '#10b981',
   },
@@ -39,7 +53,7 @@ export const TOOL_CATEGORIES: Record<string, ToolCategory> = {
   calculators: {
     id: 'calculators',
     label: 'Calculators',
-    description: 'GST, tax, financial, and ratio calculation tools.',
+    description: 'GST, SIP compounding, loan EMI, gratuity, and profit calculators.',
     iconName: 'Calculator',
     accentColor: '#06b6d4',
   },

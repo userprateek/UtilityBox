@@ -26,11 +26,11 @@ export interface ImageCompressorOptionsProps {
 }
 
 const TARGET_SIZE_PRESETS = [
-  { kb: 20, title: '20 KB', desc: 'Signatures (SSC/UPSC)' },
-  { kb: 50, title: '50 KB', desc: 'Sarkari Photo / UPSC' },
-  { kb: 100, title: '100 KB', desc: 'Govt ID & Job Forms' },
-  { kb: 200, title: '200 KB', desc: 'Web & Documents' },
-  { kb: 500, title: '500 KB', desc: 'High Resolution' },
+  { kb: 20, title: '✍️ 20 KB', desc: 'Signature (SSC / UPSC)' },
+  { kb: 50, title: '🎓 50 KB', desc: 'Sarkari Photo / UPSC' },
+  { kb: 100, title: '📄 100 KB', desc: 'Aadhaar & Marksheets' },
+  { kb: 200, title: '📁 200 KB', desc: 'Govt Job Application' },
+  { kb: 500, title: '📸 500 KB', desc: 'High Resolution Docs' },
 ];
 
 export const ImageCompressorOptions: React.FC<ImageCompressorOptionsProps> = ({

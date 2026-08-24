@@ -1,0 +1,183 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.workspace {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.uploadStage {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.goalBadgesCard {
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-xl;
+  padding: $space-6;
+}
+
+.goalTitle {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: var(--color-primary);
+  margin-bottom: $space-4;
+}
+
+.goalGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+
+  @include respond-to('md') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.goalChip {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-3;
+  padding: $space-4;
+  border-radius: $radius-lg;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+
+  strong {
+    display: block;
+    font-size: $font-size-sm;
+    color: var(--color-text-main);
+  }
+
+  p {
+    font-size: $font-size-xs;
+    color: var(--color-text-muted);
+    margin: 2px 0 0 0;
+  }
+}
+
+.activeStage {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.controlsCard {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.controlsTitle {
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  color: var(--color-text-main);
+  margin: 0;
+}
+
+.presetButtonsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-3;
+}
+
+.presetBtn {
+  flex: 1;
+  min-width: 180px;
+  padding: $space-3 $space-4;
+  border-radius: $radius-lg;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-subtle);
+  color: var(--color-text-main);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    border-color: var(--color-primary);
+  }
+}
+
+.presetBtnActive {
+  background: var(--color-primary-subtle);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  box-shadow: 0 0 12px var(--color-primary-glow);
+}
+
+.optionsRow {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  color: var(--color-text-main);
+  cursor: pointer;
+}
+
+.previewCard {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  align-items: center;
+}
+
+.previewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  h4 {
+    margin: 0;
+    font-size: $font-size-base;
+    color: var(--color-text-main);
+  }
+}
+
+.generatingBadge {
+  font-size: $font-size-xs;
+  color: var(--color-primary);
+  font-weight: $font-weight-bold;
+}
+
+.previewImageContainer {
+  max-width: 100%;
+  max-height: 500px;
+  overflow: auto;
+  padding: $space-4;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-lg;
+  display: flex;
+  justify-content: center;
+}
+
+.previewImg {
+  max-width: 100%;
+  height: auto;
+  box-shadow: var(--shadow-lg);
+  border-radius: $radius-sm;
+}
+
+.actionsBar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: $space-4;
+  margin-top: $space-2;
+}

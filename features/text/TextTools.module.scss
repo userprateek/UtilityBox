@@ -1,0 +1,173 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.workspace {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-6;
+
+  @include respond-to('md') {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.mainCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.editorCard {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toolbarTitle {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: var(--color-text-main);
+}
+
+.toolActions {
+  display: flex;
+  gap: $space-2;
+}
+
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-main);
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  padding: 4px 10px;
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: var(--color-primary-subtle);
+    border-color: var(--color-primary);
+  }
+}
+
+.textarea {
+  width: 100%;
+  padding: $space-4;
+  border-radius: $radius-lg;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-subtle);
+  color: var(--color-text-main);
+  font-family: monospace;
+  font-size: $font-size-sm;
+  line-height: $line-height-relaxed;
+  resize: vertical;
+  outline: none;
+
+  &:focus {
+    border-color: var(--color-primary);
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  margin-top: $space-2;
+}
+
+.groupLabel {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  color: var(--color-primary);
+}
+
+.btnsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.transformBtn {
+  padding: 6px 12px;
+  border-radius: $radius-md;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-subtle);
+  color: var(--color-text-main);
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: var(--color-primary-subtle);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+}
+
+.statsCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.statsCard {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.statsHeader {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  color: var(--color-text-main);
+  margin: 0;
+}
+
+.statsList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $space-3;
+}
+
+.statBox {
+  display: flex;
+  flex-direction: column;
+  padding: $space-3;
+  border-radius: $radius-lg;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+}
+
+.statNum {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: var(--color-primary);
+}
+
+.statLabel {
+  font-size: $font-size-xs;
+  color: var(--color-text-muted);
+}

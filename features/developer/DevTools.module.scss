@@ -1,0 +1,190 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.workspace {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.toolCard {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.headerIcon {
+  color: var(--color-primary);
+}
+
+.cardTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: var(--color-text-main);
+  margin: 0;
+}
+
+.controlsRow {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  flex-wrap: wrap;
+}
+
+.label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: var(--color-text-main);
+}
+
+.cntBtn {
+  padding: 4px 12px;
+  border-radius: $radius-md;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-subtle);
+  color: var(--color-text-main);
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    border-color: var(--color-primary);
+  }
+}
+
+.cntBtnActive {
+  background: var(--color-primary-subtle);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.generateBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: $radius-md;
+  border: 1px solid var(--color-primary);
+  background: var(--color-primary);
+  color: #ffffff;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.outputBox {
+  padding: $space-4;
+  border-radius: $radius-lg;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+}
+
+.preText {
+  font-family: monospace;
+  font-size: $font-size-sm;
+  color: var(--color-text-main);
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.actionsRow {
+  display: flex;
+  gap: $space-3;
+  align-items: center;
+}
+
+.copyBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: $radius-md;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-subtle);
+  color: var(--color-primary);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: var(--color-primary-subtle);
+    border-color: var(--color-primary);
+  }
+}
+
+.textarea {
+  width: 100%;
+  padding: $space-4;
+  border-radius: $radius-lg;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-subtle);
+  color: var(--color-text-main);
+  font-family: monospace;
+  font-size: $font-size-sm;
+  outline: none;
+
+  &:focus {
+    border-color: var(--color-primary);
+  }
+}
+
+.errorBox {
+  padding: $space-3;
+  border-radius: $radius-md;
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #dc2626;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+}
+
+.jwtResultsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+
+  @include respond-to('md') {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.jwtBlock {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.jwtBlockTitle {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.preJson {
+  padding: $space-4;
+  border-radius: $radius-lg;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  font-family: monospace;
+  font-size: $font-size-xs;
+  color: var(--color-text-main);
+  margin: 0;
+  overflow-x: auto;
+}

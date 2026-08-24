@@ -93,4 +93,26 @@ describe('Calculators Workspace Suite', () => {
       expect(screen.getByText('₹1,600.00')).toBeInTheDocument();
     });
   });
+
+  describe('SipCalculatorWorkspace', () => {
+    it('calculates SIP investment growth and maturity value', () => {
+      const sipTool = { ...mockTool, slug: 'sip-calculator', name: 'SIP Calculator' };
+      const { SipCalculatorWorkspace } = require('./SipCalculatorWorkspace');
+      render(<SipCalculatorWorkspace tool={sipTool} />);
+
+      expect(screen.getByText('SIP Wealth Projection')).toBeInTheDocument();
+      expect(screen.getByText('ESTIMATED MATURITY VALUE')).toBeInTheDocument();
+    });
+  });
+
+  describe('FdCalculatorWorkspace', () => {
+    it('calculates FD maturity payout with compounding', () => {
+      const fdTool = { ...mockTool, slug: 'fd-calculator', name: 'FD Calculator' };
+      const { FdCalculatorWorkspace } = require('./FdCalculatorWorkspace');
+      render(<FdCalculatorWorkspace tool={fdTool} />);
+
+      expect(screen.getByText('Bank FD Maturity Projection')).toBeInTheDocument();
+      expect(screen.getByText('TOTAL MATURITY PAYOUT')).toBeInTheDocument();
+    });
+  });
 });

@@ -394,6 +394,38 @@ export const TOOL_REGISTRY: Record<string, ToolMetadata> = {
       'High-res printable download',
     ],
   },
+  'passport-sheet-maker': {
+    slug: 'passport-sheet-maker',
+    name: 'Passport Photo Sheet Generator',
+    shortDescription: 'Tile single passport photo into an 8-photo (4x6") or 12-photo (A4) printable grid.',
+    description:
+      'Instantly generate printable multi-photo sheets on 4x6 inch photo paper or A4 paper with cutting guides. Designed for cyber cafes, xerox shops, and home printers.',
+    category: 'image',
+    iconName: 'Grid',
+    supportedInputFormats: ['image/jpeg', 'image/png', 'image/webp'],
+    supportedOutputFormats: ['image/jpeg', 'image/png', 'application/pdf'],
+    maxFiles: 1,
+    maxFileSizeMB: 50,
+    seoTitle: 'Passport Photo Sheet Generator Online Free - 4x6" & A4 Print Grid Maker',
+    seoDescription:
+      'Combine 1 passport photo into an 8-photo 4x6" card or 12-photo A4 sheet ready for printing. Free, 100% in-browser, no Photoshop required.',
+    keywords: [
+      'passport photo sheet generator',
+      '4x6 passport photo print maker',
+      'passport photo grid maker',
+      'multiple passport photo print online',
+      'xerox shop passport photo grid',
+    ],
+    isPopular: true,
+    isNew: true,
+    features: [
+      '8 Photos on 4x6 inch photo paper grid preset',
+      '12 & 16 Photos on A4 paper grid preset',
+      'Automatic cutting border guidelines',
+      'Instant high-res PDF or JPEG printable download',
+      '100% Private in-browser generation',
+    ],
+  },
   'signature-cropper': {
     slug: 'signature-cropper',
     name: 'Online Signature Cropper',
@@ -578,6 +610,215 @@ export const TOOL_REGISTRY: Record<string, ToolMetadata> = {
       'Simple & fast shop counter tool',
     ],
   },
+  'sip-calculator': {
+    slug: 'sip-calculator',
+    name: 'SIP Investment & Compounding Calculator',
+    shortDescription:
+      'Calculate monthly SIP returns, total wealth gained, and maturity value with compound interest.',
+    description:
+      'Calculate your Systematic Investment Plan (SIP) and lumpsum investment returns over time. Estimate future wealth growth with monthly compounding, return sliders, and visual growth breakdown.',
+    category: 'calculators',
+    iconName: 'TrendingUp',
+    supportedInputFormats: ['text/plain'],
+    supportedOutputFormats: ['text/plain'],
+    maxFiles: 0,
+    seoTitle: 'SIP Calculator Online Free - Calculate Monthly Investment Return & Wealth Growth',
+    seoDescription:
+      'Calculate monthly SIP investment returns, total interest earned, and maturity wealth. 100% free with interactive return sliders and visual breakdown.',
+    keywords: [
+      'sip calculator',
+      'sip investment return calculator',
+      'mutual fund sip calculator',
+      'compounding investment calculator',
+      'sip wealth calculator',
+    ],
+    isPopular: true,
+    isNew: true,
+    features: [
+      'Monthly SIP and Lumpsum investment calculation modes',
+      'Interactive return rate slider (1% to 30% p.a.)',
+      'Visual Principal vs Wealth Growth breakdown bar',
+      '1-Click calculation summary copy',
+    ],
+  },
+  'fd-calculator': {
+    slug: 'fd-calculator',
+    name: 'FD & Bank Deposit Calculator',
+    shortDescription:
+      'Calculate fixed deposit maturity amount, interest earned, and quarterly compounding returns.',
+    description:
+      'Calculate bank fixed deposit (FD) interest and maturity value. Supports quarterly compounding (standard bank FD), monthly, and annual interest payouts.',
+    category: 'calculators',
+    iconName: 'Coins',
+    supportedInputFormats: ['text/plain'],
+    supportedOutputFormats: ['text/plain'],
+    maxFiles: 0,
+    seoTitle: 'FD Calculator Online Free - Bank Fixed Deposit Interest & Maturity Calculator',
+    seoDescription:
+      'Calculate fixed deposit maturity returns and interest earned online. Supports quarterly bank compounding and tenure in months or years.',
+    keywords: [
+      'fd calculator',
+      'fixed deposit calculator',
+      'bank fd interest calculator',
+      'fd maturity calculator',
+      'term deposit calculator',
+    ],
+    isPopular: true,
+    isNew: true,
+    features: [
+      'Quarterly, Monthly, Half-Yearly & Annual compounding frequencies',
+      'Calculates Total Interest Earned & Final Maturity Amount',
+      'Tenure in Months or Years',
+      '100% Free with instant calculation',
+    ],
+  },
+  'word-counter': {
+    slug: 'word-counter',
+    categoryAlias: 'word-counter',
+    name: 'Word & Character Counter',
+    shortDescription:
+      'Count words, characters, sentences, paragraphs, and reading time in real time.',
+    description:
+      'Analyze text length, word count, character count with/without spaces, sentence count, and reading time for essays, articles, and application forms.',
+    category: 'text',
+    iconName: 'FileText',
+    supportedInputFormats: ['text/plain'],
+    supportedOutputFormats: ['text/plain'],
+    maxFiles: 0,
+    seoTitle: 'Word & Character Counter Online Free - Count Words, Sentences & Reading Time',
+    seoDescription:
+      'Free online word counter and character counter. Calculate exact word count, character count, and reading time instantly.',
+    keywords: ['word counter', 'character counter', 'count words online', 'sentence counter'],
+    isPopular: true,
+    isNew: true,
+    features: [
+      'Real-time word, character, sentence, and paragraph counter',
+      'Character count with and without spaces',
+      'Estimated reading time calculation',
+      '100% Client-side text analysis',
+    ],
+  },
+  'case-converter': {
+    slug: 'case-converter',
+    categoryAlias: 'case-converter',
+    name: 'Text Case Converter',
+    shortDescription:
+      'Convert text case to UPPERCASE, lowercase, Title Case, Sentence case, camelCase, kebab-case.',
+    description:
+      'Transform text formatting instantly. Convert between uppercase, lowercase, title case, sentence case, camelCase, and kebab-case with 1 click.',
+    category: 'text',
+    iconName: 'Type',
+    supportedInputFormats: ['text/plain'],
+    supportedOutputFormats: ['text/plain'],
+    maxFiles: 0,
+    seoTitle: 'Text Case Converter - Convert UPPERCASE, lowercase & Title Case Online',
+    seoDescription:
+      'Convert text to UPPERCASE, lowercase, Title Case, Sentence case, camelCase, and kebab-case instantly in your browser.',
+    keywords: ['case converter', 'uppercase converter', 'title case maker', 'camelcase converter'],
+    isPopular: true,
+    isNew: true,
+    features: [
+      '1-Click UPPERCASE, lowercase, Title Case, and Sentence case transforms',
+      'Code naming conventions: camelCase & kebab-case support',
+      'Instant copy to clipboard',
+    ],
+  },
+  'remove-duplicates': {
+    slug: 'remove-duplicates',
+    categoryAlias: 'remove-duplicates',
+    name: 'Remove Duplicate Lines',
+    shortDescription: 'Clean text lists by removing duplicate lines and sorting lines alphabetically.',
+    description:
+      'Deduplicate text lists and files. Strip repeating lines, trim whitespace, and sort lines alphabetically in seconds.',
+    category: 'text',
+    iconName: 'ListFilter',
+    supportedInputFormats: ['text/plain'],
+    supportedOutputFormats: ['text/plain'],
+    maxFiles: 0,
+    seoTitle: 'Remove Duplicate Lines Online Free - Clean & Sort Text Lists',
+    seoDescription:
+      'Remove repeating duplicate lines from text and list files online. Sort lines alphabetically with zero server uploads.',
+    keywords: ['remove duplicate lines', 'deduplicate list', 'sort text lines', 'clean text list'],
+    isPopular: false,
+    isNew: true,
+    features: [
+      'Instant line-by-line duplicate removal',
+      'Alphabetical A-Z line sorting',
+      '100% Private in-browser list cleaning',
+    ],
+  },
+  uuid: {
+    slug: 'uuid',
+    categoryAlias: 'uuid',
+    name: 'UUID v4 Generator',
+    shortDescription: 'Generate single or bulk random UUID v4 string identifiers online.',
+    description:
+      'Generate cryptographically secure random UUID v4 identifiers in bulk. Copy formatted UUID strings instantly for databases and APIs.',
+    category: 'developer',
+    iconName: 'Key',
+    supportedInputFormats: ['text/plain'],
+    supportedOutputFormats: ['text/plain'],
+    maxFiles: 0,
+    seoTitle: 'UUID v4 Generator Online Free - Bulk Random UUID Generator',
+    seoDescription:
+      'Generate single or bulk UUID v4 strings instantly in your browser using secure cryptographic randomness.',
+    keywords: ['uuid generator', 'uuid v4 maker', 'generate guid online', 'random uuid'],
+    isPopular: true,
+    isNew: true,
+    features: [
+      'Bulk generation (1, 5, 10, 20 UUIDs at once)',
+      'Cryptographically secure random UUID v4',
+      '1-Click copy to clipboard',
+    ],
+  },
+  'url-encoder': {
+    slug: 'url-encoder',
+    categoryAlias: 'url-encoder',
+    name: 'URL Encoder & Decoder',
+    shortDescription: 'Encode and decode URI components and query parameter strings.',
+    description:
+      'Safely percent-encode special characters into URL-encoded strings or decode encoded parameters back to plain text.',
+    category: 'developer',
+    iconName: 'Link',
+    supportedInputFormats: ['text/plain'],
+    supportedOutputFormats: ['text/plain'],
+    maxFiles: 0,
+    seoTitle: 'URL Encoder & Decoder Online - Percent Encode Parameter Strings',
+    seoDescription:
+      'Encode and decode URL string parameters online with 1-click percent encoding.',
+    keywords: ['url encoder', 'url decoder', 'percent encoding', 'encode uri component'],
+    isPopular: false,
+    isNew: true,
+    features: [
+      '1-Click URL Encoding and Decoding',
+      'Handles special characters, spaces, and query strings',
+      'Instant copy result',
+    ],
+  },
+  'jwt-decoder': {
+    slug: 'jwt-decoder',
+    categoryAlias: 'jwt-decoder',
+    name: 'JWT Token Decoder',
+    shortDescription: 'Decode JSON Web Token (JWT) headers, payload claims, and signatures client-side.',
+    description:
+      'Decode and inspect JSON Web Tokens (JWT) safely. Parse header algorithms, payload claims, expiration timestamps, and user data 100% locally in browser without sending tokens anywhere.',
+    category: 'developer',
+    iconName: 'Shield',
+    supportedInputFormats: ['text/plain'],
+    supportedOutputFormats: ['application/json'],
+    maxFiles: 0,
+    seoTitle: 'JWT Decoder Online Free - Decode JSON Web Token Claims Securely',
+    seoDescription:
+      'Decode JWT tokens client-side. Inspect JSON Web Token header and payload claims securely with zero data transmission.',
+    keywords: ['jwt decoder', 'decode jwt online', 'inspect jwt token', 'jwt payload parser'],
+    isPopular: true,
+    isNew: true,
+    features: [
+      '100% Client-side token decoding (Tokens never sent to any server)',
+      'Prettified JSON display for Header and Payload claims',
+      'Auto-detects invalid JWT structures',
+    ],
+  },
 };
 
 // ----------------------------------------------------------------------------
@@ -589,7 +830,49 @@ export function getAllTools(): ToolMetadata[] {
 }
 
 export function getToolBySlug(slug: string): ToolMetadata | undefined {
-  return TOOL_REGISTRY[slug];
+  if (TOOL_REGISTRY[slug]) return TOOL_REGISTRY[slug];
+
+  // Fallback slug mapping for category short paths (e.g. 'compress' -> 'image-compressor', 'merge' -> 'pdf-merger', 'upi' -> 'upi-qr-code-generator')
+  const slugAliases: Record<string, string> = {
+    resize: 'image-resizer',
+    compress: 'image-compressor',
+    crop: 'image-cropper',
+    convert: 'image-converter',
+    merge: 'pdf-merger',
+    split: 'pdf-splitter',
+    'jpg-to-pdf': 'image-to-pdf',
+    'pdf-to-jpg': 'pdf-to-image',
+    upi: 'upi-qr-code-generator',
+    gst: 'gst-calculator',
+    emi: 'emi-calculator',
+    sip: 'sip-calculator',
+    discount: 'discount-calculator',
+    gratuity: 'gratuity-calculator',
+    base64: 'base64-converter',
+  };
+
+  const mappedSlug = slugAliases[slug];
+  if (mappedSlug && TOOL_REGISTRY[mappedSlug]) {
+    return TOOL_REGISTRY[mappedSlug];
+  }
+
+  return undefined;
+}
+
+export function getToolByCategoryAndSlug(
+  category: string,
+  slug: string
+): ToolMetadata | undefined {
+  const tool = getToolBySlug(slug);
+  if (tool) return tool;
+
+  // Search by category and matching slug or categoryAlias
+  return Object.values(TOOL_REGISTRY).find((t) => {
+    return (
+      (t.category === category || t.category === category.toLowerCase()) &&
+      (t.slug === slug || t.categoryAlias === slug)
+    );
+  });
 }
 
 export function getToolsByCategory(categoryId: ToolCategoryId): ToolMetadata[] {
@@ -633,3 +916,4 @@ export function searchTools(query: string): ToolMetadata[] {
     );
   });
 }
+
