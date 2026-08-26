@@ -119,16 +119,6 @@ export const Footer: React.FC = () => {
                   Terms of Service
                 </Link>
               </li>
-              <li>
-                <a
-                  href="https://github.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.footerLink}
-                >
-                  GitHub Repository
-                </a>
-              </li>
             </ul>
           </div>
         </div>

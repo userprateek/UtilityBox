@@ -312,7 +312,13 @@ export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
   }
 
   const isDevTool =
-    tool.slug === 'uuid' || tool.slug === 'url-encoder' || tool.slug === 'jwt-decoder';
+    tool.slug === 'uuid' ||
+    tool.slug === 'url-encoder' ||
+    tool.slug === 'jwt-decoder' ||
+    tool.slug === 'base64-converter' ||
+    tool.slug === 'base64' ||
+    tool.slug === 'base64-encoder' ||
+    tool.slug === 'base64-decoder';
 
   if (isDevTool) {
     return <DevToolsWorkspace tool={tool} />;

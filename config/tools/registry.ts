@@ -849,6 +849,10 @@ export function getToolBySlug(slug: string): ToolMetadata | undefined {
     discount: 'discount-calculator',
     gratuity: 'gratuity-calculator',
     base64: 'base64-converter',
+    'base64-encoder': 'base64-converter',
+    'base64-decoder': 'base64-converter',
+    'base64-encode': 'base64-converter',
+    'base64-decode': 'base64-converter',
   };
 
   const mappedSlug = slugAliases[slug];

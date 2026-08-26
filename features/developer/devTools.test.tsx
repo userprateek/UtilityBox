@@ -61,8 +61,6 @@ describe('Developer Tools Suite', () => {
     it('decodes base64url encoded JWT tokens', () => {
       render(<DevToolsWorkspace tool={mockJwtTool} />);
 
-      // Standard JWT Header: {"alg":"HS256","typ":"JWT"} -> eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-      // Payload: {"sub":"1234567890","name":"John Doe","admin":true} -> eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9
       const sampleJwt =
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
 
@@ -71,6 +69,27 @@ describe('Developer Tools Suite', () => {
 
       expect(screen.getByText(/HEADER: Algorithm & Token Type/i)).toBeInTheDocument();
       expect(screen.getByText(/PAYLOAD: Data Claims & Expiry/i)).toBeInTheDocument();
+    });
+  });
+
+  describe('Base64 Encoder & Decoder', () => {
+    it('encodes and decodes base64 strings', () => {
+      const mockBase64Tool: ToolMetadata = {
+        ...mockUuidTool,
+        slug: 'base64-converter',
+        name: 'Base64 Encoder & Decoder',
+      };
+
+      render(<DevToolsWorkspace tool={mockBase64Tool} />);
+
+      expect(screen.getAllByText('Base64 Encoder & Decoder')[0]).toBeInTheDocument();
+      const textarea = screen.getByPlaceholderText(/Type or paste raw text or Base64 string here/i);
+      fireEvent.change(textarea, { target: { value: 'Hello World' } });
+
+      const encodeBtn = screen.getByText('Encode to Base64');
+      fireEvent.click(encodeBtn);
+
+      expect(screen.getByText('SGVsbG8gV29ybGQ=')).toBeInTheDocument();
     });
   });
 });

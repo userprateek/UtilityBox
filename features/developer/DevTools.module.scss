@@ -5,33 +5,264 @@
   display: flex;
   flex-direction: column;
   gap: $space-6;
-  max-width: 900px;
+  max-width: 1040px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .toolCard {
   display: flex;
   flex-direction: column;
-  gap: $space-4;
+  gap: $space-5;
+  width: 100%;
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-xl;
+  box-shadow: var(--shadow-card);
 }
 
 .cardHeader {
   display: flex;
   align-items: center;
   gap: $space-3;
+  padding-bottom: $space-3;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .headerIcon {
   color: var(--color-primary);
+  flex-shrink: 0;
 }
 
 .cardTitle {
-  font-size: $font-size-lg;
+  font-size: $font-size-base;
   font-weight: $font-weight-bold;
   color: var(--color-text-main);
   margin: 0;
 }
 
+// Segmented Navigation Bar / Mode Tabs
+.navTabs {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: 4px;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-lg;
+  margin-bottom: $space-2;
+}
+
+.tabBtn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  padding: 8px $space-4;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: none;
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: all $transition-fast;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--color-text-main);
+    background: var(--color-surface-hover);
+  }
+}
+
+.tabBtnActive {
+  background: var(--color-surface-card) !important;
+  color: var(--color-primary) !important;
+  font-weight: $font-weight-bold !important;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border) !important;
+}
+
+// 2-Column Side-by-Side Editor Grid (for Base64, URL Encoder, etc.)
+.editorGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+
+  @include respond-to('md') {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.editorPanel {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  width: 100%;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2px;
+}
+
+.panelTitle {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: $font-weight-medium;
+  color: var(--color-text-faint);
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  padding: 1px 8px;
+  border-radius: $radius-full;
+}
+
+.panelActions {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.miniBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: $font-weight-medium;
+  color: var(--color-text-muted);
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-text-main);
+  }
+}
+
+.textarea {
+  width: 100%;
+  min-height: 180px;
+  padding: $space-4;
+  border-radius: $radius-lg;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-subtle);
+  color: var(--color-text-main);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: $font-size-sm;
+  line-height: $line-height-relaxed;
+  outline: none;
+  resize: vertical;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &::placeholder {
+    color: var(--color-text-faint);
+  }
+
+  &:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-glow);
+  }
+}
+
+.outputArea {
+  width: 100%;
+  min-height: 180px;
+  padding: $space-4;
+  border-radius: $radius-lg;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-subtle);
+  color: var(--color-text-main);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: $font-size-sm;
+  line-height: $line-height-relaxed;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  user-select: text;
+}
+
+// Action Bar (Between or Below Panels)
+.actionsRow {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  flex-wrap: wrap;
+  padding-top: $space-2;
+}
+
+.primaryBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px $space-5;
+  border-radius: $radius-lg;
+  border: 1px solid var(--color-primary);
+  background: var(--color-primary);
+  color: #ffffff;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  cursor: pointer;
+  transition: all $transition-fast;
+  box-shadow: 0 0 14px var(--color-primary-glow);
+
+  &:hover {
+    background: var(--color-primary-hover);
+  }
+}
+
+.secondaryBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px $space-5;
+  border-radius: $radius-lg;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-subtle);
+  color: var(--color-text-main);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-hover);
+  }
+}
+
+.errorBox {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-3 $space-4;
+  border-radius: $radius-lg;
+  background: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
+  color: var(--color-error);
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+}
+
+// Backward compatibility classes
 .controlsRow {
   display: flex;
   align-items: center;
@@ -40,31 +271,33 @@
 }
 
 .label {
-  font-size: $font-size-sm;
+  font-size: $font-size-xs;
   font-weight: $font-weight-bold;
   color: var(--color-text-main);
 }
 
 .cntBtn {
-  padding: 4px 12px;
-  border-radius: $radius-md;
+  padding: 6px 14px;
+  border-radius: $radius-full;
   border: 1px solid var(--color-border);
   background: var(--color-surface-subtle);
-  color: var(--color-text-main);
+  color: var(--color-text-muted);
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
   cursor: pointer;
   transition: all $transition-fast;
 
   &:hover {
-    border-color: var(--color-primary);
+    border-color: var(--color-border-hover);
+    color: var(--color-text-main);
   }
 }
 
 .cntBtnActive {
-  background: var(--color-primary-subtle);
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  background: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 10px var(--color-primary-glow);
 }
 
 .generateBtn {
@@ -82,30 +315,8 @@
   transition: all $transition-fast;
 
   &:hover {
-    opacity: 0.9;
+    background: var(--color-primary-hover);
   }
-}
-
-.outputBox {
-  padding: $space-4;
-  border-radius: $radius-lg;
-  background: var(--color-surface-subtle);
-  border: 1px solid var(--color-border);
-}
-
-.preText {
-  font-family: monospace;
-  font-size: $font-size-sm;
-  color: var(--color-text-main);
-  margin: 0;
-  white-space: pre-wrap;
-  word-break: break-all;
-}
-
-.actionsRow {
-  display: flex;
-  gap: $space-3;
-  align-items: center;
 }
 
 .copyBtn {
@@ -114,8 +325,8 @@
   gap: 6px;
   padding: 8px 16px;
   border-radius: $radius-md;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-primary-glow);
+  background: var(--color-primary-subtle);
   color: var(--color-primary);
   font-size: $font-size-sm;
   font-weight: $font-weight-bold;
@@ -123,35 +334,26 @@
   transition: all $transition-fast;
 
   &:hover {
-    background: var(--color-primary-subtle);
-    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: #ffffff;
   }
 }
 
-.textarea {
-  width: 100%;
+.outputBox {
   padding: $space-4;
   border-radius: $radius-lg;
-  border: 1px solid var(--color-border);
   background: var(--color-surface-subtle);
-  color: var(--color-text-main);
-  font-family: monospace;
-  font-size: $font-size-sm;
-  outline: none;
-
-  &:focus {
-    border-color: var(--color-primary);
-  }
+  border: 1px solid var(--color-border);
+  width: 100%;
 }
 
-.errorBox {
-  padding: $space-3;
-  border-radius: $radius-md;
-  background: #fef2f2;
-  border: 1px solid #fca5a5;
-  color: #dc2626;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-bold;
+.preText {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: $font-size-sm;
+  color: var(--color-text-main);
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 
 .jwtResultsGrid {
@@ -182,7 +384,7 @@
   border-radius: $radius-lg;
   background: var(--color-surface-subtle);
   border: 1px solid var(--color-border);
-  font-family: monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: $font-size-xs;
   color: var(--color-text-main);
   margin: 0;

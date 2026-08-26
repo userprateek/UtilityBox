@@ -10,59 +10,96 @@
   margin: 0 auto;
 }
 
+// Support both .calcGrid and .grid
+.calcGrid,
 .grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: $space-6;
 
   @include respond-to('lg') {
-    grid-template-columns: 1fr 400px;
+    grid-template-columns: 1fr 440px;
   }
 }
 
-.card {
+// Columns
+.inputCol,
+.formCol {
   display: flex;
   flex-direction: column;
   gap: $space-6;
 }
 
+.outputCol {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+// Cards
+.calcCard,
+.resultCard,
+.summaryCard,
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-xl;
+  box-shadow: var(--shadow-card);
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &:hover {
+    border-color: var(--color-border-hover);
+  }
+}
+
 // ----------------------------------------------------------------------------
-// Mode Navigation Pills
+// Mode Navigation & Toggle Pills
 // ----------------------------------------------------------------------------
+.modeToggle,
 .modeNav {
   display: flex;
   align-items: center;
   gap: $space-2;
   flex-wrap: wrap;
-  padding-bottom: $space-4;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4px;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-lg;
+  margin-bottom: $space-2;
 }
 
 .modeBtn {
+  flex: 1;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: $space-2;
   padding: 8px $space-3;
   font-size: $font-size-xs;
   font-weight: $font-weight-medium;
-  color: $neutral-300;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: $radius-lg;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: none;
+  border-radius: $radius-md;
   cursor: pointer;
   transition: all $transition-fast;
+  white-space: nowrap;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: #ffffff;
+    color: var(--color-text-main);
+    background: var(--color-surface-hover);
   }
 }
 
 .modeBtnActive {
-  background: $primary-500 !important;
-  color: #ffffff !important;
-  border-color: $primary-500 !important;
-  box-shadow: 0 0 14px hsla(230, 80%, 56%, 0.4);
+  background: var(--color-surface-card) !important;
+  color: var(--color-primary) !important;
+  font-weight: $font-weight-bold !important;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border) !important;
 }
 
 .infoBanner {
@@ -71,64 +108,94 @@
   gap: $space-3;
   padding: $space-3 $space-4;
   border-radius: $radius-lg;
-  background: rgba(6, 182, 212, 0.1);
-  border: 1px solid rgba(6, 182, 212, 0.25);
+  background: var(--color-info-bg);
+  border: 1px solid var(--color-info-border);
   font-size: $font-size-xs;
-  color: $neutral-200;
+  color: var(--color-text-main);
   line-height: $line-height-relaxed;
 }
 
 .infoIcon {
-  color: $accent-cyan;
+  color: var(--color-info);
   flex-shrink: 0;
   margin-top: 2px;
 }
 
 // ----------------------------------------------------------------------------
-// Rate Selector Section
+// Form Controls, Labels & Preset Chips
 // ----------------------------------------------------------------------------
+.fieldGroup,
 .rateSection {
   display: flex;
   flex-direction: column;
   gap: $space-2;
 }
 
+.label,
 .inputLabel {
   font-size: $font-size-xs;
-  font-weight: $font-weight-medium;
-  color: $neutral-200;
+  font-weight: $font-weight-semibold;
+  color: var(--color-text-main);
+  display: block;
 }
 
+.labelWithBadge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.badgeVal {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  color: var(--color-primary);
+  background: var(--color-primary-subtle);
+  border: 1px solid var(--color-primary-glow);
+  padding: 2px 8px;
+  border-radius: $radius-full;
+}
+
+// Preset Quick Chips (Supports both .presetChipsRow / .ratePills and .chipBtn / .ratePill)
+.presetChipsRow,
 .ratePills {
   display: flex;
   align-items: center;
   gap: $space-2;
   flex-wrap: wrap;
+  margin-top: $space-1;
 }
 
+.chipBtn,
 .ratePill {
-  padding: 6px 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 12px;
   font-size: $font-size-xs;
-  font-weight: $font-weight-semibold;
-  color: $neutral-300;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-weight: $font-weight-medium;
+  color: var(--color-text-muted);
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
   border-radius: $radius-full;
   cursor: pointer;
   transition: all $transition-fast;
+  user-select: none;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.15);
-    color: #ffffff;
+    background: var(--color-surface-hover);
+    color: var(--color-text-main);
+    border-color: var(--color-border-hover);
   }
 }
 
+.chipBtnActive,
 .ratePillActive {
-  background: $accent-cyan !important;
-  color: #0b0f19 !important;
-  border-color: $accent-cyan !important;
+  background: var(--color-primary) !important;
+  color: #ffffff !important;
+  border-color: var(--color-primary) !important;
   font-weight: $font-weight-bold !important;
-  box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+  box-shadow: 0 0 10px var(--color-primary-glow);
 }
 
 .customRateInput {
@@ -136,18 +203,18 @@
   align-items: center;
   gap: 6px;
   padding: 4px $space-2;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
   border-radius: $radius-full;
   font-size: $font-size-xs;
-  color: $neutral-400;
+  color: var(--color-text-muted);
 }
 
 .miniRateInput {
   width: 44px;
   padding: 2px 4px;
   font-size: $font-size-xs;
-  color: #ffffff;
+  color: var(--color-text-main);
   background: transparent;
   border: none;
   outline: none;
@@ -171,10 +238,10 @@
 .tenureSwitch {
   display: flex;
   align-items: center;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: $radius-lg;
-  padding: 3px;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-md;
+  padding: 2px;
   height: 42px;
 }
 
@@ -183,17 +250,22 @@
   height: 100%;
   border: none;
   background: transparent;
-  color: $neutral-400;
+  color: var(--color-text-muted);
   font-size: $font-size-xs;
   font-weight: $font-weight-medium;
-  border-radius: $radius-md;
+  border-radius: $radius-sm;
   cursor: pointer;
   transition: all $transition-fast;
+
+  &:hover {
+    color: var(--color-text-main);
+  }
 }
 
 .tenureBtnActive {
-  background: $primary-500;
-  color: #ffffff;
+  background: var(--color-primary) !important;
+  color: #ffffff !important;
+  font-weight: $font-weight-bold;
 }
 
 .formulaNoteBox {
@@ -202,118 +274,133 @@
   gap: $space-2;
   padding: $space-3 $space-4;
   border-radius: $radius-lg;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px dashed rgba(255, 255, 255, 0.12);
+  background: var(--color-surface-subtle);
+  border: 1px dashed var(--color-border);
   font-size: $font-size-xs;
-  color: $neutral-300;
+  color: var(--color-text-muted);
 }
 
 // ----------------------------------------------------------------------------
-// Output Summary Column
+// Output Summary Column & Hero Card
 // ----------------------------------------------------------------------------
-.summaryCard {
-  display: flex;
-  flex-direction: column;
-  gap: $space-5;
-}
-
+.resultHeader,
 .summaryHeader {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  gap: $space-3;
   padding-bottom: $space-3;
+  border-bottom: 1px solid var(--color-border);
 }
 
+.resultTitle,
 .summaryTitle {
   font-size: $font-size-base;
-  font-weight: $font-weight-semibold;
-  color: #ffffff;
+  font-weight: $font-weight-bold;
+  color: var(--color-text-main);
 }
 
 .headerIcon {
-  color: $accent-cyan;
+  color: var(--color-primary);
+  flex-shrink: 0;
 }
 
+// Hero MRP / Maturity Highlight Box (Fixes contrast bug!)
 .mrpHighlightCard {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 4px;
-  padding: $space-5 $space-4;
+  padding: $space-6 $space-4;
   border-radius: $radius-xl;
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 30px -5px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(135deg, var(--color-primary-subtle) 0%, rgba(99, 102, 241, 0.12) 100%);
+  border: 1px solid var(--color-primary-glow);
+  box-shadow: var(--shadow-card);
+
+  [data-theme='dark'] & {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.25) 0%, rgba(6, 182, 212, 0.2) 100%);
+  }
 }
 
 .mrpLabel {
-  font-size: 0.7rem;
-  font-weight: $font-weight-bold;
+  font-size: 0.72rem;
+  font-weight: $font-weight-extrabold;
   letter-spacing: 0.08em;
-  color: $neutral-300;
+  color: var(--color-text-muted);
   text-transform: uppercase;
 }
 
 .mrpValue {
   font-size: 2.2rem;
   font-weight: $font-weight-extrabold;
-  color: #ffffff;
+  color: var(--color-primary);
   letter-spacing: -0.03em;
   line-height: 1.1;
+  margin: 4px 0;
+
+  [data-theme='dark'] & {
+    color: #ffffff;
+  }
 }
 
 .mrpSubtext {
   font-size: $font-size-xs;
-  color: $neutral-200;
+  color: var(--color-text-muted);
 
   strong {
-    color: $color-success;
+    color: var(--color-success);
   }
 }
 
-// Visual Distribution Bar
-.barSection {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.barHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: $font-size-xs;
-  color: $neutral-300;
-}
-
-.trackBar {
-  display: flex;
-  height: 10px;
-  width: 100%;
-  border-radius: $radius-full;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.principalFill {
-  background: $primary-500;
-  height: 100%;
-  transition: width $transition-base;
-}
-
-.interestFill {
-  background: $accent-cyan;
-  height: 100%;
-  transition: width $transition-base;
-}
-
-// Details Table
-.detailsGrid {
-  display: flex;
-  flex-direction: column;
+// Breakdown Grid & Items (Supports both .breakdownGrid / .splitRow and .breakdownItem / .splitBox)
+.breakdownGrid,
+.detailsGrid,
+.splitRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: $space-3;
+}
+
+.breakdownItem,
+.splitBox {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: $space-3 $space-4;
+  border-radius: $radius-lg;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+}
+
+.bdLabel,
+.detailLabel,
+.splitLabel {
+  font-size: 0.72rem;
+  font-weight: $font-weight-medium;
+  color: var(--color-text-muted);
+}
+
+.bdValue,
+.detailValue,
+.splitVal {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: var(--color-text-main);
+}
+
+.greenText {
+  color: var(--color-success) !important;
+}
+
+.blueText,
+.detailValueHighlight {
+  color: var(--color-primary) !important;
+}
+
+.detailValueBold {
+  color: var(--color-text-main);
+  font-weight: $font-weight-bold;
+  font-size: $font-size-sm;
 }
 
 .detailRow {
@@ -322,54 +409,44 @@
   justify-content: space-between;
   font-size: $font-size-xs;
   padding: 6px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--color-border);
 }
 
-.detailLabel {
-  color: $neutral-400;
-}
-
-.detailValue {
-  color: $neutral-200;
-  font-weight: $font-weight-medium;
-}
-
-.detailValueHighlight {
-  color: $accent-cyan;
-  font-weight: $font-weight-semibold;
-}
-
-.detailValueBold {
-  color: #ffffff;
-  font-weight: $font-weight-bold;
-  font-size: $font-size-sm;
-}
-
-.splitRow {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: $space-3;
-}
-
-.splitBox {
+// Visual Distribution Track Bar
+.barSection {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: $space-2 $space-3;
-  border-radius: $radius-md;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  gap: $space-2;
 }
 
-.splitLabel {
-  font-size: 0.68rem;
-  color: $neutral-400;
-}
-
-.splitVal {
+.barHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: $font-size-xs;
-  font-weight: $font-weight-semibold;
-  color: $neutral-200;
+  color: var(--color-text-muted);
+}
+
+.trackBar {
+  display: flex;
+  height: 10px;
+  width: 100%;
+  border-radius: $radius-full;
+  overflow: hidden;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+}
+
+.principalFill {
+  background: var(--color-primary);
+  height: 100%;
+  transition: width $transition-base;
+}
+
+.interestFill {
+  background: var(--color-success);
+  height: 100%;
+  transition: width $transition-base;
 }
 
 .profitResultCard {
@@ -378,8 +455,8 @@
   justify-content: space-between;
   padding: $space-3 $space-4;
   border-radius: $radius-lg;
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: var(--color-success-bg);
+  border: 1px solid var(--color-success-border);
 }
 
 .profitTitleRow {
@@ -388,17 +465,17 @@
   gap: $space-2;
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
-  color: $color-success;
+  color: var(--color-success);
 }
 
 .profitIcon {
-  color: $color-success;
+  color: var(--color-success);
 }
 
 .profitVal {
   font-size: $font-size-base;
   font-weight: $font-weight-bold;
-  color: #ffffff;
+  color: var(--color-text-main);
 }
 
 .eligibilityWarning {
@@ -407,19 +484,19 @@
   gap: $space-2;
   padding: $space-3 $space-4;
   border-radius: $radius-lg;
-  background: rgba(245, 158, 11, 0.12);
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  background: var(--color-warning-bg);
+  border: 1px solid var(--color-warning-border);
   font-size: $font-size-xs;
-  color: $accent-amber;
+  color: var(--color-warning);
 }
 
 .statusSuccess {
-  color: $color-success;
+  color: var(--color-success);
   font-weight: $font-weight-semibold;
 }
 
 .statusWarning {
-  color: $accent-amber;
+  color: var(--color-warning);
   font-weight: $font-weight-semibold;
 }
 
@@ -429,23 +506,42 @@
   justify-content: center;
   gap: $space-2;
   width: 100%;
-  padding: 10px $space-4;
-  font-size: $font-size-xs;
+  padding: 12px $space-4;
+  font-size: $font-size-sm;
   font-weight: $font-weight-semibold;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--color-primary);
+  background: var(--color-primary-subtle);
+  border: 1px solid var(--color-primary-glow);
   border-radius: $radius-lg;
   cursor: pointer;
   transition: all $transition-fast;
 
   &:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.16);
-    border-color: rgba(255, 255, 255, 0.25);
+    background: var(--color-primary);
+    color: #ffffff;
   }
 
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+}
+
+.tipBox {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-2;
+  padding: $space-3 $space-4;
+  border-radius: $radius-lg;
+  background: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+  font-size: $font-size-xs;
+  color: var(--color-text-muted);
+  line-height: $line-height-relaxed;
+
+  svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+    margin-top: 2px;
   }
 }

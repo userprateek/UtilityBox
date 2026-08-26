@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Key, Link, Shield, Copy, Check, RefreshCw, Code, Trash2 } from 'lucide-react';
+import { Key, Link, Shield, Copy, Check, RefreshCw, Code, Trash2, Sparkles } from 'lucide-react';
 import { ToolMetadata } from '@/types/tool';
 import { Card } from '@/components/common/Card/Card';
 import { ToolHeader } from '@/components/tool/ToolHeader/ToolHeader';
@@ -94,6 +94,71 @@ export const DevToolsWorkspace: React.FC<DevToolsWorkspaceProps> = ({ tool }) =>
     }
   }
 
+  // Base64 Converter State
+  const [base64Tab, setBase64Tab] = useState<'text' | 'file'>('text');
+  const [base64Input, setBase64Input] = useState<string>('');
+  const [base64Output, setBase64Output] = useState<string>('');
+  const [base64Error, setBase64Error] = useState<string | null>(null);
+  const [fileBase64, setFileBase64] = useState<{
+    name: string;
+    size: number;
+    type: string;
+    dataUrl: string;
+    rawBase64: string;
+  } | null>(null);
+
+  const handleBase64EncodeText = () => {
+    try {
+      setBase64Error(null);
+      const encoded = btoa(
+        encodeURIComponent(base64Input).replace(/%([0-9A-F]{2})/g, (_, p1) =>
+          String.fromCharCode(parseInt(p1, 16))
+        )
+      );
+      setBase64Output(encoded);
+    } catch {
+      setBase64Error('Failed to encode input text to Base64.');
+    }
+  };
+
+  const handleBase64DecodeText = () => {
+    try {
+      setBase64Error(null);
+      let cleanInput = base64Input.trim();
+      if (cleanInput.includes(';base64,')) {
+        cleanInput = cleanInput.split(';base64,')[1] || cleanInput;
+      }
+      const decoded = decodeURIComponent(
+        atob(cleanInput)
+          .split('')
+          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+      setBase64Output(decoded);
+    } catch {
+      setBase64Error('Invalid Base64 string provided for decoding.');
+    }
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = (reader.result as string) || '';
+      const rawBase64 = dataUrl.split(',')[1] || dataUrl;
+      setFileBase64({
+        name: file.name,
+        size: file.size,
+        type: file.type || 'application/octet-stream',
+        dataUrl,
+        rawBase64,
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleCopyText = async (textToCopy: string) => {
     try {
       await navigator.clipboard.writeText(textToCopy);
@@ -107,6 +172,11 @@ export const DevToolsWorkspace: React.FC<DevToolsWorkspaceProps> = ({ tool }) =>
   const isUuid = tool.slug === 'uuid';
   const isUrlEncoder = tool.slug === 'url-encoder';
   const isJwtDecoder = tool.slug === 'jwt-decoder';
+  const isBase64 =
+    tool.slug === 'base64-converter' ||
+    tool.slug === 'base64' ||
+    tool.slug === 'base64-encoder' ||
+    tool.slug === 'base64-decoder';
 
   return (
     <div className={styles.workspace}>
@@ -218,6 +288,170 @@ export const DevToolsWorkspace: React.FC<DevToolsWorkspaceProps> = ({ tool }) =>
                 <h4 className={styles.jwtBlockTitle}>PAYLOAD: Data Claims & Expiry</h4>
                 <pre className={styles.preJson}>{JSON.stringify(jwtPayload, null, 2)}</pre>
               </div>
+            </div>
+          )}
+        </Card>
+      )}
+
+      {/* TOOL 4: Base64 Encoder & Decoder */}
+      {isBase64 && (
+        <Card variant="glass" padding="lg" className={styles.toolCard}>
+          {/* Mode Switcher Tabs */}
+          <div className={styles.navTabs}>
+            <button
+              type="button"
+              className={`${styles.tabBtn} ${base64Tab === 'text' ? styles.tabBtnActive : ''}`}
+              onClick={() => setBase64Tab('text')}
+            >
+              <Code size={15} /> Text / String Converter
+            </button>
+            <button
+              type="button"
+              className={`${styles.tabBtn} ${base64Tab === 'file' ? styles.tabBtnActive : ''}`}
+              onClick={() => setBase64Tab('file')}
+            >
+              <RefreshCw size={15} /> File to Base64 (Data URL)
+            </button>
+          </div>
+
+          {base64Tab === 'text' ? (
+            <>
+              <div className={styles.editorGrid}>
+                {/* INPUT PANEL */}
+                <div className={styles.editorPanel}>
+                  <div className={styles.panelHeader}>
+                    <span className={styles.panelTitle}>
+                      <Code size={14} /> Input Text / Base64
+                    </span>
+                    <div className={styles.panelActions}>
+                      <span className={styles.badge}>{base64Input.length} chars</span>
+                      {base64Input && (
+                        <button
+                          type="button"
+                          className={styles.miniBtn}
+                          onClick={() => {
+                            setBase64Input('');
+                            setBase64Output('');
+                            setBase64Error(null);
+                          }}
+                        >
+                          <Trash2 size={12} /> Clear
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <textarea
+                    className={styles.textarea}
+                    placeholder="Type or paste raw text or Base64 string here..."
+                    value={base64Input}
+                    onChange={(e) => {
+                      setBase64Input(e.target.value);
+                      setBase64Error(null);
+                    }}
+                  />
+                </div>
+
+                {/* OUTPUT PANEL */}
+                <div className={styles.editorPanel}>
+                  <div className={styles.panelHeader}>
+                    <span className={styles.panelTitle}>
+                      <Sparkles size={14} /> Converted Result
+                    </span>
+                    <div className={styles.panelActions}>
+                      {base64Output && (
+                        <>
+                          <span className={styles.badge}>{base64Output.length} chars</span>
+                          <button
+                            type="button"
+                            className={styles.miniBtn}
+                            onClick={() => handleCopyText(base64Output)}
+                          >
+                            {copied ? <Check size={12} /> : <Copy size={12} />}
+                            {copied ? 'Copied!' : 'Copy Result'}
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  <div className={styles.outputArea}>
+                    {base64Output ? (
+                      base64Output
+                    ) : (
+                      <span style={{ color: 'var(--color-text-faint)' }}>
+                        Result will appear here after clicking Encode or Decode...
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {base64Error && <div className={styles.errorBox}>⚠️ {base64Error}</div>}
+
+              {/* ACTION TOOLBAR */}
+              <div className={styles.actionsRow}>
+                <button type="button" className={styles.primaryBtn} onClick={handleBase64EncodeText}>
+                  Encode to Base64
+                </button>
+                <button type="button" className={styles.secondaryBtn} onClick={handleBase64DecodeText}>
+                  Decode from Base64
+                </button>
+                {base64Output && (
+                  <button
+                    type="button"
+                    className={styles.secondaryBtn}
+                    onClick={() => {
+                      setBase64Input(base64Output);
+                      setBase64Output('');
+                    }}
+                  >
+                    Swap Input & Result
+                  </button>
+                )}
+              </div>
+            </>
+          ) : (
+            /* File to Base64 */
+            <div className={styles.editorPanel}>
+              <div className={styles.controlsRow}>
+                <input
+                  type="file"
+                  onChange={handleFileUpload}
+                  id="base64-file-input"
+                  style={{ display: 'none' }}
+                />
+                <label htmlFor="base64-file-input" className={styles.primaryBtn} style={{ cursor: 'pointer' }}>
+                  Choose File to Convert to Base64
+                </label>
+              </div>
+
+              {fileBase64 && (
+                <div className={styles.outputBox} style={{ marginTop: '16px' }}>
+                  <div className={styles.panelHeader} style={{ marginBottom: '12px' }}>
+                    <span className={styles.panelTitle}>
+                      File: {fileBase64.name} ({(fileBase64.size / 1024).toFixed(1)} KB)
+                    </span>
+                    <div className={styles.panelActions}>
+                      <button
+                        type="button"
+                        className={styles.copyBtn}
+                        onClick={() => handleCopyText(fileBase64.dataUrl)}
+                      >
+                        {copied ? <Check size={14} /> : <Copy size={14} />} Copy Data URL
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.copyBtn}
+                        onClick={() => handleCopyText(fileBase64.rawBase64)}
+                      >
+                        {copied ? <Check size={14} /> : <Copy size={14} />} Copy Raw Base64
+                      </button>
+                    </div>
+                  </div>
+                  <pre className={styles.preText} style={{ maxHeight: '240px', overflowY: 'auto' }}>
+                    {fileBase64.dataUrl}
+                  </pre>
+                </div>
+              )}
             </div>
           )}
         </Card>
