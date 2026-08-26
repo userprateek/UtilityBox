@@ -1,9 +1,6 @@
-'use client';
-
 import React from 'react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
-import { FaqItem, generateFaqJsonLd } from '@/lib/seo/schema';
-import { JsonLd } from '@/components/seo/JsonLd';
+import { FaqItem } from '@/lib/seo/schema';
 import styles from './ToolFaq.module.scss';
 
 export interface ToolFaqProps {
@@ -12,12 +9,8 @@ export interface ToolFaqProps {
 }
 
 export const ToolFaq: React.FC<ToolFaqProps> = ({ toolName, faqs }) => {
-  const faqSchema = generateFaqJsonLd(faqs);
-
   return (
     <section className={styles.faqSection} aria-labelledby="faq-heading">
-      {/* Google Rich Snippet FAQPage Schema */}
-      <JsonLd schema={faqSchema} />
 
       <div className={styles.faqHeader}>
         <div className={styles.faqIconWrapper}>

@@ -1,4 +1,5 @@
 import React from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
   ShieldCheck,
@@ -19,16 +20,48 @@ import { ToolCard } from '@/components/tool/ToolCard/ToolCard';
 import { Badge } from '@/components/common/Badge/Badge';
 import { Button } from '@/components/common/Button/Button';
 import { AdSlot } from '@/components/ads/AdSlot';
-import { getPopularTools, getAllTools } from '@/config/tools/registry';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { getPopularTools, getAllTools, getToolsByCategory } from '@/config/tools/registry';
 import { TOOL_CATEGORIES_LIST } from '@/config/tools/categories';
+import { siteConfig } from '@/config/site';
+import { generateSiteWebApplicationJsonLd } from '@/lib/seo/schema';
 import styles from './page.module.scss';
+
+export const metadata: Metadata = {
+  title: {
+    absolute: `${siteConfig.name} — Free in-browser photo, PDF, QR & calculator tools`,
+  },
+  description: siteConfig.description,
+  alternates: {
+    canonical: siteConfig.url,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: `${siteConfig.name} — Free in-browser photo, PDF, QR & calculator tools`,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: `${siteConfig.name} — Free in-browser photo, PDF, QR & calculator tools`,
+    description: siteConfig.description,
+  },
+};
 
 export default function HomePage() {
   const popularTools = getPopularTools();
   const allTools = getAllTools();
+  const webAppJsonLd = generateSiteWebApplicationJsonLd();
 
   return (
     <div className={styles.homePage}>
+      <JsonLd schema={webAppJsonLd} />
       {/* Hero Section */}
       <section className={styles.heroSection}>
         <Container size="lg" className={styles.heroContainer}>
@@ -39,15 +72,11 @@ export default function HomePage() {
           </div>
 
           <h1 className={styles.heroTitle}>
-            Free, Fast File Tools for <br />
-            <span className={styles.heroGradientText}>Forms, PDFs & Shop Daily Tasks</span>
+            DocsWala: free in-browser tools for{' '}
+            <span className={styles.heroGradientText}>photos, PDFs, QR codes & forms</span>
           </h1>
 
-          <p className={styles.heroSubtitle}>
-            Compress photos under 50KB for online exam portals, merge ID cards & marksheets into 1
-            PDF, crop signatures, or make shop UPI QR codes. Everything runs instantly in your
-            browser.
-          </p>
+          <p className={styles.heroSubtitle}>{siteConfig.oneLiner}</p>
 
           <div className={styles.heroActions}>
             <Link href="/tools">
@@ -266,13 +295,23 @@ export default function HomePage() {
       </section>
 
       {/* Categories Catalog Showcase */}
-      <section className={styles.catalogSection}>
+      <section className={styles.catalogSection} aria-labelledby="all-tools-heading">
         <Container size="lg">
           <div className={styles.sectionHeader}>
             <div>
-              <span className={styles.sectionOverline}>Categories</span>
-              <h2 className={styles.sectionTitle}>Browse by Category</h2>
+              <span className={styles.sectionOverline}>Full catalog</span>
+              <h2 id="all-tools-heading" className={styles.sectionTitle}>
+                All {allTools.length} DocsWala tools
+              </h2>
+              <p className={styles.sectionSubtitle}>
+                Every public tool on this site, grouped by category. Each page explains what the
+                tool does, what files it accepts, and how to use it.
+              </p>
             </div>
+            <Link href="/tools" className={styles.viewAllLink}>
+              <span>Open the searchable directory</span>
+              <ArrowRight size={16} />
+            </Link>
           </div>
 
           <div className={styles.categoriesGrid}>
@@ -289,6 +328,35 @@ export default function HomePage() {
               </Link>
             ))}
           </div>
+
+          <div className={styles.fullCatalog}>
+            {TOOL_CATEGORIES_LIST.map((cat) => {
+              const categoryTools = getToolsByCategory(cat.id);
+              if (categoryTools.length === 0) return null;
+              return (
+                <div key={cat.id} className={styles.catalogGroup}>
+                  <h3 className={styles.catalogGroupTitle}>
+                    <Link href={`/tools?category=${cat.id}`}>{cat.label}</Link>
+                  </h3>
+                  <ul className={styles.catalogList}>
+                    {categoryTools.map((tool) => (
+                      <li key={tool.slug}>
+                        <Link href={`/${tool.slug}`}>{tool.name}</Link>
+                        <span> — {tool.shortDescription}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+
+          <nav className={styles.siteLinks} aria-label="About DocsWala">
+            <Link href="/about">About DocsWala</Link>
+            <Link href="/help">How the tools work</Link>
+            <Link href="/privacy">Privacy</Link>
+            <Link href="/terms">Terms</Link>
+          </nav>
         </Container>
       </section>
     </div>

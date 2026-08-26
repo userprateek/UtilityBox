@@ -113,6 +113,8 @@
   font-size: $font-size-sm;
   color: var(--color-text-muted);
   margin-top: $space-2;
+  max-width: 640px;
+  line-height: $line-height-relaxed;
 }
 
 .tasksGrid {
@@ -387,12 +389,64 @@
   line-height: $line-height-normal;
 }
 
-.catCardFooter {
+.fullCatalog {
   display: flex;
-  align-items: center;
-  gap: $space-1;
-  font-size: $font-size-xs;
-  font-weight: $font-weight-semibold;
-  color: var(--color-text-muted);
-  transition: color $transition-fast;
+  flex-direction: column;
+  gap: $space-8;
+  margin-top: $space-12;
+}
+
+.catalogGroupTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  margin-bottom: $space-3;
+
+  a {
+    color: var(--color-text-main);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+}
+
+.catalogList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  margin: 0;
+  padding: 0;
+
+  li {
+    font-size: $font-size-sm;
+    color: var(--color-text-muted);
+    line-height: $line-height-relaxed;
+    list-style: none;
+  }
+
+  a {
+    font-weight: $font-weight-semibold;
+    color: var(--color-primary);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.siteLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-4;
+  margin-top: $space-10;
+  padding-top: $space-6;
+  border-top: 1px solid var(--color-border);
+
+  a {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: var(--color-primary);
+  }
 }

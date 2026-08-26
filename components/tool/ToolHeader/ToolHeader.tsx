@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { ShieldCheck, Sparkles, HelpCircle } from 'lucide-react';
 import { ToolMetadata } from '@/types/tool';
@@ -14,14 +12,6 @@ export interface ToolHeaderProps {
 
 export const ToolHeader: React.FC<ToolHeaderProps> = ({ tool }) => {
   const category = TOOL_CATEGORIES[tool.category];
-
-  const handleScrollToGuide = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const el = document.getElementById('how-it-works-title');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  };
 
   return (
     <div className={styles.headerContainer}>
@@ -47,15 +37,10 @@ export const ToolHeader: React.FC<ToolHeaderProps> = ({ tool }) => {
             </Badge>
           )}
 
-          <button
-            type="button"
-            className={styles.helpButton}
-            onClick={handleScrollToGuide}
-            title="Learn how to use this tool"
-          >
+          <a href="#how-it-works-title" className={styles.helpButton}>
             <HelpCircle size={13} />
-            <span>How to Use / उपयोग कैसे करें</span>
-          </button>
+            <span>How to use {tool.name}</span>
+          </a>
         </div>
       </div>
 

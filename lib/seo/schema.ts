@@ -1,5 +1,6 @@
-import { ToolMetadata } from '@/types/tool';
+import { ToolCategoryId, ToolMetadata } from '@/types/tool';
 import { siteConfig } from '@/config/site';
+import { getToolGuide } from '@/config/tools/guides';
 
 export interface BreadcrumbItem {
   name: string;
@@ -12,8 +13,8 @@ export interface FaqItem {
 }
 
 /**
- * Builds Schema.org SoftwareApplication & WebApplication structured data for a specific tool
- * Includes AggregateRating for Google Golden Star Search Snippets (⭐⭐⭐⭐⭐)
+ * Schema.org SoftwareApplication + WebApplication for a single tool.
+ * Offers price 0 because tools are free. No fabricated ratings or review counts.
  */
 export function generateToolJsonLd(tool: ToolMetadata) {
   return {
@@ -23,20 +24,13 @@ export function generateToolJsonLd(tool: ToolMetadata) {
     url: `${siteConfig.url}/${tool.slug}`,
     description: tool.description,
     applicationCategory: mapCategoryToSchemaCategory(tool.category),
-    operatingSystem: 'All (Web Browser, Windows, Mac, Linux, Android, iOS)',
-    browserRequirements: 'Requires JavaScript and HTML5 Canvas / WebAssembly support',
+    operatingSystem: 'Web browser',
+    browserRequirements: 'Requires JavaScript. Image and PDF tools also use HTML5 Canvas or WebAssembly.',
+    isAccessibleForFree: true,
     offers: {
       '@type': 'Offer',
       price: '0',
-      priceCurrency: 'USD',
-      availability: 'https://schema.org/InStock',
-    },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      ratingCount: '14850',
-      bestRating: '5',
-      worstRating: '1',
+      priceCurrency: 'INR',
     },
     author: {
       '@type': 'Organization',
@@ -48,59 +42,31 @@ export function generateToolJsonLd(tool: ToolMetadata) {
       name: siteConfig.name,
       url: siteConfig.url,
     },
-    featureList: tool.features || [
-      '100% Client-side in-browser file processing',
-      'Zero server upload privacy guarantee',
-      'Instant local computation with zero delay',
-      'No registration, sign-up, or watermarks',
-    ],
+    featureList: tool.features,
   };
 }
 
 /**
- * Builds Schema.org HowTo structured data for Google Position 0 Search Snippets
+ * HowTo markup taken from the visible English guide on the tool page.
  */
 export function generateHowToJsonLd(tool: ToolMetadata) {
+  const guide = getToolGuide(tool.slug);
+
   return {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
-    name: `How to use ${tool.name} Online for Free`,
-    description: `Step-by-step instructions on how to use ${tool.name} locally in your web browser with zero server uploads and instant downloads.`,
-    totalTime: 'PT10S',
-    estimatedCost: {
-      '@type': 'MonetaryAmount',
-      currency: 'USD',
-      value: '0',
-    },
-    step: [
-      {
-        '@type': 'HowToStep',
-        position: 1,
-        name: 'Upload or Select Your Files',
-        text: `Choose your files from your computer or phone, or drag & drop them into the ${tool.name} dropzone. Files never leave your browser.`,
-        url: `${siteConfig.url}/${tool.slug}#step-1`,
-      },
-      {
-        '@type': 'HowToStep',
-        position: 2,
-        name: 'Adjust Settings & Presets',
-        text: 'Configure target file size presets, crop aspect ratios, image quality, or output formats to match your exam or portal specifications.',
-        url: `${siteConfig.url}/${tool.slug}#step-2`,
-      },
-      {
-        '@type': 'HowToStep',
-        position: 3,
-        name: 'Process and Download',
-        text: 'Click process to transform your files locally via HTML5 Canvas / WebAssembly and download the output immediately with zero watermarks.',
-        url: `${siteConfig.url}/${tool.slug}#step-3`,
-      },
-    ],
+    name: guide.title.en,
+    description: guide.subtitle.en,
+    step: guide.steps.map((step) => ({
+      '@type': 'HowToStep',
+      position: step.stepNumber,
+      name: step.title.en,
+      text: step.description.en,
+      url: `${siteConfig.url}/${tool.slug}#howto-step-${step.stepNumber}`,
+    })),
   };
 }
 
-/**
- * Builds Schema.org FAQPage structured data for Google rich snippet dropdowns
- */
 export function generateFaqJsonLd(faqs: FaqItem[]) {
   return {
     '@context': 'https://schema.org',
@@ -116,9 +82,6 @@ export function generateFaqJsonLd(faqs: FaqItem[]) {
   };
 }
 
-/**
- * Builds Schema.org BreadcrumbList structured data
- */
 export function generateBreadcrumbJsonLd(crumbs: BreadcrumbItem[]) {
   return {
     '@context': 'https://schema.org',
@@ -132,16 +95,18 @@ export function generateBreadcrumbJsonLd(crumbs: BreadcrumbItem[]) {
   };
 }
 
-/**
- * Builds Schema.org WebSite structured data with SearchAction
- */
 export function generateWebsiteJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: siteConfig.name,
     url: siteConfig.url,
-    description: siteConfig.description,
+    description: siteConfig.oneLiner,
+    publisher: {
+      '@type': 'Organization',
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
     potentialAction: {
       '@type': 'SearchAction',
       target: {
@@ -153,33 +118,110 @@ export function generateWebsiteJsonLd() {
   };
 }
 
-/**
- * Maps internal category id to Schema.org application category
- */
+export function generateOrganizationJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: siteConfig.name,
+    url: siteConfig.url,
+    description: siteConfig.oneLiner,
+    logo: `${siteConfig.url}/favicon.svg`,
+  };
+}
+
+export function generateSiteWebApplicationJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: siteConfig.name,
+    url: siteConfig.url,
+    description: siteConfig.oneLiner,
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Web browser',
+    isAccessibleForFree: true,
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'INR',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+  };
+}
+
+export function generateItemListJsonLd(
+  tools: ToolMetadata[],
+  name: string,
+  description: string
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name,
+    description,
+    numberOfItems: tools.length,
+    itemListElement: tools.map((tool, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: tool.name,
+      url: `${siteConfig.url}/${tool.slug}`,
+      description: tool.shortDescription,
+    })),
+  };
+}
+
 function mapCategoryToSchemaCategory(category: string): string {
   switch (category) {
     case 'image':
       return 'MultimediaApplication';
     case 'pdf':
       return 'BusinessApplication';
-    case 'converters':
-      return 'UtilitiesApplication';
     case 'developer':
       return 'DeveloperApplication';
+    case 'calculators':
+      return 'FinanceApplication';
     default:
       return 'UtilitiesApplication';
   }
 }
 
-/**
- * Generates rich, high-intent semantic FAQs tailored to each specific tool and target keywords
- */
+export function getToolAudience(category: ToolCategoryId): string {
+  switch (category) {
+    case 'image':
+      return 'People filling exam or government forms, students, cyber cafes, and anyone who needs to compress, crop, or resize a photo on a computer or phone.';
+    case 'pdf':
+      return 'Anyone combining ID scans, marksheets, or other multi-page documents without uploading them to a server.';
+    case 'qr':
+      return 'Shopkeepers, cafes, and anyone who needs a UPI, WhatsApp, Wi-Fi, or link QR code.';
+    case 'text':
+      return 'Anyone who needs to count words, change letter case, or clean duplicate lines in a list.';
+    case 'converters':
+      return 'Anyone converting between common image or document formats in the browser.';
+    case 'developer':
+      return 'Developers who need JSON formatting, Base64 conversion, URL encoding, UUID generation, or JWT inspection without sending data to a server.';
+    case 'calculators':
+      return 'Shopkeepers, students, and anyone calculating GST, EMI, SIP, FD, discount, or gratuity figures.';
+    default:
+      return 'Anyone who needs a free, in-browser document utility with no sign-up.';
+  }
+}
+
 export function getDefaultToolFaqs(tool: ToolMetadata): FaqItem[] {
-  const formats = tool.supportedInputFormats
+  const formats = (tool.supportedInputFormats as string[])
     .map((f) => f.replace('image/', '').replace('application/', '').toUpperCase())
     .join(', ');
 
-  // 1. Photo Compressor FAQs (Targeting SSC, UPSC, Sarkari, Admission keywords)
+  const sizeLimit = tool.maxFileSizeMB
+    ? `Each file can be up to ${tool.maxFileSizeMB} MB.`
+    : 'There is no advertised per-file size cap for this tool.';
+  const fileLimit =
+    tool.maxFiles && tool.maxFiles > 0
+      ? `You can process up to ${tool.maxFiles} file${tool.maxFiles === 1 ? '' : 's'} at a time.`
+      : 'This tool does not take file uploads; you enter values or text in the page.';
+
   if (
     tool.slug === 'compress-image-to-50kb' ||
     tool.slug === 'compress-image-to-100kb' ||
@@ -187,128 +229,127 @@ export function getDefaultToolFaqs(tool: ToolMetadata): FaqItem[] {
   ) {
     return [
       {
-        question: `How to compress photo under 50KB or 100KB for Sarkari / SSC / UPSC online forms?`,
-        answer: `Upload your photo to ${siteConfig.name}, set the quality level (e.g. 50% for under 50KB), and click Compress Images. The tool compresses the image in-browser to meet strict portal size limits without blurring text or faces.`,
+        question: `How do I compress a photo under 50KB or 100KB for an online form?`,
+        answer: `Open ${tool.name}, add your photo, choose a target size or quality setting, and compress. Processing runs in your browser. ${fileLimit} ${sizeLimit}`,
       },
       {
-        question: `Will compressing my photo reduce its visual quality or clarity?`,
-        answer: `No. ${siteConfig.name} uses smart adaptive quantization and canvas encoding to remove invisible metadata and redundant bytes while preserving high sharpness and facial clarity.`,
+        question: `Will compressing my photo reduce visual quality?`,
+        answer: `Smaller files usually mean some quality loss. Use the quality or target-size controls and check the preview before you download.`,
       },
       {
-        question: `Can I compress multiple images simultaneously in batch mode?`,
-        answer: `Yes! You can select up to 20 images at once and compress them all with a single click.`,
+        question: `Can I compress more than one image at a time?`,
+        answer: `Yes. ${fileLimit}`,
       },
       {
-        question: `Are my identity documents or certificates uploaded to a server?`,
-        answer: `Never. All compression runs 100% locally on your computer or phone CPU/GPU. Your files never leave your browser sandbox, ensuring complete confidentiality.`,
+        question: `Are photos uploaded to a server?`,
+        answer: `No. Compression for this tool runs in your browser. Files are not uploaded to DocsWala for storage.`,
       },
     ];
   }
 
-  // 2. Passport Photo Maker FAQs
   if (tool.slug === 'passport-photo-maker') {
     return [
       {
-        question: `What are the official passport size photo dimensions in millimeters (mm)?`,
-        answer: `The standard international passport size photo dimension is 35x45 mm (3.5x4.5 cm) with an aspect ratio of 7:9. For US Visa and certain portals, 2x2 inches (51x51 mm / 1:1 square) is used. Both presets are built directly into this tool.`,
+        question: `What passport photo size does this tool produce?`,
+        answer: `The built-in Passport 35×45 mm preset uses a 7:9 crop. A 2×2 inch (square) preset is also available for portals that ask for that size.`,
       },
       {
-        question: `How do I convert my mobile selfie into a passport size photo?`,
-        answer: `Upload your selfie, select the 'Passport 35×45' preset, drag the interactive boundary box to center your face and shoulders, and click 'Crop Image Now' to download a print-ready photo.`,
+        question: `How do I turn a selfie into a passport-size photo?`,
+        answer: `Upload the photo, choose the Passport 35×45 preset, move the crop box so the face and shoulders are centered, then download the cropped image.`,
       },
       {
-        question: `Is this passport photo valid for Indian Passport Seva, Visa, and SSC/UPSC portals?`,
-        answer: `Yes. The generated 35x45mm crop strictly adheres to government and exam portal specifications for passport and identity photo uploads.`,
+        question: `Is the passport photo maker free?`,
+        answer: `Yes. DocsWala tools are free to use in the browser, with no watermark and no account.`,
       },
       {
-        question: `Is the passport photo maker free with no watermark?`,
-        answer: `Yes, ${siteConfig.name} is 100% free with zero watermarks, zero limits, and no account sign-up required.`,
+        question: `Are photos uploaded to a server?`,
+        answer: `No. Cropping runs in your browser. ${sizeLimit}`,
       },
     ];
   }
 
-  // 3. Signature Cropper FAQs
   if (tool.slug === 'signature-cropper') {
     return [
       {
-        question: `What is the standard aspect ratio for signature uploads in online forms?`,
-        answer: `Most exam and government portals (such as SSC, IBPS, UPSC, and state PSCs) require a 3:1 (width to height) rectangular signature ratio (typically 140x60 pixels or under 20KB-50KB).`,
+        question: `What signature size do exam portals usually want?`,
+        answer: `Many Indian exam and banking portals ask for a wide 3:1 signature. This tool includes a 3:1 preset so you can crop to that ratio.`,
       },
       {
-        question: `How do I crop a signature cleanly from a photo taken on white paper?`,
-        answer: `Upload the photo of your signed paper, click the 'Signature 3:1' preset, adjust the bounding box tightly around your signature strokes, and click Crop to export a crisp signature image.`,
+        question: `How do I crop a signature from a photo of paper?`,
+        answer: `Upload the photo, choose the Signature 3:1 preset, tighten the box around the signature, then crop and download.`,
       },
       {
-        question: `Can I rotate and straighten a tilted signature before downloading?`,
-        answer: `Yes! Use the built-in 90° rotation and horizontal/vertical flip buttons on the toolbar to align your signature perfectly before cropping.`,
+        question: `Can I rotate a tilted signature?`,
+        answer: `Yes. Use the rotate and flip controls on the cropper toolbar before you download.`,
+      },
+      {
+        question: `Are signature photos uploaded to a server?`,
+        answer: `No. Cropping runs in your browser.`,
       },
     ];
   }
 
-  // 4. Shop UPI QR Code Generator FAQs
   if (tool.slug === 'upi-qr-code-generator' || tool.slug === 'qr-code-generator') {
     return [
       {
-        question: `How do I create a printable UPI QR code standee for my shop counter?`,
-        answer: `Enter your Shop UPI ID (e.g. yourshop@upi), your Payee/Shop Name, and click 'Print Standee'. The tool automatically formats a professional counter standee card ready to print on A4 or sticker sheets.`,
+        question: `How do I make a UPI QR for a shop counter?`,
+        answer: `Open the UPI QR generator, enter the UPI ID and payee name, then generate and print the standee. The QR uses the standard upi://pay format.`,
       },
       {
-        question: `Does this QR code work with Google Pay, PhonePe, Paytm, and BHIM?`,
-        answer:
-          `Yes! The generated QR code uses the standard NPCI UPI protocol (` +
-          'upi://pay' +
-          `) supported by Google Pay, PhonePe, Paytm, Amazon Pay, Cred, and all Indian banking apps.`,
+        question: `Which apps can scan the UPI QR?`,
+        answer: `Any app that understands NPCI UPI QR codes can scan it, including Google Pay, PhonePe, Paytm, and BHIM, as long as the UPI ID is valid.`,
       },
       {
-        question: `Are there any transaction fees, merchant charges, or commissions?`,
-        answer: `Zero. ${siteConfig.name} creates direct peer-to-peer and merchant UPI codes. 100% of customer payments go directly to your linked bank account with no middleman.`,
+        question: `Does DocsWala take a cut of payments?`,
+        answer: `No. DocsWala only generates the QR image in your browser. Payments go to the UPI ID you entered.`,
       },
       {
-        question: `Can I add my shop logo or the ₹ Rupee symbol inside the QR code?`,
-        answer: `Yes! Select the built-in Rupee logo preset or upload your custom shop logo with an automatic high-contrast background shield for 100% scanning reliability.`,
+        question: `Is the QR generator free?`,
+        answer: `Yes. There is no sign-up and no watermark on the generated QR.`,
       },
     ];
   }
 
-  // 5. PDF Merger FAQs
   if (tool.slug === 'pdf-merger') {
     return [
       {
-        question: `How do I merge front and back sides of an Aadhaar card or PAN card into one PDF?`,
-        answer: `Upload both PDF pages or converted images to the PDF Merger, arrange them in the desired front/back sequence, and click 'Merge PDFs' to download a unified document.`,
+        question: `How do I merge front and back of an ID into one PDF?`,
+        answer: `Add both PDF files (or convert photos to PDF first), put them in front/back order, then merge and download.`,
       },
       {
-        question: `Is it safe to merge confidential bank statements and salary slips on ${siteConfig.name}?`,
-        answer: `Yes, 100%. The PDF merging algorithm executes locally in your browser sandbox using WebAssembly. Your documents are never uploaded to any external server.`,
+        question: `Are PDFs uploaded when I merge them?`,
+        answer: `No. Merging runs in your browser using client-side PDF libraries. Files are not stored on DocsWala.`,
       },
       {
-        question: `Can I rearrange the order of pages before creating the merged PDF?`,
-        answer: `Yes! You can organize and sort your uploaded documents in any custom order before combining them into a single PDF.`,
+        question: `Can I change the order of files before merging?`,
+        answer: `Yes. You can rearrange uploaded documents before creating the merged PDF.`,
       },
       {
-        question: `Is there any file count limit or watermark on merged PDFs?`,
-        answer: `No. ${siteConfig.name} is completely free with zero watermarks and no limits on the number of documents you can merge.`,
+        question: `Is there a file limit?`,
+        answer: `${fileLimit} ${sizeLimit} The tool is free and does not add a watermark.`,
       },
     ];
   }
 
-  // Fallback generic high-value FAQs
   return [
     {
-      question: `Is the ${tool.name} free to use?`,
-      answer: `Yes, ${tool.name} on ${siteConfig.name} is 100% free with no subscriptions, file size paywalls, or hidden limitations.`,
+      question: `Is ${tool.name} free to use?`,
+      answer: `Yes. ${tool.name} on DocsWala is free in the browser, with no account and no watermark.`,
     },
     {
-      question: `Are my files uploaded to your servers when using ${tool.name}?`,
-      answer: `No. All operations for ${tool.name} are executed client-side directly within your browser sandbox using WebAssembly and HTML5 Canvas. Your files never leave your device.`,
+      question: `Does ${tool.name} upload my files?`,
+      answer: `No. This tool runs in your browser. Files you add are processed on your device and are not stored on DocsWala.`,
     },
     {
-      question: `What file formats does ${tool.name} support?`,
-      answer: `${tool.name} supports ${formats || 'standard file formats'}.`,
+      question: `What can I put into ${tool.name}?`,
+      answer:
+        tool.maxFiles === 0
+          ? `${tool.name} uses values or text you type on the page rather than file uploads.`
+          : `${tool.name} accepts ${formats || 'the formats listed on the tool page'}. ${fileLimit} ${sizeLimit}`,
     },
     {
-      question: `How fast is ${tool.name}?`,
-      answer: `Since processing runs on your local CPU/GPU with zero network upload delays, operations complete almost instantaneously in under a second.`,
+      question: `Who is ${tool.name} for?`,
+      answer: getToolAudience(tool.category),
     },
   ];
 }

@@ -40,8 +40,8 @@ export const Footer: React.FC = () => {
               </span>
             </Link>
             <p className={styles.brandTagline}>
-              Free, Fast in-browser file tools built for cyber cafes, small shops, students, and
-              daily online form filling.
+              Free in-browser tools for photos, PDFs, QR codes, text, developer utilities, and
+              calculators. No sign-up. Files stay on your device.
             </p>
             <div className={styles.badgePill}>
               <Sparkles size={13} className={styles.dot} />
@@ -110,8 +110,13 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
+                <Link href="/help" className={styles.footerLink}>
+                  How the tools work
+                </Link>
+              </li>
+              <li>
                 <Link href="/privacy" className={styles.footerLink}>
-                  Privacy Guarantee
+                  Privacy Policy
                 </Link>
               </li>
               <li>

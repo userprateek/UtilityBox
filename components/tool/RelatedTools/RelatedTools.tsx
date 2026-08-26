@@ -19,9 +19,9 @@ export const RelatedTools: React.FC<RelatedToolsProps> = ({ currentSlug, limit =
     <section className={styles.relatedSection} aria-label="Related Tools">
       <div className={styles.header}>
         <span className={styles.overline}>Complementary Tools</span>
-        <h2 className={styles.title}>Explore Related Utilities</h2>
+        <h2 className={styles.title}>Related tools</h2>
         <p className={styles.subtitle}>
-          Fast, 100% private in-browser tools you might find helpful for your daily workflow.
+          Other DocsWala tools in the same category, plus popular tools from other categories.
         </p>
       </div>
 

@@ -1,0 +1,70 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.overview {
+  margin: $space-10 0 0;
+  padding: $space-8;
+  border-radius: $radius-2xl;
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+}
+
+.heading {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: var(--color-text-main);
+  margin-bottom: $space-3;
+}
+
+.lead {
+  font-size: $font-size-sm;
+  color: var(--color-text-muted);
+  line-height: $line-height-relaxed;
+  margin-bottom: $space-6;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+
+  @include respond-to('md') {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.fact {
+  dt {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-primary);
+    margin-bottom: $space-1;
+  }
+
+  dd {
+    font-size: $font-size-sm;
+    color: var(--color-text-muted);
+    line-height: $line-height-relaxed;
+
+    a {
+      color: var(--color-primary);
+      font-weight: $font-weight-medium;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+  }
+}
+
+.featureList {
+  margin: 0;
+  padding-left: $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+
+  li {
+    list-style: disc;
+  }
+}

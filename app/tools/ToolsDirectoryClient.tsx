@@ -18,11 +18,12 @@ export interface ToolsDirectoryClientProps {
 export const ToolsDirectoryClient: React.FC<ToolsDirectoryClientProps> = ({ initialTools }) => {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get('category') as ToolCategoryId | null;
+  const queryParam = searchParams.get('q') ?? '';
 
   const [selectedCategory, setSelectedCategory] = useState<ToolCategoryId | 'all'>(
     categoryParam || 'all'
   );
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>(queryParam);
   const [isSearchHighlighted, setIsSearchHighlighted] = useState<boolean>(false);
   const searchInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -60,7 +61,7 @@ export const ToolsDirectoryClient: React.FC<ToolsDirectoryClientProps> = ({ init
     };
   }, [focusAndHighlightSearch]);
 
-  // Sync category state when URL searchParams changes (e.g. from header navigation)
+  // Sync category and search query when URL searchParams change
   React.useEffect(() => {
     if (categoryParam) {
       setSelectedCategory(categoryParam);
@@ -68,6 +69,10 @@ export const ToolsDirectoryClient: React.FC<ToolsDirectoryClientProps> = ({ init
       setSelectedCategory('all');
     }
   }, [categoryParam]);
+
+  React.useEffect(() => {
+    setSearchQuery(queryParam);
+  }, [queryParam]);
 
   const filteredTools = useMemo(() => {
     return initialTools.filter((tool) => {
@@ -96,6 +101,9 @@ export const ToolsDirectoryClient: React.FC<ToolsDirectoryClientProps> = ({ init
         >
           <Input
             ref={searchInputRef}
+            id="tool-search"
+            aria-label="Search tools"
+            type="search"
             placeholder="Search all utilities (e.g. compress jpg, merge pdf)..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}

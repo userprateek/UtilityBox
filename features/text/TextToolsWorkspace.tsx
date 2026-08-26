@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Type, FileText, Copy, Check, Trash2, ListFilter, AlignLeft } from 'lucide-react';
+import { Type, FileText, Trash2, ListFilter, AlignLeft } from 'lucide-react';
 import { ToolMetadata } from '@/types/tool';
 import { Card } from '@/components/common/Card/Card';
 import { ToolHeader } from '@/components/tool/ToolHeader/ToolHeader';
+import { CopyButton } from '@/components/common/CopyButton/CopyButton';
 import styles from './TextTools.module.scss';
 
 export interface TextToolsWorkspaceProps {
@@ -15,17 +16,6 @@ export const TextToolsWorkspace: React.FC<TextToolsWorkspaceProps> = ({ tool }) 
   const [text, setText] = useState<string>(
     'DocsWala is a 100% free and private suite of client-side browser tools.'
   );
-  const [copied, setCopied] = useState<boolean>(false);
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // ignore
-    }
-  };
 
   const handleClear = () => {
     setText('');
@@ -115,10 +105,13 @@ export const TextToolsWorkspace: React.FC<TextToolsWorkspaceProps> = ({ tool }) 
                 <AlignLeft size={16} /> Input Text
               </span>
               <div className={styles.toolActions}>
-                <button type="button" className={styles.actionBtn} onClick={handleCopy}>
-                  {copied ? <Check size={14} /> : <Copy size={14} />}
-                  <span>{copied ? 'Copied' : 'Copy'}</span>
-                </button>
+                <CopyButton
+                  className={styles.actionBtn}
+                  text={text}
+                  idleLabel="Copy"
+                  copiedLabel="Copied"
+                  iconSize={14}
+                />
                 <button type="button" className={styles.actionBtn} onClick={handleClear}>
                   <Trash2 size={14} />
                   <span>Clear</span>

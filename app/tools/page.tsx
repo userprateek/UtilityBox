@@ -3,28 +3,19 @@ import type { Metadata } from 'next';
 import { Container } from '@/components/layout/Container/Container';
 import { getAllTools } from '@/config/tools/registry';
 import { siteConfig } from '@/config/site';
+import { publicPageMetadata } from '@/lib/seo/pageMetadata';
 import { ToolsDirectoryClient } from './ToolsDirectoryClient';
 import { LoadingState } from '@/components/common/States/LoadingState';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { generateBreadcrumbJsonLd } from '@/lib/seo/schema';
+import { generateBreadcrumbJsonLd, generateItemListJsonLd } from '@/lib/seo/schema';
 import styles from './page.module.scss';
 
-export const metadata: Metadata = {
-  title: `All In-Browser File Utilities | ${siteConfig.name}`,
+export const metadata: Metadata = publicPageMetadata({
+  title: 'All DocsWala tools',
   description:
-    'Browse our comprehensive catalog of 100% private, client-side tools for images, PDFs, converters, and developer utilities.',
-  alternates: {
-    canonical: `${siteConfig.url}/tools`,
-  },
-  openGraph: {
-    title: `All In-Browser File Utilities | ${siteConfig.name}`,
-    description:
-      'Browse our comprehensive catalog of 100% private, client-side tools for images, PDFs, converters, and developer utilities.',
-    url: `${siteConfig.url}/tools`,
-    siteName: siteConfig.name,
-    type: 'website',
-  },
-};
+    'Directory of free in-browser DocsWala tools for images, PDFs, QR codes, text, developer utilities, and calculators.',
+  path: '/tools',
+});
 
 export default function ToolsPage() {
   const allTools = getAllTools();
@@ -33,21 +24,26 @@ export default function ToolsPage() {
     { name: 'Home', url: siteConfig.url },
     { name: 'All Tools', url: `${siteConfig.url}/tools` },
   ]);
+  const itemListJsonLd = generateItemListJsonLd(
+    allTools,
+    'DocsWala tools',
+    'Public in-browser tools on DocsWala.'
+  );
 
   return (
     <>
       <JsonLd schema={breadcrumbsJsonLd} />
+      <JsonLd schema={itemListJsonLd} />
       <div className={styles.pageContainer}>
         <Container size="lg">
-          {/* Page Header */}
           <div className={styles.pageHeader}>
-            <h1 className={styles.pageTitle}>All Utilities</h1>
+            <h1 className={styles.pageTitle}>All DocsWala tools</h1>
             <p className={styles.pageSubtitle}>
-              Free, Fast, and privacy-friendly tools executing directly in your browser.
+              {allTools.length} free tools that run in your browser. Search by name or filter by
+              category. No account required.
             </p>
           </div>
 
-          {/* Client Interactive Directory */}
           <Suspense fallback={<LoadingState message="Loading utilities catalog..." />}>
             <ToolsDirectoryClient initialTools={allTools} />
           </Suspense>

@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic';
 import { ToolMetadata, ProcessingProgress } from '@/types/tool';
 import { ManagedFile } from '@/types/file';
 import { ToolShell } from '@/components/tool/ToolShell/ToolShell';
-import { LoadingState } from '@/components/common/States/LoadingState';
 import { ImageCompressorSettings } from '@/features/image/ImageCompressorOptions';
 import { ImageResizerSettings } from '@/features/image/ImageResizerOptions';
 import { ImageConverterSettings } from '@/features/image/ImageConverterOptions';
@@ -16,154 +15,9 @@ import { convertPdfToImages, PdfToImageOptions } from '@/lib/pdf/pdfToImage';
 import { convertImagesToPdf, ImageToPdfOptions } from '@/lib/pdf/imageToPdf';
 import { trackToolView } from '@/lib/analytics/gtag';
 import { changeFileExtension, mimeTypeToExtension } from '@/lib/file/fileUtils';
+import { DedicatedToolWorkspace, hasDedicatedWorkspace } from './dedicatedWorkspaces';
 
 // Dynamically import heavy tool workspaces for optimal code splitting & minimal initial bundle
-const ImageCropperWorkspace = dynamic(
-  () =>
-    import('@/features/image/ImageCropper/ImageCropperWorkspace').then(
-      (m) => m.ImageCropperWorkspace
-    ),
-  {
-    loading: () => (
-      <div style={{ padding: '3rem 0' }}>
-        <LoadingState message="Loading Image Cropper..." />
-      </div>
-    ),
-  }
-);
-
-const QrCodeGeneratorWorkspace = dynamic(
-  () => import('@/features/qr/QrCodeGeneratorWorkspace').then((m) => m.QrCodeGeneratorWorkspace),
-  {
-    loading: () => (
-      <div style={{ padding: '3rem 0' }}>
-        <LoadingState message="Loading QR Code Generator..." />
-      </div>
-    ),
-  }
-);
-
-const PassportSheetWorkspace = dynamic(
-  () => import('@/features/image/PassportSheetWorkspace').then((m) => m.PassportSheetWorkspace),
-  {
-    loading: () => (
-      <div style={{ padding: '3rem 0' }}>
-        <LoadingState message="Loading Passport Photo Sheet Generator..." />
-      </div>
-    ),
-  }
-);
-
-// Calculator Workspaces
-const GstCalculatorWorkspace = dynamic(
-  () =>
-    import('@/features/calculators/GstCalculatorWorkspace').then((m) => m.GstCalculatorWorkspace),
-  {
-    loading: () => (
-      <div style={{ padding: '3rem 0' }}>
-        <LoadingState message="Loading GST Calculator..." />
-      </div>
-    ),
-  }
-);
-
-const EmiCalculatorWorkspace = dynamic(
-  () =>
-    import('@/features/calculators/EmiCalculatorWorkspace').then((m) => m.EmiCalculatorWorkspace),
-  {
-    loading: () => (
-      <div style={{ padding: '3rem 0' }}>
-        <LoadingState message="Loading EMI Calculator..." />
-      </div>
-    ),
-  }
-);
-
-const GratuityCalculatorWorkspace = dynamic(
-  () =>
-    import('@/features/calculators/GratuityCalculatorWorkspace').then(
-      (m) => m.GratuityCalculatorWorkspace
-    ),
-  {
-    loading: () => (
-      <div style={{ padding: '3rem 0' }}>
-        <LoadingState message="Loading Gratuity Calculator..." />
-      </div>
-    ),
-  }
-);
-
-const DiscountCalculatorWorkspace = dynamic(
-  () =>
-    import('@/features/calculators/DiscountCalculatorWorkspace').then(
-      (m) => m.DiscountCalculatorWorkspace
-    ),
-  {
-    loading: () => (
-      <div style={{ padding: '3rem 0' }}>
-        <LoadingState message="Loading Discount Calculator..." />
-      </div>
-    ),
-  }
-);
-
-const SipCalculatorWorkspace = dynamic(
-  () =>
-    import('@/features/calculators/SipCalculatorWorkspace').then((m) => m.SipCalculatorWorkspace),
-  {
-    loading: () => (
-      <div style={{ padding: '3rem 0' }}>
-        <LoadingState message="Loading SIP Calculator..." />
-      </div>
-    ),
-  }
-);
-
-const FdCalculatorWorkspace = dynamic(
-  () =>
-    import('@/features/calculators/FdCalculatorWorkspace').then((m) => m.FdCalculatorWorkspace),
-  {
-    loading: () => (
-      <div style={{ padding: '3rem 0' }}>
-        <LoadingState message="Loading FD Calculator..." />
-      </div>
-    ),
-  }
-);
-
-const TextToolsWorkspace = dynamic(
-  () => import('@/features/text/TextToolsWorkspace').then((m) => m.TextToolsWorkspace),
-  {
-    loading: () => (
-      <div style={{ padding: '3rem 0' }}>
-        <LoadingState message="Loading Text Workspace..." />
-      </div>
-    ),
-  }
-);
-
-const DevToolsWorkspace = dynamic(
-  () => import('@/features/developer/DevToolsWorkspace').then((m) => m.DevToolsWorkspace),
-  {
-    loading: () => (
-      <div style={{ padding: '3rem 0' }}>
-        <LoadingState message="Loading Developer Utility Workspace..." />
-      </div>
-    ),
-  }
-);
-
-const JsonFormatterWorkspace = dynamic(
-  () => import('@/features/developer/JsonFormatterWorkspace').then((m) => m.JsonFormatterWorkspace),
-  {
-    loading: () => (
-      <div style={{ padding: '3rem 0' }}>
-        <LoadingState message="Loading JSON Formatter..." />
-      </div>
-    ),
-  }
-);
-
 const ImageCompressorOptions = dynamic(
   () => import('@/features/image/ImageCompressorOptions').then((m) => m.ImageCompressorOptions),
   {
@@ -226,12 +80,18 @@ function applyImageResult(
 }
 
 export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
-  // Track individual tool route visit in Google Analytics
   useEffect(() => {
     trackToolView(tool.slug, tool.name, tool.category);
   }, [tool.slug, tool.name, tool.category]);
 
-  // Option states for tools with options
+  if (hasDedicatedWorkspace(tool.slug)) {
+    return <DedicatedToolWorkspace tool={tool} />;
+  }
+
+  return <FileToolPage tool={tool} />;
+};
+
+const FileToolPage: React.FC<ToolPageClientProps> = ({ tool }) => {
   const defaultTargetKb =
     tool.slug === 'compress-image-to-50kb'
       ? 50
@@ -285,74 +145,6 @@ export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
     outputFormat: 'image/jpeg',
     quality: 90,
   });
-
-  // Dedicated standalone interactive workspaces
-  const isCropper =
-    tool.slug === 'image-cropper' ||
-    tool.slug === 'passport-photo-maker' ||
-    tool.slug === 'signature-cropper';
-
-  if (isCropper) {
-    return <ImageCropperWorkspace tool={tool} />;
-  }
-
-  const isQr = tool.slug === 'qr-code-generator' || tool.slug === 'upi-qr-code-generator';
-
-  if (isQr) {
-    return <QrCodeGeneratorWorkspace tool={tool} />;
-  }
-
-  if (tool.slug === 'passport-sheet-maker') {
-    return <PassportSheetWorkspace tool={tool} />;
-  }
-
-  // Calculator Workspaces Routing
-  if (tool.slug === 'gst-calculator') {
-    return <GstCalculatorWorkspace tool={tool} />;
-  }
-
-  if (tool.slug === 'emi-calculator') {
-    return <EmiCalculatorWorkspace tool={tool} />;
-  }
-
-  if (tool.slug === 'gratuity-calculator') {
-    return <GratuityCalculatorWorkspace tool={tool} />;
-  }
-
-  if (tool.slug === 'discount-calculator') {
-    return <DiscountCalculatorWorkspace tool={tool} />;
-  }
-
-  if (tool.slug === 'sip-calculator') {
-    return <SipCalculatorWorkspace tool={tool} />;
-  }
-
-  if (tool.slug === 'fd-calculator') {
-    return <FdCalculatorWorkspace tool={tool} />;
-  }
-
-  const isTextTool =
-    tool.slug === 'word-counter' ||
-    tool.slug === 'case-converter' ||
-    tool.slug === 'remove-duplicates';
-
-  if (isTextTool) {
-    return <TextToolsWorkspace tool={tool} />;
-  }
-
-  const isDevTool =
-    tool.slug === 'uuid' ||
-    tool.slug === 'url-encoder' ||
-    tool.slug === 'jwt-decoder' ||
-    tool.slug === 'base64-converter';
-
-  if (isDevTool) {
-    return <DevToolsWorkspace tool={tool} />;
-  }
-
-  if (tool.slug === 'json-formatter') {
-    return <JsonFormatterWorkspace tool={tool} />;
-  }
 
   const isCompressor =
     tool.slug === 'image-compressor' ||

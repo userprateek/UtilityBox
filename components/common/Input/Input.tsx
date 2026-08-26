@@ -1,5 +1,3 @@
-'use client';
-
 import React, { forwardRef } from 'react';
 import { cn } from '@/lib/utils/cn';
 import styles from './Input.module.scss';

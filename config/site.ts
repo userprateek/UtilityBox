@@ -1,14 +1,15 @@
 export const siteConfig = {
   name: 'DocsWala',
   shortName: 'DocsWala',
+  oneLiner:
+    'DocsWala is a free, no-signup website of in-browser tools for compressing and cropping photos, merging and converting PDFs, generating shop QR codes, formatting text, running developer utilities, and calculating GST, EMI, SIP, and related figures.',
   description:
-    '100% Free online tools to resize photos for government forms, merge PDFs, crop signatures, and make shop UPI QR codes. No signup, no limits, instant and safe.',
+    'Free in-browser tools for photos, PDFs, QR codes, text, developer utilities, and GST/EMI/SIP calculators. No sign-up. Files stay on your device.',
   url: 'https://docswala.net',
-  ogImage: '/og-image.png',
   creator: 'DocsWala Team',
   links: {
-    github: 'https://github.com/docswala/docswala',
     docs: '/about',
+    help: '/help',
     privacy: '/privacy',
     terms: '/terms',
   },

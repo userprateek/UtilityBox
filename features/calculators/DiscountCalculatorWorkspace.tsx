@@ -1,12 +1,18 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Percent, Copy, Check, Tag, TrendingDown, IndianRupee } from 'lucide-react';
+import { Percent, Tag, IndianRupee } from 'lucide-react';
 import { ToolMetadata } from '@/types/tool';
 import { Card } from '@/components/common/Card/Card';
 import { Input } from '@/components/common/Input/Input';
-import { ToolHeader } from '@/components/tool/ToolHeader/ToolHeader';
-import styles from './Calculators.module.scss';
+import { CopyButton } from '@/components/common/CopyButton/CopyButton';
+import {
+  CalculatorDetailRow,
+  CalculatorHighlight,
+  CalculatorShell,
+  CalculatorSummaryCard,
+  calculatorStyles as styles,
+} from './CalculatorUi';
 
 export interface DiscountCalculatorWorkspaceProps {
   tool: ToolMetadata;
@@ -20,8 +26,6 @@ export const DiscountCalculatorWorkspace: React.FC<DiscountCalculatorWorkspacePr
   const [originalPrice, setOriginalPrice] = useState<string>('2499');
   const [discountType, setDiscountType] = useState<DiscountType>('percentage');
   const [discountValue, setDiscountValue] = useState<string>('25');
-
-  const [copied, setCopied] = useState<boolean>(false);
 
   const price = parseFloat(originalPrice) || 0;
   const value = parseFloat(discountValue) || 0;
@@ -42,28 +46,15 @@ export const DiscountCalculatorWorkspace: React.FC<DiscountCalculatorWorkspacePr
     }
   }
 
-  const handleCopySummary = async () => {
-    const summaryText = `UtilityBox Discount Calculation:
+  const summaryText = `UtilityBox Discount Calculation:
 Original MRP: ₹${price.toFixed(2)}
 Discount: ${discountType === 'percentage' ? `${effectivePercent}%` : `₹${savingsAmount.toFixed(2)} off`}
 ----------------------------------------
 YOU PAY: ₹${finalPrice.toFixed(2)}
 TOTAL MONEY SAVED: ₹${savingsAmount.toFixed(2)} (${effectivePercent.toFixed(1)}% OFF)`;
 
-    try {
-      await navigator.clipboard.writeText(summaryText);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // ignore
-    }
-  };
-
   return (
-    <div className={styles.calcWrapper}>
-      <ToolHeader tool={tool} />
-
-      <div className={styles.grid}>
+    <CalculatorShell tool={tool}>
         {/* Input Column */}
         <div className={styles.formCol}>
           <Card variant="glass" padding="lg" className={styles.card}>
@@ -116,66 +107,51 @@ TOTAL MONEY SAVED: ₹${savingsAmount.toFixed(2)} (${effectivePercent.toFixed(1)
         </div>
 
         {/* Output Summary Column */}
-        <div className={styles.outputCol}>
-          <Card variant="glass" padding="lg" className={styles.summaryCard}>
-            <div className={styles.summaryHeader}>
-              <h3 className={styles.summaryTitle}>Final Price & Savings</h3>
-              <Tag size={20} className={styles.headerIcon} />
-            </div>
+        <CalculatorSummaryCard title="Final Price & Savings" icon={<Tag size={20} />}>
+            <CalculatorHighlight
+              label="FINAL PRICE YOU PAY"
+              value={`₹${finalPrice.toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}`}
+              subtext={
+                <>
+                  Saved <strong>₹{savingsAmount.toFixed(2)}</strong> ({effectivePercent.toFixed(1)}%
+                  OFF)
+                </>
+              }
+            />
 
-            {/* Big Highlight Final Price Box */}
-            <div className={styles.mrpHighlightCard}>
-              <span className={styles.mrpLabel}>FINAL PRICE YOU PAY</span>
-              <span className={styles.mrpValue}>
-                ₹
-                {finalPrice.toLocaleString('en-IN', {
+            <div className={styles.detailsGrid}>
+              <CalculatorDetailRow
+                label="Original MRP"
+                value={`₹${price.toLocaleString('en-IN', {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
-                })}
-              </span>
-              <span className={styles.mrpSubtext}>
-                Saved <strong>₹{savingsAmount.toFixed(2)}</strong> ({effectivePercent.toFixed(1)}%
-                OFF)
-              </span>
+                })}`}
+              />
+              <CalculatorDetailRow
+                label="Total Savings"
+                value={`- ₹${savingsAmount.toLocaleString('en-IN', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}`}
+                valueClassName={styles.detailValueHighlight}
+              />
+              <CalculatorDetailRow
+                label="Effective Savings Rate"
+                value={`${effectivePercent.toFixed(1)}% OFF`}
+                valueClassName={styles.detailValueBold}
+              />
             </div>
 
-            {/* Detailed Key Value Rows */}
-            <div className={styles.detailsGrid}>
-              <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>Original MRP</span>
-                <span className={styles.detailValue}>
-                  ₹
-                  {price.toLocaleString('en-IN', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
-                </span>
-              </div>
-
-              <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>Total Savings</span>
-                <span className={styles.detailValueHighlight}>
-                  - ₹
-                  {savingsAmount.toLocaleString('en-IN', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
-                </span>
-              </div>
-
-              <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>Effective Savings Rate</span>
-                <span className={styles.detailValueBold}>{effectivePercent.toFixed(1)}% OFF</span>
-              </div>
-            </div>
-
-            <button type="button" className={styles.copyBtn} onClick={handleCopySummary}>
-              {copied ? <Check size={16} /> : <Copy size={16} />}
-              <span>{copied ? 'Copied Discount Summary!' : 'Copy Discount Summary'}</span>
-            </button>
-          </Card>
-        </div>
-      </div>
-    </div>
+            <CopyButton
+              className={styles.copyBtn}
+              text={summaryText}
+              idleLabel="Copy Discount Summary"
+              copiedLabel="Copied Discount Summary!"
+            />
+        </CalculatorSummaryCard>
+    </CalculatorShell>
   );
 };

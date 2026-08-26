@@ -5,6 +5,7 @@ import { getAllTools, getToolBySlug } from '@/config/tools/registry';
 import { siteConfig } from '@/config/site';
 import { ToolPageClient } from './ToolPageClient';
 import { Breadcrumbs } from '@/components/navigation/Breadcrumbs/Breadcrumbs';
+import { ToolOverview } from '@/components/tool/ToolOverview/ToolOverview';
 import { ToolGuide } from '@/components/tool/ToolGuide/ToolGuide';
 import { ToolFaq } from '@/components/tool/ToolFaq/ToolFaq';
 import { RelatedTools } from '@/components/tool/RelatedTools/RelatedTools';
@@ -35,6 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!tool) {
     return {
       title: `Tool Not Found | ${siteConfig.name}`,
+      robots: { index: false, follow: true },
     };
   }
 
@@ -47,6 +49,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: pageUrl,
     },
+    robots: {
+      index: true,
+      follow: true,
+    },
     openGraph: {
       title: tool.seoTitle,
       description: tool.seoDescription,
@@ -56,10 +62,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'website',
     },
     twitter: {
-      card: 'summary_large_image',
+      card: 'summary',
       title: tool.seoTitle,
       description: tool.seoDescription,
-      creator: `@${siteConfig.name}`,
     },
   };
 }
@@ -90,26 +95,22 @@ export default async function ToolPage({ params }: Props) {
 
   return (
     <>
-      {/* Structured Data (JSON-LD) for Search Engines */}
       <JsonLd schema={toolJsonLd} />
       <JsonLd schema={howToJsonLd} />
       <JsonLd schema={breadcrumbJsonLd} />
       <JsonLd schema={faqJsonLd} />
 
       <Container size="lg" style={{ paddingTop: '1.5rem', paddingBottom: '5rem' }}>
-        {/* Semantic Breadcrumbs Navigation */}
         <Breadcrumbs items={breadcrumbItems} />
 
-        {/* Interactive Tool Workflow */}
         <ToolPageClient tool={tool} />
 
-        {/* Step-by-Step How-To Guide for Organic Keywords */}
+        <ToolOverview tool={tool} />
+
         <ToolGuide tool={tool} />
 
-        {/* Semantic FAQ Section with FAQPage Schema */}
         <ToolFaq toolName={tool.name} faqs={faqs} />
 
-        {/* Internal Linking SEO & Discovery Matrix */}
         <RelatedTools currentSlug={tool.slug} />
       </Container>
     </>

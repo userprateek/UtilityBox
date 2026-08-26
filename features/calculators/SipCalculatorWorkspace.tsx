@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { TrendingUp, Copy, Check, Sparkles, Coins, PieChart } from 'lucide-react';
+import { TrendingUp, Sparkles, Coins, PieChart } from 'lucide-react';
 import { ToolMetadata } from '@/types/tool';
 import { Card } from '@/components/common/Card/Card';
 import { Input } from '@/components/common/Input/Input';
 import { ToolHeader } from '@/components/tool/ToolHeader/ToolHeader';
+import { CopyButton } from '@/components/common/CopyButton/CopyButton';
 import styles from './Calculators.module.scss';
 
 export interface SipCalculatorWorkspaceProps {
@@ -19,7 +20,6 @@ export const SipCalculatorWorkspace: React.FC<SipCalculatorWorkspaceProps> = ({ 
   const [amount, setAmount] = useState<string>('10000');
   const [returnRate, setReturnRate] = useState<string>('6');
   const [tenureYears, setTenureYears] = useState<string>('10');
-  const [copied, setCopied] = useState<boolean>(false);
 
   const numAmount = parseFloat(amount) || 0;
   const numRate = parseFloat(returnRate) || 0;
@@ -56,8 +56,7 @@ export const SipCalculatorWorkspace: React.FC<SipCalculatorWorkspaceProps> = ({ 
         : Math.min(100, Math.max(0, (totalInvested / Math.max(maturityValue, totalInvested)) * 100));
   const growthPct = Math.max(0, 100 - investedPct);
 
-  const handleCopy = async () => {
-    const summaryText = `UtilityBox ${mode === 'sip' ? 'SIP' : 'Lumpsum'} Investment Calculation:
+  const summaryText = `UtilityBox ${mode === 'sip' ? 'SIP' : 'Lumpsum'} Investment Calculation:
 Investment Mode: ${mode === 'sip' ? 'Monthly SIP' : 'One-Time Lumpsum'}
 ${mode === 'sip' ? 'Monthly SIP Amount' : 'Lumpsum Deposit'}: ₹${numAmount.toLocaleString('en-IN')}
 Expected Return Rate: ${numRate}% p.a.
@@ -67,15 +66,6 @@ Total Invested Amount: ₹${Math.round(totalInvested).toLocaleString('en-IN')}
 Est. Wealth Growth (Returns): ₹${Math.round(wealthGained).toLocaleString('en-IN')}
 ----------------------------------------
 TOTAL MATURITY VALUE: ₹${Math.round(maturityValue).toLocaleString('en-IN')}`;
-
-    try {
-      await navigator.clipboard.writeText(summaryText);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // ignore
-    }
-  };
 
   return (
     <div className={styles.calcWrapper}>
@@ -237,10 +227,12 @@ TOTAL MATURITY VALUE: ₹${Math.round(maturityValue).toLocaleString('en-IN')}`;
               </div>
             </div>
 
-            <button type="button" className={styles.copyBtn} onClick={handleCopy}>
-              {copied ? <Check size={16} /> : <Copy size={16} />}
-              <span>{copied ? 'Summary Copied!' : 'Copy SIP Return Summary'}</span>
-            </button>
+            <CopyButton
+              className={styles.copyBtn}
+              text={summaryText}
+              idleLabel="Copy SIP Return Summary"
+              copiedLabel="Summary Copied!"
+            />
 
             <div className={styles.tipBox}>
               <Sparkles size={14} />

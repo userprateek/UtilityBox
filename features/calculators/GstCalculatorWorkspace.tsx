@@ -2,12 +2,9 @@
 
 import React, { useState } from 'react';
 import {
-  Calculator,
   Store,
   PlusCircle,
   MinusCircle,
-  Copy,
-  Check,
   HelpCircle,
   TrendingUp,
   Receipt,
@@ -16,6 +13,7 @@ import { ToolMetadata } from '@/types/tool';
 import { Card } from '@/components/common/Card/Card';
 import { Input } from '@/components/common/Input/Input';
 import { ToolHeader } from '@/components/tool/ToolHeader/ToolHeader';
+import { CopyButton } from '@/components/common/CopyButton/CopyButton';
 import styles from './Calculators.module.scss';
 
 export interface GstCalculatorWorkspaceProps {
@@ -36,8 +34,6 @@ export const GstCalculatorWorkspace: React.FC<GstCalculatorWorkspaceProps> = ({ 
 
   // Add / Remove GST Fields
   const [amount, setAmount] = useState<string>('1000');
-
-  const [copied, setCopied] = useState<boolean>(false);
 
   // Calculate outputs based on active mode
   const numCost = parseFloat(costPrice) || 0;
@@ -71,8 +67,7 @@ export const GstCalculatorWorkspace: React.FC<GstCalculatorWorkspaceProps> = ({ 
   const cgst = gstAmount / 2;
   const sgst = gstAmount / 2;
 
-  const handleCopySummary = async () => {
-    const summaryText =
+  const summaryText =
       mode === 'shopkeeper'
         ? `UtilityBox GST & Profit Calculation:
 Cost Price: ₹${numCost.toFixed(2)}
@@ -86,15 +81,6 @@ Base Amount: ₹${basePrice.toFixed(2)}
 GST (${safeGstRate}%): ₹${gstAmount.toFixed(2)} (CGST: ₹${cgst.toFixed(2)}, SGST: ₹${sgst.toFixed(2)})
 ----------------------------------------
 TOTAL BILL AMOUNT: ₹${finalMrp.toFixed(2)}`;
-
-    try {
-      await navigator.clipboard.writeText(summaryText);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // ignore
-    }
-  };
 
   return (
     <div className={styles.calcWrapper}>
@@ -274,10 +260,12 @@ TOTAL BILL AMOUNT: ₹${finalMrp.toFixed(2)}`;
               )}
             </div>
 
-            <button type="button" className={styles.copyBtn} onClick={handleCopySummary}>
-              {copied ? <Check size={16} /> : <Copy size={16} />}
-              <span>{copied ? 'Copied Calculation Summary!' : 'Copy Calculation Summary'}</span>
-            </button>
+            <CopyButton
+              className={styles.copyBtn}
+              text={summaryText}
+              idleLabel="Copy Calculation Summary"
+              copiedLabel="Copied Calculation Summary!"
+            />
           </Card>
         </div>
       </div>

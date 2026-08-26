@@ -127,7 +127,7 @@ export const TOOL_REGISTRY: Record<string, ToolMetadata> = {
     isPopular: true,
     features: [
       'Visual drag-and-drop page and file reordering',
-      'Unlimited file merging with zero server uploads',
+      'Merge up to 30 PDFs in the browser with zero server uploads',
       'Retain original bookmarks and form fields',
     ],
   },

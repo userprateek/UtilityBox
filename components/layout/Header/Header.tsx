@@ -153,6 +153,10 @@ export const Header: React.FC = () => {
           <Link href="/about" className={cn(styles.navLink, isActive('/about') && styles.active)}>
             About
           </Link>
+
+          <Link href="/help" className={cn(styles.navLink, isActive('/help') && styles.active)}>
+            Help
+          </Link>
         </nav>
 
         {/* Right Actions */}
@@ -235,7 +239,21 @@ export const Header: React.FC = () => {
               className={cn(styles.mobileNavLink, isActive('/about') && styles.active)}
               onClick={() => setMobileMenuOpen(false)}
             >
-              About & Privacy Guarantee
+              About DocsWala
+            </Link>
+            <Link
+              href="/help"
+              className={cn(styles.mobileNavLink, isActive('/help') && styles.active)}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Help
+            </Link>
+            <Link
+              href="/privacy"
+              className={cn(styles.mobileNavLink, isActive('/privacy') && styles.active)}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Privacy
             </Link>
           </nav>
         </div>

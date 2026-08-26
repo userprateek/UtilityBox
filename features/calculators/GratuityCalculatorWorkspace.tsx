@@ -3,9 +3,6 @@
 import React, { useState } from 'react';
 import {
   Briefcase,
-  Copy,
-  Check,
-  ShieldCheck,
   AlertCircle,
   HelpCircle,
   IndianRupee,
@@ -15,6 +12,7 @@ import { ToolMetadata } from '@/types/tool';
 import { Card } from '@/components/common/Card/Card';
 import { Input } from '@/components/common/Input/Input';
 import { ToolHeader } from '@/components/tool/ToolHeader/ToolHeader';
+import { CopyButton } from '@/components/common/CopyButton/CopyButton';
 import styles from './Calculators.module.scss';
 
 export interface GratuityCalculatorWorkspaceProps {
@@ -26,8 +24,6 @@ export const GratuityCalculatorWorkspace: React.FC<GratuityCalculatorWorkspacePr
 }) => {
   const [basicSalary, setBasicSalary] = useState<string>('45000');
   const [tenureYears, setTenureYears] = useState<string>('7');
-
-  const [copied, setCopied] = useState<boolean>(false);
 
   const salary = parseFloat(basicSalary) || 0;
   const years = parseFloat(tenureYears) || 0;
@@ -43,23 +39,13 @@ export const GratuityCalculatorWorkspace: React.FC<GratuityCalculatorWorkspacePr
   const taxExemptLimit = 2000000; // ₹20 Lakhs
   const isTaxExempt = gratuityAmount <= taxExemptLimit;
 
-  const handleCopySummary = async () => {
-    const summaryText = `UtilityBox Gratuity Settlement Calculation:
+  const summaryText = `UtilityBox Gratuity Settlement Calculation:
 Monthly Basic + DA: ₹${salary.toLocaleString('en-IN')}
 Completed Service: ${years} Years
 Eligibility Status: ${isEligible ? 'Eligible (5+ Years)' : 'Not Eligible (Less than 5 Years)'}
 ----------------------------------------
 TOTAL GRATUITY PAYABLE: ₹${gratuityAmount.toFixed(2)}
 Tax Status: ${isTaxExempt ? '100% Tax Free (Under ₹20 Lakhs limit)' : 'Taxable above ₹20 Lakhs'}`;
-
-    try {
-      await navigator.clipboard.writeText(summaryText);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // ignore
-    }
-  };
 
   return (
     <div className={styles.calcWrapper}>
@@ -155,15 +141,13 @@ Tax Status: ${isTaxExempt ? '100% Tax Free (Under ₹20 Lakhs limit)' : 'Taxable
               </div>
             </div>
 
-            <button
-              type="button"
+            <CopyButton
               className={styles.copyBtn}
-              onClick={handleCopySummary}
+              text={summaryText}
+              idleLabel="Copy Gratuity Summary"
+              copiedLabel="Copied Gratuity Summary!"
               disabled={!isEligible}
-            >
-              {copied ? <Check size={16} /> : <Copy size={16} />}
-              <span>{copied ? 'Copied Gratuity Summary!' : 'Copy Gratuity Summary'}</span>
-            </button>
+            />
           </Card>
         </div>
       </div>

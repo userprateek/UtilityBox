@@ -6,7 +6,7 @@ import { Footer } from '@/components/layout/Footer/Footer';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import { siteConfig } from '@/config/site';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { generateWebsiteJsonLd } from '@/lib/seo/schema';
+import { generateOrganizationJsonLd, generateWebsiteJsonLd } from '@/lib/seo/schema';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -25,7 +25,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: `${siteConfig.name} - Fast, 100% Private In-Browser File Utilities`,
+    default: `${siteConfig.name} — Free in-browser photo, PDF, QR & calculator tools`,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
@@ -33,29 +33,25 @@ export const metadata: Metadata = {
     'online file tools',
     'image compressor',
     'pdf merger',
-    'pdf compressor',
     'image cropper',
-    'browser utilities',
+    'upi qr code',
+    'gst calculator',
+    'in-browser utilities',
     'private file tools',
-    'in-browser conversion',
-    'free pdf tools',
   ],
   authors: [{ name: siteConfig.creator }],
   creator: siteConfig.creator,
   metadataBase: new URL(siteConfig.url),
-  alternates: {
-    canonical: siteConfig.url,
-  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: siteConfig.url,
-    title: `${siteConfig.name} - Fast, 100% Private In-Browser File Utilities`,
+    title: `${siteConfig.name} — Free in-browser photo, PDF, QR & calculator tools`,
     description: siteConfig.description,
     siteName: siteConfig.name,
   },
   twitter: {
-    card: 'summary_large_image',
+    card: 'summary',
     title: siteConfig.name,
     description: siteConfig.description,
   },
@@ -78,6 +74,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const websiteJsonLd = generateWebsiteJsonLd();
+  const organizationJsonLd = generateOrganizationJsonLd();
 
   return (
     <html lang="en" className={inter.variable} data-theme="light" suppressHydrationWarning>
@@ -88,6 +85,7 @@ export default function RootLayout({
           }}
         />
         <JsonLd schema={websiteJsonLd} />
+        <JsonLd schema={organizationJsonLd} />
       </head>
       <body>
         <GoogleAnalytics />

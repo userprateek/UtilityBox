@@ -4,11 +4,17 @@ import { ToolsDirectoryClient } from './ToolsDirectoryClient';
 import { getAllTools } from '@/config/tools/registry';
 
 jest.mock('next/navigation', () => ({
-  useSearchParams: () => new URLSearchParams(),
+  useSearchParams: () => mockSearchParams,
 }));
+
+let mockSearchParams = new URLSearchParams();
 
 describe('ToolsDirectoryClient Component Integration', () => {
   const allTools = getAllTools();
+
+  beforeEach(() => {
+    mockSearchParams = new URLSearchParams();
+  });
 
   it('renders search input and category filter buttons', () => {
     render(<ToolsDirectoryClient initialTools={allTools} />);
@@ -60,5 +66,13 @@ describe('ToolsDirectoryClient Component Integration', () => {
 
     expect(screen.queryByText(/No utilities match your search/i)).not.toBeInTheDocument();
     expect(screen.getByText('Image Compressor')).toBeInTheDocument();
+  });
+
+  it('applies the q search-param from the URL on first render', () => {
+    mockSearchParams = new URLSearchParams('q=cropper');
+    render(<ToolsDirectoryClient initialTools={allTools} />);
+
+    expect(screen.getByText('Image Cropper')).toBeInTheDocument();
+    expect(screen.queryByText('PDF Merger')).not.toBeInTheDocument();
   });
 });

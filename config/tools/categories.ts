@@ -11,7 +11,7 @@ export const TOOL_CATEGORIES: Record<string, ToolCategory> = {
   pdf: {
     id: 'pdf',
     label: 'PDF Tools',
-    description: 'Merge, split, compress, and convert PDF documents securely with zero uploads.',
+    description: 'Merge, split, and convert PDF documents in your browser with no uploads.',
     iconName: 'FileText',
     accentColor: '#ef4444',
   },
@@ -25,7 +25,7 @@ export const TOOL_CATEGORIES: Record<string, ToolCategory> = {
   text: {
     id: 'text',
     label: 'Text Tools',
-    description: 'Count words, convert cases, clean duplicates, and compare text strings.',
+    description: 'Count words, convert letter case, and remove duplicate lines.',
     iconName: 'Type',
     accentColor: '#a855f7',
   },

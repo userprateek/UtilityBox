@@ -16,8 +16,6 @@
   "dependencies": {
     "browser-image-compression": "^2.0.2",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.4.7",
-    "jotai": "^2.12.1",
     "lucide-react": "^1.16.0",
     "next": "^15.1.7",
     "pdf-lib": "^1.17.1",

@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Coins, Copy, Check, Sparkles, Building2 } from 'lucide-react';
+import { Coins, Sparkles, Building2 } from 'lucide-react';
 import { ToolMetadata } from '@/types/tool';
 import { Card } from '@/components/common/Card/Card';
 import { Input } from '@/components/common/Input/Input';
 import { Select } from '@/components/common/Select/Select';
 import { ToolHeader } from '@/components/tool/ToolHeader/ToolHeader';
+import { CopyButton } from '@/components/common/CopyButton/CopyButton';
 import styles from './Calculators.module.scss';
 
 export interface FdCalculatorWorkspaceProps {
@@ -20,7 +21,6 @@ export const FdCalculatorWorkspace: React.FC<FdCalculatorWorkspaceProps> = ({ to
   const [interestRate, setInterestRate] = useState<string>('7.5');
   const [tenureYears, setTenureYears] = useState<string>('3');
   const [frequency, setFrequency] = useState<CompoundingFreq>('quarterly');
-  const [copied, setCopied] = useState<boolean>(false);
 
   const numPrincipal = parseFloat(depositAmount) || 0;
   const numRate = parseFloat(interestRate) || 0;
@@ -38,8 +38,7 @@ export const FdCalculatorWorkspace: React.FC<FdCalculatorWorkspaceProps> = ({ to
     totalCompPeriods > 0 ? numPrincipal * Math.pow(1 + ratePerPeriod, totalCompPeriods) : numPrincipal;
   const totalInterest = Math.max(0, maturityAmount - numPrincipal);
 
-  const handleCopy = async () => {
-    const freqLabel =
+  const freqLabel =
       frequency === 'quarterly'
         ? 'Quarterly (Standard Bank FD)'
         : frequency === 'monthly'
@@ -48,7 +47,7 @@ export const FdCalculatorWorkspace: React.FC<FdCalculatorWorkspaceProps> = ({ to
             ? 'Half-Yearly'
             : 'Annually';
 
-    const summaryText = `UtilityBox Fixed Deposit (FD) Calculation:
+  const summaryText = `UtilityBox Fixed Deposit (FD) Calculation:
 Deposit Principal Amount: ₹${numPrincipal.toLocaleString('en-IN')}
 Annual Bank Interest Rate: ${numRate}% p.a.
 Tenure: ${numYears} Years
@@ -57,15 +56,6 @@ Compounding Frequency: ${freqLabel}
 Total Interest Earned: ₹${Math.round(totalInterest).toLocaleString('en-IN')}
 ----------------------------------------
 TOTAL MATURITY VALUE: ₹${Math.round(maturityAmount).toLocaleString('en-IN')}`;
-
-    try {
-      await navigator.clipboard.writeText(summaryText);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // ignore
-    }
-  };
 
   return (
     <div className={styles.calcWrapper}>
@@ -209,10 +199,12 @@ TOTAL MATURITY VALUE: ₹${Math.round(maturityAmount).toLocaleString('en-IN')}`;
               </div>
             </div>
 
-            <button type="button" className={styles.copyBtn} onClick={handleCopy}>
-              {copied ? <Check size={16} /> : <Copy size={16} />}
-              <span>{copied ? 'Summary Copied!' : 'Copy FD Summary'}</span>
-            </button>
+            <CopyButton
+              className={styles.copyBtn}
+              text={summaryText}
+              idleLabel="Copy FD Summary"
+              copiedLabel="Summary Copied!"
+            />
 
             <div className={styles.tipBox}>
               <Sparkles size={14} />
