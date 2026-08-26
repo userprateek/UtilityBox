@@ -23,6 +23,42 @@ export const ToolsDirectoryClient: React.FC<ToolsDirectoryClientProps> = ({ init
     categoryParam || 'all'
   );
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isSearchHighlighted, setIsSearchHighlighted] = useState<boolean>(false);
+  const searchInputRef = React.useRef<HTMLInputElement>(null);
+
+  const focusAndHighlightSearch = React.useCallback(() => {
+    if (searchInputRef.current) {
+      searchInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      searchInputRef.current.focus();
+      setIsSearchHighlighted(true);
+      setTimeout(() => {
+        setIsSearchHighlighted(false);
+      }, 2200);
+    }
+  }, []);
+
+  // Handle URL ?focus=true parameter
+  React.useEffect(() => {
+    const focusParam = searchParams.get('focus') === 'true';
+    if (!focusParam) return;
+
+    const timer = setTimeout(() => {
+      focusAndHighlightSearch();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [searchParams, focusAndHighlightSearch]);
+
+  // Handle custom window focus event triggered from top header search
+  React.useEffect(() => {
+    const handleCustomFocus = () => {
+      focusAndHighlightSearch();
+    };
+
+    window.addEventListener('focus-search-input', handleCustomFocus);
+    return () => {
+      window.removeEventListener('focus-search-input', handleCustomFocus);
+    };
+  }, [focusAndHighlightSearch]);
 
   // Sync category state when URL searchParams changes (e.g. from header navigation)
   React.useEffect(() => {
@@ -52,12 +88,19 @@ export const ToolsDirectoryClient: React.FC<ToolsDirectoryClientProps> = ({ init
     <div className={styles.directoryWrapper}>
       {/* Search & Category Filter Controls */}
       <div className={styles.controlsBar}>
-        <div className={styles.searchWrapper}>
+        <div
+          className={cn(
+            styles.searchWrapper,
+            isSearchHighlighted && styles.searchWrapperHighlighted
+          )}
+        >
           <Input
+            ref={searchInputRef}
             placeholder="Search all utilities (e.g. compress jpg, merge pdf)..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             leftIcon={<Search size={18} />}
+            className={cn(isSearchHighlighted && styles.inputHighlighted)}
           />
         </div>
 

@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   Box,
   Search,
@@ -23,8 +23,47 @@ import styles from './Header.module.scss';
 
 export const Header: React.FC = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [categoriesDropdownOpen, setCategoriesDropdownOpen] = useState(false);
+
+  // Prevent background scrolling when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
+  const triggerSearchFocus = React.useCallback(() => {
+    setMobileMenuOpen(false);
+    if (pathname === '/tools') {
+      window.dispatchEvent(new Event('focus-search-input'));
+    } else {
+      router.push('/tools?focus=true');
+    }
+  }, [pathname, router]);
+
+  const handleSearchClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    triggerSearchFocus();
+  };
+
+  // Listen for Cmd+K / Ctrl+K keyboard shortcut
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        triggerSearchFocus();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [triggerSearchFocus]);
 
   const isActive = (path: string) => {
     if (path === '/') return pathname === '/';
@@ -45,7 +84,7 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className={styles.header}>
+    <header className={cn(styles.header, mobileMenuOpen && styles.headerMobileOpen)}>
       <Container size="lg" className={styles.container}>
         {/* Brand Logo */}
         <Link href="/" className={styles.logo} onClick={() => setMobileMenuOpen(false)}>
@@ -82,6 +121,7 @@ export const Header: React.FC = () => {
               type="button"
               className={styles.dropdownButton}
               aria-expanded={categoriesDropdownOpen}
+              onClick={() => setCategoriesDropdownOpen((prev) => !prev)}
             >
               <span>Categories</span>
               <ChevronDown
@@ -123,11 +163,16 @@ export const Header: React.FC = () => {
             </Badge>
           </div>
 
-          <Link href="/tools" className={styles.searchButton} aria-label="Search tools">
+          <button
+            type="button"
+            className={styles.searchButton}
+            onClick={handleSearchClick}
+            aria-label="Search tools"
+          >
             <Search size={16} />
             <span className={styles.searchLabel}>Search tools...</span>
             <kbd className={styles.searchKbd}>⌘K</kbd>
-          </Link>
+          </button>
 
           {/* Theme Switcher Toggle */}
           <ThemeToggle />

@@ -47,6 +47,55 @@
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
+  transition: transform $transition-fast;
+}
+
+.searchWrapperHighlighted {
+  animation: searchWrapperPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  z-index: 10;
+}
+
+.inputHighlighted {
+  border-color: $primary-500 !important;
+  box-shadow: 0 0 0 4px var(--color-primary-glow), 0 0 25px hsla(230, 80%, 56%, 0.45) !important;
+  animation: inputHighlightPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes searchWrapperPulse {
+  0% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(1.04);
+  }
+  40% {
+    transform: scale(0.99);
+  }
+  60% {
+    transform: scale(1.02);
+  }
+  80% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes inputHighlightPulse {
+  0% {
+    box-shadow: 0 0 0 0px var(--color-primary-glow);
+  }
+  25% {
+    box-shadow: 0 0 0 6px var(--color-primary-glow), 0 0 35px hsla(230, 80%, 56%, 0.6);
+  }
+  60% {
+    box-shadow: 0 0 0 4px var(--color-primary-glow), 0 0 20px hsla(230, 80%, 56%, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 0 0px transparent;
+  }
 }
 
 .categoryTabs {
