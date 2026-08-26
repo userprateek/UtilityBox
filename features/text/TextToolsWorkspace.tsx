@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Type, FileText, Trash2, ListFilter, AlignLeft } from 'lucide-react';
+import { Type, FileText, Trash2, ListFilter, AlignLeft, RotateCcw } from 'lucide-react';
 import { ToolMetadata } from '@/types/tool';
 import { Card } from '@/components/common/Card/Card';
 import { ToolHeader } from '@/components/tool/ToolHeader/ToolHeader';
@@ -16,9 +16,24 @@ export const TextToolsWorkspace: React.FC<TextToolsWorkspaceProps> = ({ tool }) 
   const [text, setText] = useState<string>(
     'DocsWala is a 100% free and private suite of client-side browser tools.'
   );
+  const [historyStack, setHistoryStack] = useState<string[]>([]);
+
+  const pushHistory = (currentText: string) => {
+    setHistoryStack((prev) => [...prev, currentText]);
+  };
+
+  const handleRevert = () => {
+    if (historyStack.length === 0) return;
+    const previous = historyStack[historyStack.length - 1];
+    setHistoryStack((prev) => prev.slice(0, -1));
+    setText(previous ?? '');
+  };
 
   const handleClear = () => {
-    setText('');
+    if (text) {
+      pushHistory(text);
+      setText('');
+    }
   };
 
   // Word counter statistics
@@ -33,41 +48,46 @@ export const TextToolsWorkspace: React.FC<TextToolsWorkspaceProps> = ({ tool }) 
   const readingTimeMin = Math.ceil(wordCount / 200);
 
   // Case Conversion Functions
-  const toUppercase = () => setText(text.toUpperCase());
-  const toLowercase = () => setText(text.toLowerCase());
+  const applyTransform = (transformFn: (t: string) => string) => {
+    const next = transformFn(text);
+    if (next !== text) {
+      pushHistory(text);
+      setText(next);
+    }
+  };
+
+  const toUppercase = () => applyTransform((t) => t.toUpperCase());
+  const toLowercase = () => applyTransform((t) => t.toLowerCase());
   const toTitleCase = () => {
-    setText(
-      text.replace(
-        /\w\S*/g,
-        (txt) => txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase()
-      )
+    applyTransform((t) =>
+      t.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase())
     );
   };
   const toSentenceCase = () => {
-    setText(
-      text
+    applyTransform((t) =>
+      t
         .toLowerCase()
         .replace(/(^\s*|[.!?]\s+)([a-z])/g, (_m, p1: string, p2: string) => p1 + p2.toUpperCase())
     );
   };
   const toCamelCase = () => {
-    const words = text
-      .replace(/([a-z])([A-Z])/g, '$1 $2')
-      .split(/[\s_\-]+/)
-      .filter(Boolean);
-    setText(
-      words
+    applyTransform((t) => {
+      const words = t
+        .replace(/([a-z])([A-Z])/g, '$1 $2')
+        .split(/[\s_\-]+/)
+        .filter(Boolean);
+      return words
         .map((word, index) => {
           const lower = word.toLowerCase();
           if (index === 0) return lower;
           return lower.charAt(0).toUpperCase() + lower.slice(1);
         })
-        .join('')
-    );
+        .join('');
+    });
   };
   const toKebabCase = () => {
-    setText(
-      text
+    applyTransform((t) =>
+      t
         .replace(/([a-z])([A-Z])/g, '$1-$2')
         .replace(/[\s_]+/g, '-')
         .replace(/-+/g, '-')
@@ -77,15 +97,19 @@ export const TextToolsWorkspace: React.FC<TextToolsWorkspaceProps> = ({ tool }) 
 
   // Duplicate Lines Handler
   const handleRemoveDuplicates = () => {
-    const lines = text.split('\n');
-    const uniqueLines = Array.from(new Set(lines));
-    setText(uniqueLines.join('\n'));
+    applyTransform((t) => {
+      const lines = t.split('\n');
+      const uniqueLines = Array.from(new Set(lines));
+      return uniqueLines.join('\n');
+    });
   };
 
   const handleSortLines = () => {
-    const lines = text.split('\n');
-    lines.sort((a, b) => a.localeCompare(b));
-    setText(lines.join('\n'));
+    applyTransform((t) => {
+      const lines = t.split('\n');
+      lines.sort((a, b) => a.localeCompare(b));
+      return lines.join('\n');
+    });
   };
 
   const isWordCounter = tool.slug === 'word-counter';
@@ -105,6 +129,16 @@ export const TextToolsWorkspace: React.FC<TextToolsWorkspaceProps> = ({ tool }) 
                 <AlignLeft size={16} /> Input Text
               </span>
               <div className={styles.toolActions}>
+                <button
+                  type="button"
+                  className={styles.actionBtn}
+                  onClick={handleRevert}
+                  disabled={historyStack.length === 0}
+                  title="Revert to previous text"
+                >
+                  <RotateCcw size={14} />
+                  <span>Revert</span>
+                </button>
                 <CopyButton
                   className={styles.actionBtn}
                   text={text}
@@ -150,6 +184,16 @@ export const TextToolsWorkspace: React.FC<TextToolsWorkspaceProps> = ({ tool }) 
                   <button type="button" className={styles.transformBtn} onClick={toKebabCase}>
                     kebab-case
                   </button>
+                  <button
+                    type="button"
+                    className={styles.revertBtn}
+                    onClick={handleRevert}
+                    disabled={historyStack.length === 0}
+                    title="Revert to previous text"
+                  >
+                    <RotateCcw size={14} />
+                    <span>Revert / Undo</span>
+                  </button>
                 </div>
               </div>
             )}
@@ -168,6 +212,16 @@ export const TextToolsWorkspace: React.FC<TextToolsWorkspaceProps> = ({ tool }) 
                   </button>
                   <button type="button" className={styles.transformBtn} onClick={handleSortLines}>
                     Sort Lines A-Z
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.revertBtn}
+                    onClick={handleRevert}
+                    disabled={historyStack.length === 0}
+                    title="Revert to previous text"
+                  >
+                    <RotateCcw size={14} />
+                    <span>Revert / Undo</span>
                   </button>
                 </div>
               </div>

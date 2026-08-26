@@ -64,9 +64,14 @@
   cursor: pointer;
   transition: all $transition-fast;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: var(--color-primary-subtle);
     border-color: var(--color-primary);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 }
 
@@ -108,7 +113,11 @@
 }
 
 .transformBtn {
-  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 14px;
   border-radius: $radius-md;
   border: 1px solid var(--color-border);
   background: var(--color-surface-subtle);
@@ -116,12 +125,48 @@
   font-size: $font-size-xs;
   font-weight: $font-weight-semibold;
   cursor: pointer;
+  white-space: nowrap;
   transition: all $transition-fast;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: var(--color-primary-subtle);
     border-color: var(--color-primary);
     color: var(--color-primary);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.revertBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: $radius-md;
+  border: 1px solid var(--color-primary);
+  background: var(--color-primary-subtle);
+  color: var(--color-primary);
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all $transition-fast;
+
+  &:hover:not(:disabled) {
+    background: var(--color-primary);
+    color: #ffffff;
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    background: var(--color-surface-subtle);
+    border-color: var(--color-border);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
   }
 }
 

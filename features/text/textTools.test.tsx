@@ -55,6 +55,10 @@ describe('Text Tools Suite', () => {
       fireEvent.change(textarea, { target: { value: 'hello-world' } });
       fireEvent.click(screen.getByRole('button', { name: 'camelCase' }));
       expect(textarea.value).toBe('helloWorld');
+
+      const revertBtn = screen.getAllByText(/Revert/i)[0]!;
+      fireEvent.click(revertBtn);
+      expect(textarea.value).toBe('hello-world');
     });
   });
 
