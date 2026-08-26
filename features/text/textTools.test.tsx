@@ -51,6 +51,10 @@ describe('Text Tools Suite', () => {
       fireEvent.click(upperBtn);
 
       expect(textarea.value).toBe('HELLO WORLD');
+
+      fireEvent.change(textarea, { target: { value: 'hello-world' } });
+      fireEvent.click(screen.getByRole('button', { name: 'camelCase' }));
+      expect(textarea.value).toBe('helloWorld');
     });
   });
 

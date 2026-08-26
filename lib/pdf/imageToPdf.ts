@@ -144,7 +144,7 @@ export async function convertImagesToPdf(
 
   let totalPagesCreated = 0;
 
-  if (pageSize === 'fit' && imagesPerPage === 1) {
+  if (pageSize === 'fit') {
     // Exact 1:1 image page dimensions (no blank space, fits image exactly)
     for (let i = 0; i < loadedImages.length; i++) {
       const { image, width, height } = loadedImages[i]!;

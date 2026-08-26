@@ -6,6 +6,7 @@ describe('pdfSplitter', () => {
     expect(parsePageRangeString('1-3, 5', 10)).toEqual([0, 1, 2, 4]);
     expect(parsePageRangeString('2-4', 5)).toEqual([1, 2, 3]);
     expect(parsePageRangeString('', 3)).toEqual([0, 1, 2]);
+    expect(parsePageRangeString('99-100', 3)).toEqual([]);
   });
 
   it('splits a 3-page PDF into 1 page per file in all_pages mode', async () => {

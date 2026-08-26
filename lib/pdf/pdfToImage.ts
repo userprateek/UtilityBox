@@ -101,6 +101,8 @@ export async function convertPdfToImages(
     targetPages = Array.from({ length: totalPages }, (_, i) => i);
   }
 
+  // Invalid or out-of-range custom input (e.g. "99-100" on a 3-page PDF)
+  // falls back to converting the full document, matching prior tool behavior.
   if (targetPages.length === 0) {
     targetPages = Array.from({ length: totalPages }, (_, i) => i);
   }

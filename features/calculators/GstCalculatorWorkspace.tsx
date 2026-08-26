@@ -43,6 +43,7 @@ export const GstCalculatorWorkspace: React.FC<GstCalculatorWorkspaceProps> = ({ 
   const numCost = parseFloat(costPrice) || 0;
   const numProfit = parseFloat(desiredProfit) || 0;
   const numAmount = parseFloat(amount) || 0;
+  const safeGstRate = Number.isFinite(gstRate) ? Math.min(100, Math.max(0, gstRate)) : 0;
 
   let basePrice = 0;
   let gstAmount = 0;
@@ -52,18 +53,18 @@ export const GstCalculatorWorkspace: React.FC<GstCalculatorWorkspaceProps> = ({ 
   if (mode === 'shopkeeper') {
     // Businessman Logic: Desired Profit (X) + Cost (Y) = Base Selling Price
     basePrice = numCost + numProfit;
-    gstAmount = basePrice * (gstRate / 100);
+    gstAmount = basePrice * (safeGstRate / 100);
     finalMrp = basePrice + gstAmount;
     netProfitKept = numProfit;
   } else if (mode === 'add') {
     // Exclusive GST: Amount + GST%
     basePrice = numAmount;
-    gstAmount = numAmount * (gstRate / 100);
+    gstAmount = numAmount * (safeGstRate / 100);
     finalMrp = numAmount + gstAmount;
   } else {
     // Inclusive GST: Amount already includes GST%
     finalMrp = numAmount;
-    basePrice = numAmount / (1 + gstRate / 100);
+    basePrice = numAmount / (1 + safeGstRate / 100);
     gstAmount = finalMrp - basePrice;
   }
 
@@ -77,12 +78,12 @@ export const GstCalculatorWorkspace: React.FC<GstCalculatorWorkspaceProps> = ({ 
 Cost Price: ₹${numCost.toFixed(2)}
 Desired Profit: ₹${netProfitKept.toFixed(2)}
 Base Selling Price: ₹${basePrice.toFixed(2)}
-GST (${gstRate}%): ₹${gstAmount.toFixed(2)} (CGST: ₹${cgst.toFixed(2)}, SGST: ₹${sgst.toFixed(2)})
+GST (${safeGstRate}%): ₹${gstAmount.toFixed(2)} (CGST: ₹${cgst.toFixed(2)}, SGST: ₹${sgst.toFixed(2)})
 ----------------------------------------
 FINAL MRP / BILLING PRICE: ₹${finalMrp.toFixed(2)}`
         : `UtilityBox GST Calculation (${mode === 'add' ? 'Exclusive' : 'Inclusive'}):
 Base Amount: ₹${basePrice.toFixed(2)}
-GST (${gstRate}%): ₹${gstAmount.toFixed(2)} (CGST: ₹${cgst.toFixed(2)}, SGST: ₹${sgst.toFixed(2)})
+GST (${safeGstRate}%): ₹${gstAmount.toFixed(2)} (CGST: ₹${cgst.toFixed(2)}, SGST: ₹${sgst.toFixed(2)})
 ----------------------------------------
 TOTAL BILL AMOUNT: ₹${finalMrp.toFixed(2)}`;
 
@@ -163,7 +164,10 @@ TOTAL BILL AMOUNT: ₹${finalMrp.toFixed(2)}`;
                     min={0}
                     max={100}
                     value={gstRate}
-                    onChange={(e) => setGstRate(parseFloat(e.target.value) || 0)}
+                    onChange={(e) => {
+                      const next = parseFloat(e.target.value);
+                      setGstRate(Number.isFinite(next) ? Math.min(100, Math.max(0, next)) : 0);
+                    }}
                     className={styles.miniRateInput}
                   />
                   <span>% Custom</span>
@@ -244,17 +248,17 @@ TOTAL BILL AMOUNT: ₹${finalMrp.toFixed(2)}`;
               </div>
 
               <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>Total GST Tax ({gstRate}%)</span>
+                <span className={styles.detailLabel}>Total GST Tax ({safeGstRate}%)</span>
                 <span className={styles.detailValueHighlight}>+ ₹{gstAmount.toFixed(2)}</span>
               </div>
 
               <div className={styles.splitRow}>
                 <div className={styles.splitBox}>
-                  <span className={styles.splitLabel}>CGST ({gstRate / 2}%)</span>
+                  <span className={styles.splitLabel}>CGST ({safeGstRate / 2}%)</span>
                   <span className={styles.splitVal}>₹{cgst.toFixed(2)}</span>
                 </div>
                 <div className={styles.splitBox}>
-                  <span className={styles.splitLabel}>SGST ({gstRate / 2}%)</span>
+                  <span className={styles.splitLabel}>SGST ({safeGstRate / 2}%)</span>
                   <span className={styles.splitVal}>₹{sgst.toFixed(2)}</span>
                 </div>
               </div>

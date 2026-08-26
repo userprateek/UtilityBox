@@ -36,6 +36,11 @@ const nextConfig = {
         destination: '/:slug',
         permanent: true,
       },
+      {
+        source: '/pdf-compressor',
+        destination: '/pdf-merger',
+        permanent: false,
+      },
     ];
   },
   async rewrites() {

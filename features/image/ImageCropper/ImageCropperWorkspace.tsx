@@ -144,6 +144,7 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
   const [cropResult, setCropResult] = useState<CropResult | null>(null);
 
   const imgRef = useRef<HTMLImageElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
   const activeDragRef = useRef<{
     handle: HandleType;
     startX: number;
@@ -186,25 +187,38 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
     setCropBox(initialBox);
   };
 
+  const isQuarterTurn = rotation === 90 || rotation === 270;
+  const orientedWidth = isQuarterTurn ? naturalSize.height : naturalSize.width;
+  const orientedHeight = isQuarterTurn ? naturalSize.width : naturalSize.height;
+
   // Adjust crop box when aspect ratio preset changes
   const applyAspectRatio = useCallback(
     (ratio: AspectRatioPreset) => {
       setAspectRatio(ratio);
-      if (naturalSize.width > 0 && naturalSize.height > 0) {
-        const newBox = computeCropBoxForRatio(ratio, naturalSize.width, naturalSize.height);
-        setCropBox(newBox);
+      const w = isQuarterTurn ? naturalSize.height : naturalSize.width;
+      const h = isQuarterTurn ? naturalSize.width : naturalSize.height;
+      if (w > 0 && h > 0) {
+        setCropBox(computeCropBoxForRatio(ratio, w, h));
       }
     },
-    [naturalSize]
+    [naturalSize, isQuarterTurn]
   );
+
+  useEffect(() => {
+    if (orientedWidth > 0 && orientedHeight > 0) {
+      setCropBox(computeCropBoxForRatio(aspectRatio, orientedWidth, orientedHeight));
+    }
+    // Re-fit the crop window to the oriented canvas after rotate, not after flip.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rotation]);
 
   // Global window listeners for drag & resize
   useEffect(() => {
     const handleGlobalPointerMove = (e: PointerEvent) => {
-      if (!activeDragRef.current || !imgRef.current) return;
+      if (!activeDragRef.current || !viewportRef.current) return;
 
       const { handle, startX, startY, startCrop } = activeDragRef.current;
-      const rect = imgRef.current.getBoundingClientRect();
+      const rect = viewportRef.current.getBoundingClientRect();
 
       if (rect.width === 0 || rect.height === 0) return;
 
@@ -247,7 +261,7 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
               break;
           }
 
-          const imgAspect = naturalSize.width / naturalSize.height;
+          const imgAspect = orientedWidth / orientedHeight;
 
           if (handle === 'se' || handle === 'e' || handle === 's') {
             let newW = Math.max(0.05, Math.min(1 - startCrop.x, startCrop.width + deltaX));
@@ -337,7 +351,7 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
       window.removeEventListener('pointermove', handleGlobalPointerMove);
       window.removeEventListener('pointerup', handleGlobalPointerUp);
     };
-  }, [aspectRatio, naturalSize]);
+  }, [aspectRatio, naturalSize, orientedWidth, orientedHeight]);
 
   const handlePointerDown = (e: React.PointerEvent, handle: HandleType) => {
     e.preventDefault();
@@ -419,12 +433,14 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
     setFlipH(false);
     setFlipV(false);
     setAspectRatio(initialRatio);
-    setTargetSizeEnabled(false);
+    setTargetSizeEnabled(
+      tool.slug === 'signature-cropper' || tool.slug === 'passport-photo-maker'
+    );
   };
 
   // Projected pixel dimensions
-  const approxCroppedWidth = Math.round(cropBox.width * naturalSize.width);
-  const approxCroppedHeight = Math.round(cropBox.height * naturalSize.height);
+  const approxCroppedWidth = Math.round(cropBox.width * (orientedWidth || naturalSize.width));
+  const approxCroppedHeight = Math.round(cropBox.height * (orientedHeight || naturalSize.height));
 
   const savings =
     selectedFile && cropResult ? calculateSavings(selectedFile.size, cropResult.size) : null;
@@ -601,7 +617,15 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
 
             {/* Interactive Crop Stage */}
             <div className={styles.stage}>
-              <div className={styles.imageWrapper}>
+              <div
+                ref={viewportRef}
+                className={`${styles.imageWrapper} ${styles.orientedViewport}`}
+                style={
+                  orientedWidth > 0 && orientedHeight > 0
+                    ? { aspectRatio: `${orientedWidth} / ${orientedHeight}` }
+                    : undefined
+                }
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   ref={imgRef}
@@ -609,7 +633,20 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
                   alt="Original to crop"
                   className={styles.sourceImage}
                   style={{
-                    transform: `rotate(${rotation}deg) scaleX(${flipH ? -1 : 1}) scaleY(${flipV ? -1 : 1})`,
+                    width:
+                      orientedWidth > 0
+                        ? `${(naturalSize.width / orientedWidth) * 100}%`
+                        : '100%',
+                    height:
+                      orientedHeight > 0
+                        ? `${(naturalSize.height / orientedHeight) * 100}%`
+                        : '100%',
+                    maxWidth: 'none',
+                    maxHeight: 'none',
+                    position: 'absolute',
+                    left: '50%',
+                    top: '50%',
+                    transform: `translate(-50%, -50%) rotate(${rotation}deg) scaleX(${flipH ? -1 : 1}) scaleY(${flipV ? -1 : 1})`,
                   }}
                   onLoad={handleImageLoaded}
                   draggable={false}

@@ -113,14 +113,25 @@ Total Amount Payable: ₹${totalPayable.toFixed(2)}`;
                   <button
                     type="button"
                     className={`${styles.tenureBtn} ${tenureType === 'years' ? styles.tenureBtnActive : ''}`}
-                    onClick={() => setTenureType('years')}
+                    onClick={() => {
+                      if (tenureType === 'years') return;
+                      const months = parseFloat(tenure) || 0;
+                      const years = months / 12;
+                      setTenure(String(Number.isInteger(years) ? years : Math.round(years * 100) / 100));
+                      setTenureType('years');
+                    }}
                   >
                     Yr
                   </button>
                   <button
                     type="button"
                     className={`${styles.tenureBtn} ${tenureType === 'months' ? styles.tenureBtnActive : ''}`}
-                    onClick={() => setTenureType('months')}
+                    onClick={() => {
+                      if (tenureType === 'months') return;
+                      const years = parseFloat(tenure) || 0;
+                      setTenure(String(Math.round(years * 12)));
+                      setTenureType('months');
+                    }}
                   >
                     Mo
                   </button>

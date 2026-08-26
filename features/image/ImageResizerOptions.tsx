@@ -57,9 +57,9 @@ export const ImageResizerOptions: React.FC<ImageResizerOptionsProps> = ({
 
   const notifyChange = (updated: Partial<ImageResizerSettings>) => {
     const parsedW =
-      parseInt(updated.width !== undefined ? String(updated.width) : width, 10) || 1080;
+      parseFloat(updated.width !== undefined ? String(updated.width) : width) || 1080;
     const parsedH =
-      parseInt(updated.height !== undefined ? String(updated.height) : height, 10) || 1080;
+      parseFloat(updated.height !== undefined ? String(updated.height) : height) || 1080;
 
     const current: ImageResizerSettings = {
       unit: updated.unit ?? unit,
@@ -119,7 +119,9 @@ export const ImageResizerOptions: React.FC<ImageResizerOptionsProps> = ({
             className={`${styles.modeBtn} ${unit === 'mm' || unit === 'cm' || unit === 'inch' ? styles.modeBtnActive : ''}`}
             onClick={() => {
               setUnit('mm');
-              notifyChange({ unit: 'mm' });
+              setWidth('35');
+              setHeight('45');
+              notifyChange({ unit: 'mm', width: 35, height: 45 });
             }}
           >
             Print Size (mm/cm/in)
@@ -225,6 +227,45 @@ export const ImageResizerOptions: React.FC<ImageResizerOptionsProps> = ({
 
       {(unit === 'mm' || unit === 'cm' || unit === 'inch') && (
         <div className={styles.optionGroup}>
+          <div className={styles.customDimRow}>
+            <div className={styles.dimInputGroup}>
+              <label className={styles.dimInputLabel}>
+                Width ({unit === 'inch' ? 'in' : unit})
+              </label>
+              <input
+                type="number"
+                min={1}
+                step="0.1"
+                value={width}
+                onChange={(e) => {
+                  setWidth(e.target.value);
+                  setSelectedPreset('');
+                  const w = parseFloat(e.target.value);
+                  notifyChange({ width: !isNaN(w) && w > 0 ? w : 35 });
+                }}
+                className={styles.customInput}
+              />
+            </div>
+            <span className={styles.multiplyIcon}>×</span>
+            <div className={styles.dimInputGroup}>
+              <label className={styles.dimInputLabel}>
+                Height ({unit === 'inch' ? 'in' : unit})
+              </label>
+              <input
+                type="number"
+                min={1}
+                step="0.1"
+                value={height}
+                onChange={(e) => {
+                  setHeight(e.target.value);
+                  setSelectedPreset('');
+                  const h = parseFloat(e.target.value);
+                  notifyChange({ height: !isNaN(h) && h > 0 ? h : 45 });
+                }}
+                className={styles.customInput}
+              />
+            </div>
+          </div>
           <div className={styles.customDimRow}>
             <div className={styles.dimInputGroup}>
               <label className={styles.dimInputLabel}>Unit</label>

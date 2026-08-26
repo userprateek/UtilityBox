@@ -188,3 +188,21 @@ export function changeFileExtension(filename: string, newExt: string): string {
   const baseName = lastDot > 0 ? filename.slice(0, lastDot) : filename;
   return `${baseName}.${cleanExt}`;
 }
+
+/**
+ * Maps a MIME type to a download-safe file extension.
+ */
+export function mimeTypeToExtension(mime: string): string {
+  const map: Record<string, string> = {
+    'image/jpeg': 'jpg',
+    'image/jpg': 'jpg',
+    'image/png': 'png',
+    'image/webp': 'webp',
+    'image/avif': 'avif',
+    'image/gif': 'gif',
+    'application/pdf': 'pdf',
+    'application/json': 'json',
+    'text/plain': 'txt',
+  };
+  return map[mime] || '';
+}

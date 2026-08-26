@@ -12,7 +12,7 @@ describe('QrCodeGeneratorWorkspace Component', () => {
     name: 'QR Code Generator',
     shortDescription: 'Generate QR codes',
     description: 'Generate QR codes for UPI, WiFi, and links',
-    category: 'utilities',
+    category: 'qr',
     iconName: 'QrCode',
     supportedInputFormats: ['text/plain'],
     seoTitle: 'Free QR Code Generator',

@@ -139,7 +139,8 @@ export const QrCodeGeneratorWorkspace: React.FC<QrCodeGeneratorWorkspaceProps> =
         return `https://wa.me/${cleanPhone}${cleanMsg ? `?text=${cleanMsg}` : ''}`;
       }
       case 'wifi': {
-        return `WIFI:T:WPA;S:${wifiSsid};P:${wifiPassword};;`;
+        const escapeWifi = (value: string) => value.replace(/([\\";,:])/g, '\\$1');
+        return `WIFI:T:WPA;S:${escapeWifi(wifiSsid)};P:${escapeWifi(wifiPassword)};;`;
       }
       case 'phone': {
         return `tel:${phoneNumber.replace(/[^\d+]/g, '')}`;

@@ -5,6 +5,7 @@ import {
   changeFileExtension,
   getSiteDomain,
   generateDownloadFilename,
+  mimeTypeToExtension,
 } from './fileUtils';
 
 describe('fileUtils', () => {
@@ -66,6 +67,13 @@ describe('fileUtils', () => {
     it('extracts the domain host cleanly', () => {
       expect(getSiteDomain()).toBe('docswala.net');
     });
+  });
+
+  it('maps MIME types to download extensions', () => {
+    expect(mimeTypeToExtension('image/jpeg')).toBe('jpg');
+    expect(mimeTypeToExtension('image/webp')).toBe('webp');
+    expect(mimeTypeToExtension('application/pdf')).toBe('pdf');
+    expect(mimeTypeToExtension('unknown/type')).toBe('');
   });
 
   describe('generateDownloadFilename', () => {

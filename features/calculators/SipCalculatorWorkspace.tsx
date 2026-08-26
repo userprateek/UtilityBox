@@ -46,10 +46,14 @@ export const SipCalculatorWorkspace: React.FC<SipCalculatorWorkspaceProps> = ({ 
     maturityValue = numAmount * Math.pow(1 + numRate / 100, numYears);
   }
 
-  wealthGained = Math.max(0, maturityValue - totalInvested);
+  wealthGained = maturityValue - totalInvested;
 
   const investedPct =
-    maturityValue > 0 ? Math.min(100, Math.max(0, (totalInvested / maturityValue) * 100)) : 50;
+    totalInvested <= 0
+      ? 50
+      : maturityValue <= 0
+        ? 100
+        : Math.min(100, Math.max(0, (totalInvested / Math.max(maturityValue, totalInvested)) * 100));
   const growthPct = Math.max(0, 100 - investedPct);
 
   const handleCopy = async () => {
@@ -187,7 +191,9 @@ TOTAL MATURITY VALUE: ₹${Math.round(maturityValue).toLocaleString('en-IN')}`;
           <Card variant="glass" padding="lg" className={styles.resultCard}>
             <div className={styles.resultHeader}>
               <PieChart size={22} className={styles.headerIcon} />
-              <h3 className={styles.resultTitle}>SIP Wealth Projection</h3>
+              <h3 className={styles.resultTitle}>
+                {mode === 'lumpsum' ? 'Lumpsum Wealth Projection' : 'SIP Wealth Projection'}
+              </h3>
             </div>
 
             <div className={styles.mrpHighlightCard}>
@@ -209,9 +215,12 @@ TOTAL MATURITY VALUE: ₹${Math.round(maturityValue).toLocaleString('en-IN')}`;
               </div>
 
               <div className={styles.breakdownItem}>
-                <span className={styles.bdLabel}>Est. Wealth Growth</span>
-                <span className={`${styles.bdValue} ${styles.greenText}`}>
-                  +₹{Math.round(wealthGained).toLocaleString('en-IN')}
+                <span className={styles.bdLabel}>
+                  {wealthGained < 0 ? 'Est. Loss' : 'Est. Wealth Growth'}
+                </span>
+                <span className={`${styles.bdValue} ${wealthGained < 0 ? '' : styles.greenText}`}>
+                  {wealthGained < 0 ? '−' : '+'}₹
+                  {Math.round(Math.abs(wealthGained)).toLocaleString('en-IN')}
                 </span>
               </div>
             </div>
@@ -236,9 +245,9 @@ TOTAL MATURITY VALUE: ₹${Math.round(maturityValue).toLocaleString('en-IN')}`;
             <div className={styles.tipBox}>
               <Sparkles size={14} />
               <span>
-                <strong>Compounding Power</strong>: Investing ₹{numAmount.toLocaleString('en-IN')}/mo at{' '}
-                {numRate}% p.a. builds ₹{Math.round(maturityValue).toLocaleString('en-IN')} maturity
-                wealth.
+                <strong>Compounding Power</strong>: Investing ₹{numAmount.toLocaleString('en-IN')}
+                {mode === 'sip' ? '/mo' : ' lumpsum'} at {numRate}% p.a. builds ₹
+                {Math.round(maturityValue).toLocaleString('en-IN')} maturity wealth.
               </span>
             </div>
           </Card>

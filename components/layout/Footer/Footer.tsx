@@ -88,8 +88,8 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/pdf-compressor" className={styles.footerLink}>
-                  PDF Compressor (Under 200KB)
+                <Link href="/pdf-splitter" className={styles.footerLink}>
+                  Split PDF Pages
                 </Link>
               </li>
               <li>

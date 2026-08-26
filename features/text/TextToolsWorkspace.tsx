@@ -36,7 +36,9 @@ export const TextToolsWorkspace: React.FC<TextToolsWorkspaceProps> = ({ tool }) 
   const wordCount = trimmed ? trimmed.split(/\s+/).length : 0;
   const charCount = text.length;
   const charNoSpaces = text.replace(/\s+/g, '').length;
-  const sentenceCount = trimmed ? (text.match(/[^.!?]+[.!?]+/g) || [text]).length : 0;
+  const sentenceCount = trimmed
+    ? (trimmed.match(/[^.!?]+(?:[.!?]+|$)/g) || [trimmed]).filter((s) => s.trim()).length
+    : 0;
   const paragraphCount = trimmed ? text.split(/\n\s*\n/).filter(Boolean).length : 0;
   const readingTimeMin = Math.ceil(wordCount / 200);
 
@@ -53,16 +55,24 @@ export const TextToolsWorkspace: React.FC<TextToolsWorkspaceProps> = ({ tool }) 
   };
   const toSentenceCase = () => {
     setText(
-      text.toLowerCase().replace(/(^\s*|\.\s*)([a-z])/g, (m, p1, p2) => p1 + p2.toUpperCase())
+      text
+        .toLowerCase()
+        .replace(/(^\s*|[.!?]\s+)([a-z])/g, (_m, p1: string, p2: string) => p1 + p2.toUpperCase())
     );
   };
   const toCamelCase = () => {
+    const words = text
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      .split(/[\s_\-]+/)
+      .filter(Boolean);
     setText(
-      text
-        .replace(/(?:^\w|[A-Z]|\b\w)/g, (letter, index) =>
-          index === 0 ? letter.toLowerCase() : letter.toUpperCase()
-        )
-        .replace(/\s+/g, '')
+      words
+        .map((word, index) => {
+          const lower = word.toLowerCase();
+          if (index === 0) return lower;
+          return lower.charAt(0).toUpperCase() + lower.slice(1);
+        })
+        .join('')
     );
   };
   const toKebabCase = () => {
@@ -70,6 +80,7 @@ export const TextToolsWorkspace: React.FC<TextToolsWorkspaceProps> = ({ tool }) 
       text
         .replace(/([a-z])([A-Z])/g, '$1-$2')
         .replace(/[\s_]+/g, '-')
+        .replace(/-+/g, '-')
         .toLowerCase()
     );
   };

@@ -186,6 +186,11 @@ export async function compressImageFile(
     }
   }
 
+  // PNG quality is ignored by canvas; target-KB mode must use a lossy format
+  if (options.targetMaxSizeBytes && options.targetMaxSizeBytes > 0 && format === 'image/png') {
+    format = 'image/jpeg';
+  }
+
   // Calculate target dimensions from scale mode & presets
   const dims = calculateTargetDimensions(naturalWidth, naturalHeight, options);
   const targetWidth = dims.width;
@@ -250,22 +255,20 @@ export async function compressImageFile(
       }
     }
 
-    // Guaranteed fallback: loop down until size is strictly <= targetMaxSizeBytes
-    while (
-      (!bestResult || bestResult.size > targetMaxSizeBytes) &&
-      curWidth > 60 &&
-      curHeight > 30
-    ) {
-      curWidth = Math.round(curWidth * 0.8);
-      curHeight = Math.round(curHeight * 0.8);
-      const res = await renderCanvasToBlob(img, curWidth, curHeight, format, 0.45);
-      if (res.size <= targetMaxSizeBytes || curWidth <= 80) {
-        bestResult = { ...res, width: curWidth, height: curHeight, quality: 0.45 };
+    // Guaranteed fallback: keep shrinking until size is strictly <= target
+    while ((!bestResult || bestResult.size > targetMaxSizeBytes) && curWidth > 16 && curHeight > 16) {
+      curWidth = Math.max(16, Math.round(curWidth * 0.8));
+      curHeight = Math.max(16, Math.round(curHeight * 0.8));
+      const res = await renderCanvasToBlob(img, curWidth, curHeight, format, 0.4);
+      if (!bestResult || res.size < bestResult.size || res.size <= targetMaxSizeBytes) {
+        bestResult = { ...res, width: curWidth, height: curHeight, quality: 0.4 };
+      }
+      if (res.size <= targetMaxSizeBytes) {
         break;
       }
     }
 
-    if (bestResult) {
+    if (bestResult && bestResult.size <= targetMaxSizeBytes) {
       return {
         blob: bestResult.blob,
         width: bestResult.width,
@@ -274,6 +277,11 @@ export async function compressImageFile(
         format,
       };
     }
+
+    const targetKb = Math.round((targetMaxSizeBytes || 0) / 1024);
+    throw new Error(
+      `Could not compress this image under ${targetKb}KB. Try JPEG output or a smaller source photo.`
+    );
   }
 
   // --------------------------------------------------------------------------

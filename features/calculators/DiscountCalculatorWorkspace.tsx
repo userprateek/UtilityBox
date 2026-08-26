@@ -45,7 +45,7 @@ export const DiscountCalculatorWorkspace: React.FC<DiscountCalculatorWorkspacePr
   const handleCopySummary = async () => {
     const summaryText = `UtilityBox Discount Calculation:
 Original MRP: ₹${price.toFixed(2)}
-Discount: ${discountType === 'percentage' ? `${value}%` : `₹${value.toFixed(2)} off`}
+Discount: ${discountType === 'percentage' ? `${effectivePercent}%` : `₹${savingsAmount.toFixed(2)} off`}
 ----------------------------------------
 YOU PAY: ₹${finalPrice.toFixed(2)}
 TOTAL MONEY SAVED: ₹${savingsAmount.toFixed(2)} (${effectivePercent.toFixed(1)}% OFF)`;

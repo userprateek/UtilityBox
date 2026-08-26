@@ -8,12 +8,14 @@ import { ToolShell } from '@/components/tool/ToolShell/ToolShell';
 import { LoadingState } from '@/components/common/States/LoadingState';
 import { ImageCompressorSettings } from '@/features/image/ImageCompressorOptions';
 import { ImageResizerSettings } from '@/features/image/ImageResizerOptions';
+import { ImageConverterSettings } from '@/features/image/ImageConverterOptions';
 import { compressImageAdvanced } from '@/lib/image/clientImageCompressor';
 import { mergePdfFiles } from '@/lib/pdf/pdfMerger';
 import { splitPdfDocument, SplitPdfOptions } from '@/lib/pdf/pdfSplitter';
 import { convertPdfToImages, PdfToImageOptions } from '@/lib/pdf/pdfToImage';
 import { convertImagesToPdf, ImageToPdfOptions } from '@/lib/pdf/imageToPdf';
 import { trackToolView } from '@/lib/analytics/gtag';
+import { changeFileExtension, mimeTypeToExtension } from '@/lib/file/fileUtils';
 
 // Dynamically import heavy tool workspaces for optimal code splitting & minimal initial bundle
 const ImageCropperWorkspace = dynamic(
@@ -197,8 +199,30 @@ const ImageToPdfOptionsComponent = dynamic(
   }
 );
 
+const ImageConverterOptions = dynamic(
+  () => import('@/features/image/ImageConverterOptions').then((m) => m.ImageConverterOptions),
+  {
+    ssr: false,
+  }
+);
+
 export interface ToolPageClientProps {
   tool: ToolMetadata;
+}
+
+function applyImageResult(
+  file: ManagedFile,
+  res: { blob: Blob; size: number; format: string }
+): void {
+  const ext = mimeTypeToExtension(res.format);
+  file.processedBlob = res.blob;
+  file.processedSize = res.size;
+  file.type = res.format;
+  if (ext) {
+    file.name = changeFileExtension(file.name, ext);
+  }
+  file.status = 'completed';
+  file.progress = 100;
 }
 
 export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
@@ -255,6 +279,11 @@ export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
     orientation: 'auto',
     imagesPerPage: 1,
     margin: 'standard',
+  });
+
+  const [converterSettings, setConverterSettings] = useState<ImageConverterSettings>({
+    outputFormat: 'image/jpeg',
+    quality: 90,
   });
 
   // Dedicated standalone interactive workspaces
@@ -315,10 +344,7 @@ export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
     tool.slug === 'uuid' ||
     tool.slug === 'url-encoder' ||
     tool.slug === 'jwt-decoder' ||
-    tool.slug === 'base64-converter' ||
-    tool.slug === 'base64' ||
-    tool.slug === 'base64-encoder' ||
-    tool.slug === 'base64-decoder';
+    tool.slug === 'base64-converter';
 
   if (isDevTool) {
     return <DevToolsWorkspace tool={tool} />;
@@ -337,6 +363,7 @@ export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
   const isSplitter = tool.slug === 'pdf-splitter';
   const isPdfToImage = tool.slug === 'pdf-to-image';
   const isImageToPdf = tool.slug === 'image-to-pdf';
+  const isConverter = tool.slug === 'image-converter';
 
   // Render tool options slot connected to settings state
   const renderOptionsSlot = () => {
@@ -359,6 +386,9 @@ export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
     }
     if (isImageToPdf) {
       return <ImageToPdfOptionsComponent onChange={setImageToPdfSettings} />;
+    }
+    if (isConverter) {
+      return <ImageConverterOptions onChange={setConverterSettings} />;
     }
     return null;
   };
@@ -398,12 +428,10 @@ export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
           customHeight: compressorSettings.customHeight,
           maintainAspectRatio: compressorSettings.maintainAspectRatio,
           targetMaxSizeBytes,
+          keepMetadata: !compressorSettings.removeMetadata,
         });
 
-        file.processedBlob = res.blob;
-        file.processedSize = res.size;
-        file.status = 'completed';
-        file.progress = 100;
+        applyImageResult(file, res);
       }
 
       onProgress({
@@ -461,10 +489,7 @@ export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
           maintainAspectRatio: resizerSettings.maintainAspectRatio,
         });
 
-        file.processedBlob = res.blob;
-        file.processedSize = res.size;
-        file.status = 'completed';
-        file.progress = 100;
+        applyImageResult(file, res);
       }
 
       onProgress({
@@ -548,14 +573,11 @@ export const ToolPageClient: React.FC<ToolPageClientProps> = ({ tool }) => {
         });
 
         const res = await compressImageAdvanced(file.originalFile, {
-          outputFormat: 'image/webp',
-          quality: 0.9,
+          outputFormat: converterSettings.outputFormat,
+          quality: converterSettings.quality / 100,
         });
 
-        file.processedBlob = res.blob;
-        file.processedSize = res.size;
-        file.status = 'completed';
-        file.progress = 100;
+        applyImageResult(file, res);
       }
 
       onProgress({

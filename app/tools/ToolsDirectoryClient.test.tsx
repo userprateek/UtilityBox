@@ -36,8 +36,14 @@ describe('ToolsDirectoryClient Component Integration', () => {
     const pdfTab = screen.getByRole('tab', { name: /pdf tools/i });
     fireEvent.click(pdfTab);
 
-    expect(screen.getByText('PDF Compressor')).toBeInTheDocument();
+    expect(screen.getByText('PDF Splitter')).toBeInTheDocument();
     expect(screen.getByText('PDF Merger')).toBeInTheDocument();
+    expect(screen.queryByText('PDF Compressor')).not.toBeInTheDocument();
+    const qrTab = screen.getByRole('tab', { name: /qr code generators/i });
+    fireEvent.click(qrTab);
+
+    expect(screen.getByText('QR Code Generator')).toBeInTheDocument();
+    expect(screen.getByText('Shop UPI QR Code Generator')).toBeInTheDocument();
     expect(screen.queryByText('Image Compressor')).not.toBeInTheDocument();
   });
 

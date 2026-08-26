@@ -66,8 +66,17 @@ export async function generatePassportPhotoSheet(
             const x = gapX + c * (photoWidth + gapX);
             const y = gapY + r * (photoHeight + gapY);
 
-            // Draw photo
-            ctx.drawImage(img, x, y, photoWidth, photoHeight);
+            // Draw photo contained (letterboxed) so non-35:45 images are not stretched
+            const srcW = img.naturalWidth || img.width;
+            const srcH = img.naturalHeight || img.height;
+            const scale = Math.min(photoWidth / srcW, photoHeight / srcH);
+            const drawW = srcW * scale;
+            const drawH = srcH * scale;
+            const drawX = x + (photoWidth - drawW) / 2;
+            const drawY = y + (photoHeight - drawH) / 2;
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(x, y, photoWidth, photoHeight);
+            ctx.drawImage(img, drawX, drawY, drawW, drawH);
 
             // Optional cut lines / border
             if (options.showCutLines) {

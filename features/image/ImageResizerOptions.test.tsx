@@ -13,6 +13,23 @@ describe('ImageResizerOptions Component', () => {
     expect(screen.getByText(/Signature \(3:1\)/i)).toBeInTheDocument();
   });
 
+  it('shows width and height inputs in print size mode with passport millimetre defaults', () => {
+    const handleChange = jest.fn();
+    render(<ImageResizerOptions onChange={handleChange} />);
+
+    fireEvent.click(screen.getByText(/Print Size/i));
+
+    expect(screen.getByText(/Width \(mm\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Height \(mm\)/i)).toBeInTheDocument();
+    expect(handleChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        unit: 'mm',
+        width: 35,
+        height: 45,
+      })
+    );
+  });
+
   it('switches to percentage mode and updates slider', () => {
     const handleChange = jest.fn();
     render(<ImageResizerOptions onChange={handleChange} />);

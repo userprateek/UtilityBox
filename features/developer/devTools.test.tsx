@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { DevToolsWorkspace } from './DevToolsWorkspace';
 import { ToolMetadata } from '@/types/tool';
+import { UUID_V4_PATTERN } from './codecs';
 
 const mockUuidTool: ToolMetadata = {
   slug: 'uuid',
@@ -28,13 +29,31 @@ const mockJwtTool: ToolMetadata = {
   name: 'JWT Token Decoder',
 };
 
+const mockBase64Tool: ToolMetadata = {
+  ...mockUuidTool,
+  slug: 'base64-converter',
+  name: 'Base64 Encoder & Decoder',
+  maxFileSizeMB: 10,
+};
+
 describe('Developer Tools Suite', () => {
   describe('UUID Generator', () => {
-    it('generates bulk UUID v4 strings', () => {
+    it('generates bulk UUID v4 strings and regenerates on count change', () => {
       render(<DevToolsWorkspace tool={mockUuidTool} />);
 
       expect(screen.getByText(/UUID v4 Bulk Generator/i)).toBeInTheDocument();
       expect(screen.getByText('Copy All UUIDs')).toBeInTheDocument();
+
+      const pre = document.querySelector('pre');
+      const initial = pre?.textContent?.trim().split('\n') ?? [];
+      expect(initial).toHaveLength(5);
+      initial.forEach((id) => expect(id).toMatch(UUID_V4_PATTERN));
+
+      fireEvent.click(screen.getByRole('button', { name: '10 UUIDs' }));
+
+      const updated = pre?.textContent?.trim().split('\n') ?? [];
+      expect(updated).toHaveLength(10);
+      updated.forEach((id) => expect(id).toMatch(UUID_V4_PATTERN));
     });
   });
 
@@ -42,18 +61,29 @@ describe('Developer Tools Suite', () => {
     it('encodes and decodes URL strings', () => {
       render(<DevToolsWorkspace tool={mockUrlTool} />);
 
-      const textarea = screen.getByPlaceholderText(/Type or paste URL parameter string here/i) as HTMLTextAreaElement;
+      const textarea = screen.getByPlaceholderText(
+        /Type or paste URL parameter string here/i
+      ) as HTMLTextAreaElement;
       fireEvent.change(textarea, { target: { value: 'hello world & test' } });
 
-      const encodeBtn = screen.getByText('Encode URL');
-      fireEvent.click(encodeBtn);
-
+      fireEvent.click(screen.getByText('Encode URL'));
       expect(textarea.value).toBe('hello%20world%20%26%20test');
 
-      const decodeBtn = screen.getByText('Decode URL');
-      fireEvent.click(decodeBtn);
-
+      fireEvent.click(screen.getByText('Decode URL'));
       expect(textarea.value).toBe('hello world & test');
+    });
+
+    it('shows an error for invalid percent-encoded input', () => {
+      render(<DevToolsWorkspace tool={mockUrlTool} />);
+
+      const textarea = screen.getByPlaceholderText(
+        /Type or paste URL parameter string here/i
+      ) as HTMLTextAreaElement;
+      fireEvent.change(textarea, { target: { value: '%' } });
+      fireEvent.click(screen.getByText('Decode URL'));
+
+      expect(screen.getByText(/Invalid percent-encoded URL string/i)).toBeInTheDocument();
+      expect(textarea.value).toBe('%');
     });
   });
 
@@ -69,27 +99,24 @@ describe('Developer Tools Suite', () => {
 
       expect(screen.getByText(/HEADER: Algorithm & Token Type/i)).toBeInTheDocument();
       expect(screen.getByText(/PAYLOAD: Data Claims & Expiry/i)).toBeInTheDocument();
+      expect(screen.getByText(/John Doe/)).toBeInTheDocument();
     });
   });
 
   describe('Base64 Encoder & Decoder', () => {
     it('encodes and decodes base64 strings', () => {
-      const mockBase64Tool: ToolMetadata = {
-        ...mockUuidTool,
-        slug: 'base64-converter',
-        name: 'Base64 Encoder & Decoder',
-      };
-
       render(<DevToolsWorkspace tool={mockBase64Tool} />);
 
       expect(screen.getAllByText('Base64 Encoder & Decoder')[0]).toBeInTheDocument();
       const textarea = screen.getByPlaceholderText(/Type or paste raw text or Base64 string here/i);
       fireEvent.change(textarea, { target: { value: 'Hello World' } });
 
-      const encodeBtn = screen.getByText('Encode to Base64');
-      fireEvent.click(encodeBtn);
-
+      fireEvent.click(screen.getByText('Encode to Base64'));
       expect(screen.getByText('SGVsbG8gV29ybGQ=')).toBeInTheDocument();
+
+      fireEvent.click(screen.getByText('Swap Input & Result'));
+      fireEvent.click(screen.getByText('Decode from Base64'));
+      expect(screen.getByText('Hello World')).toBeInTheDocument();
     });
   });
 });

@@ -30,6 +30,7 @@ import {
   generateDownloadFilename,
   formatBytes,
   calculateSavings,
+  mimeTypeToExtension,
 } from '@/lib/file/fileUtils';
 import { trackToolUse, trackToolDownload } from '@/lib/analytics/gtag';
 import styles from './ToolShell.module.scss';
@@ -132,7 +133,9 @@ export const ToolShell: React.FC<ToolShellProps> = ({
       fileName: files.length === 1 ? files[0]?.name : `batch_${tool.slug}`,
     });
     files.forEach((file) => {
-      const filename = generateDownloadFilename(file.name, tool.slug);
+      const outputExt =
+        mimeTypeToExtension(file.processedBlob?.type || file.type) || undefined;
+      const filename = generateDownloadFilename(file.name, tool.slug, outputExt);
       if (file.processedBlob) {
         downloadBlob(file.processedBlob, filename);
       } else if (file.previewUrl) {
@@ -148,7 +151,9 @@ export const ToolShell: React.FC<ToolShellProps> = ({
       fileName: file.name,
       fileSize: file.processedSize || file.size,
     });
-    const filename = generateDownloadFilename(file.name, tool.slug);
+    const outputExt =
+      mimeTypeToExtension(file.processedBlob?.type || file.type) || undefined;
+    const filename = generateDownloadFilename(file.name, tool.slug, outputExt);
     if (file.processedBlob) {
       downloadBlob(file.processedBlob, filename);
     } else if (file.previewUrl) {

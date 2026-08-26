@@ -104,31 +104,8 @@ export const TOOL_REGISTRY: Record<string, ToolMetadata> = {
     isPopular: true,
     features: [
       'Supports JPG, PNG, WebP, SVG, and GIF inputs',
-      'Batch format conversion with single-click zip download',
-      'Preserve transparency during conversion',
-    ],
-  },
-  'pdf-compressor': {
-    slug: 'pdf-compressor',
-    name: 'PDF Compressor',
-    shortDescription: 'Reduce PDF file size while maintaining readable text and sharp graphics.',
-    description:
-      'Compress bloated PDF documents, presentations, and scans to save disk space and meet email attachment limits.',
-    category: 'pdf',
-    iconName: 'FileMinus',
-    supportedInputFormats: ['application/pdf'],
-    supportedOutputFormats: ['application/pdf'],
-    maxFiles: 5,
-    maxFileSizeMB: 100,
-    seoTitle: 'PDF Compressor - Reduce PDF File Size Online Free',
-    seoDescription:
-      'Shrink your PDF documents securely in your browser. No files uploaded to remote servers.',
-    keywords: ['pdf compressor', 'compress pdf online', 'reduce pdf size', 'shrink pdf document'],
-    isPopular: true,
-    features: [
-      'Multiple compression presets (Extreme, Recommended, High Quality)',
-      'Estimated file size savings before download',
-      'Fast client-side vector and raster optimization',
+      'Choose JPEG, PNG, or WebP output',
+      'Preserve transparency during PNG conversion',
     ],
   },
   'pdf-merger': {
@@ -254,7 +231,7 @@ export const TOOL_REGISTRY: Record<string, ToolMetadata> = {
       'Create instant QR codes for UPI payments, WhatsApp, shop WiFi, links, and text.',
     description:
       'Generate high-resolution printable QR codes for Google Pay / PhonePe / Paytm shop counter payments, WhatsApp customer chats, WiFi passwords, and website links. 100% free with no signup.',
-    category: 'utilities',
+    category: 'qr',
     iconName: 'QrCode',
     supportedInputFormats: ['text/plain'],
     supportedOutputFormats: ['image/png', 'image/svg+xml'],
@@ -463,7 +440,7 @@ export const TOOL_REGISTRY: Record<string, ToolMetadata> = {
       'Generate instant shop counter UPI payment QR codes for GPay, PhonePe, and Paytm.',
     description:
       'Create custom printable UPI QR codes with your Shop UPI ID, Payee Name, center logo, and optional fixed amount. Ready for counter standees.',
-    category: 'utilities',
+    category: 'qr',
     iconName: 'QrCode',
     supportedInputFormats: ['text/plain'],
     supportedOutputFormats: ['image/png', 'image/svg+xml'],

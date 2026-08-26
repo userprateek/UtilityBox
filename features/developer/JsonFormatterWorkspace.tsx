@@ -163,7 +163,7 @@ const JsonTreeNode: React.FC<JsonTreeNodeProps> = ({
                 data={(data as Record<string, unknown>)[key]}
                 depth={depth + 1}
                 isLast={idx === keys.length - 1}
-                defaultExpanded={depth < 2}
+                defaultExpanded={defaultExpanded}
               />
             ))}
             <div className={styles.treeRow} style={{ paddingLeft: `${depth * 16}px` }}>
@@ -502,7 +502,11 @@ export const JsonFormatterWorkspace: React.FC<JsonFormatterWorkspaceProps> = ({ 
                       </button>
                     </div>
                     <div className={styles.jsonTreeContainer}>
-                      <JsonTreeNode data={parsedJsonData} defaultExpanded={expandTree} />
+                      <JsonTreeNode
+                        key={expandTree ? 'expanded' : 'collapsed'}
+                        data={parsedJsonData}
+                        defaultExpanded={expandTree}
+                      />
                     </div>
                   </div>
                 )}

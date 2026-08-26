@@ -43,13 +43,6 @@ export const TOOL_CATEGORIES: Record<string, ToolCategory> = {
     iconName: 'Code',
     accentColor: '#10b981',
   },
-  utilities: {
-    id: 'utilities',
-    label: 'Daily Utilities',
-    description: 'QR code generators, unit converters, password generators, and text tools.',
-    iconName: 'Wrench',
-    accentColor: '#f59e0b',
-  },
   calculators: {
     id: 'calculators',
     label: 'Calculators',

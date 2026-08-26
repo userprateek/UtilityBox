@@ -181,7 +181,15 @@ TOTAL MATURITY VALUE: ₹${Math.round(maturityAmount).toLocaleString('en-IN')}`;
                 ₹{Math.round(maturityAmount).toLocaleString('en-IN')}
               </span>
               <span className={styles.mrpSubtext}>
-                Total maturity value after {numYears} years with quarterly bank compounding
+                Total maturity value after {numYears} years with{' '}
+                {frequency === 'quarterly'
+                  ? 'quarterly'
+                  : frequency === 'monthly'
+                    ? 'monthly'
+                    : frequency === 'half_yearly'
+                      ? 'half-yearly'
+                      : 'annual'}{' '}
+                compounding
               </span>
             </div>
 

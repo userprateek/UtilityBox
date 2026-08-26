@@ -61,6 +61,19 @@ describe('Calculators Workspace Suite', () => {
 
       expect(screen.getByText(/EMI Repayment Summary/i)).toBeInTheDocument();
     });
+
+    it('converts tenure when switching between years and months', () => {
+      render(<EmiCalculatorWorkspace tool={{ ...mockTool, slug: 'emi-calculator' }} />);
+
+      const tenureInput = screen.getByLabelText(/Loan Tenure/i) as HTMLInputElement;
+      expect(tenureInput.value).toBe('5');
+
+      fireEvent.click(screen.getByRole('button', { name: 'Mo' }));
+      expect(tenureInput.value).toBe('60');
+
+      fireEvent.click(screen.getByRole('button', { name: 'Yr' }));
+      expect(tenureInput.value).toBe('5');
+    });
   });
 
   describe('GratuityCalculatorWorkspace', () => {

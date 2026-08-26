@@ -62,7 +62,7 @@ describe('Tool Registry', () => {
     const searchCompress = searchTools('compress');
     expect(searchCompress.length).toBeGreaterThan(0);
     expect(searchCompress.some((t) => t.slug === 'image-compressor')).toBe(true);
-    expect(searchCompress.some((t) => t.slug === 'pdf-compressor')).toBe(true);
+    expect(searchCompress.some((t) => t.slug === 'pdf-compressor')).toBe(false);
 
     const searchPdf = searchTools('pdf');
     expect(searchPdf.length).toBeGreaterThan(0);
@@ -78,5 +78,27 @@ describe('Tool Registry', () => {
   it('returns all tools when search query is empty', () => {
     const results = searchTools('   ');
     expect(results.length).toBe(Object.keys(TOOL_REGISTRY).length);
+  });
+
+  it('resolves base64 slug aliases to the canonical converter', () => {
+    const aliases = ['base64', 'base64-encoder', 'base64-decoder', 'base64-encode', 'base64-decode'];
+
+    aliases.forEach((alias) => {
+      const tool = getToolBySlug(alias);
+      expect(tool).toBeDefined();
+      expect(tool?.slug).toBe('base64-converter');
+    });
+  });
+
+  it('does not expose the unfinished pdf-compressor tool', () => {
+    expect(getToolBySlug('pdf-compressor')).toBeUndefined();
+    expect(TOOL_REGISTRY['pdf-compressor']).toBeUndefined();
+  });
+
+  it('places QR tools in the qr category', () => {
+    const qrTools = getToolsByCategory('qr');
+    expect(qrTools.length).toBeGreaterThan(0);
+    expect(qrTools.some((t) => t.slug === 'qr-code-generator')).toBe(true);
+    expect(qrTools.some((t) => t.slug === 'upi-qr-code-generator')).toBe(true);
   });
 });
