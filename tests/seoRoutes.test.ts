@@ -44,7 +44,9 @@ describe('SEO & Route Verification', () => {
 
     const star = rules.find((rule) => rule.userAgent === '*');
     expect(star?.allow).toBe('/');
-    expect(star?.disallow).toEqual(expect.arrayContaining(['/api/', '/_next/']));
+    expect(star?.disallow).toEqual(['/api/']);
+    const disallows = [star?.disallow].flat();
+    expect(disallows.some((path) => String(path).includes('/_next'))).toBe(false);
   });
 
   it('generates rich OpenGraph and Twitter metadata for tool pages', async () => {
