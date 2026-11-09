@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Globe } from 'lucide-react';
+import { useWebsiteLanguage } from '@/components/i18n/WebsiteLanguageProvider';
 import styles from './ToolGuide.module.scss';
 
 export function ToolGuideLangShell({
@@ -11,13 +12,13 @@ export function ToolGuideLangShell({
   titles: React.ReactNode;
   children: React.ReactNode;
 }) {
-  const [lang, setLang] = useState<'en' | 'hi'>('en');
+  const { language, setLanguage } = useWebsiteLanguage();
 
   return (
     <section
       className={styles.guideSection}
       aria-labelledby="how-it-works-title"
-      data-lang={lang}
+      data-lang={language}
     >
       <div className={styles.guideHeader}>
         <div className={styles.topControlRow}>
@@ -30,8 +31,10 @@ export function ToolGuideLangShell({
             <Globe size={14} className={styles.langIcon} />
             <button
               type="button"
-              className={`${styles.langBtn} ${lang === 'en' ? styles.activeLang : ''}`}
-              onClick={() => setLang('en')}
+              data-choice="en"
+              className={styles.langBtn}
+              onClick={() => setLanguage('en')}
+              aria-pressed={language === 'en'}
               aria-label="Switch to English guide"
             >
               English
@@ -39,8 +42,10 @@ export function ToolGuideLangShell({
             <span className={styles.langDivider}>|</span>
             <button
               type="button"
-              className={`${styles.langBtn} ${lang === 'hi' ? styles.activeLang : ''}`}
-              onClick={() => setLang('hi')}
+              data-choice="hi"
+              className={styles.langBtn}
+              onClick={() => setLanguage('hi')}
+              aria-pressed={language === 'hi'}
               aria-label="Switch to Hindi guide"
             >
               हिंदी

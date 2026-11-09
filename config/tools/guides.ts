@@ -709,6 +709,54 @@ export const TOOL_GUIDES: Record<string, ToolGuideData> = {
       },
     ],
   },
+  'document-translator': {
+    title: {
+      en: 'How to Translate a PDF or Image in 3 Steps',
+      hi: 'PDF या इमेज का अनुवाद 3 चरणों में कैसे करें',
+    },
+    subtitle: {
+      en: 'The file is uploaded to the DocsWala server and sent to Google Gemini. DocsWala does not keep a copy after the response.',
+      hi: 'फ़ाइल DocsWala सर्वर पर अपलोड होकर Google Gemini को भेजी जाती है। जवाब के बाद DocsWala कॉपी नहीं रखता।',
+    },
+    steps: [
+      {
+        stepNumber: 1,
+        iconName: 'UploadCloud',
+        title: {
+          en: 'Upload a PDF or image',
+          hi: 'PDF या इमेज अपलोड करें',
+        },
+        description: {
+          en: 'Add one PDF, JPG, PNG, or WebP file. Password-protected PDFs cannot be translated.',
+          hi: 'एक PDF, JPG, PNG या WebP फ़ाइल जोड़ें। पासवर्ड वाले PDF का अनुवाद नहीं हो सकता।',
+        },
+      },
+      {
+        stepNumber: 2,
+        iconName: 'Sliders',
+        title: {
+          en: 'Choose languages',
+          hi: 'भाषाएँ चुनें',
+        },
+        description: {
+          en: 'Set the document language (or Auto detect) and the target language. The target defaults to the website language and can be changed.',
+          hi: 'दस्तावेज़ की भाषा (या ऑटो डिटेक्ट) और लक्ष्य भाषा चुनें। लक्ष्य भाषा वेबसाइट भाषा से शुरू होती है, आप इसे बदल सकते हैं।',
+        },
+      },
+      {
+        stepNumber: 3,
+        iconName: 'Download',
+        title: {
+          en: 'Preview and download',
+          hi: 'प्रीव्यू करें और डाउनलोड करें',
+        },
+        description: {
+          en: 'Wait while the document is understood, translated, and rebuilt. Download the translated PDF or image, or try another language.',
+          hi: 'दस्तावेज़ समझे जाने, अनुवाद और पुनर्निर्माण तक प्रतीक्षा करें। अनुवादित PDF या इमेज डाउनलोड करें, या दूसरी भाषा आज़माएँ।',
+        },
+      },
+    ],
+  },
 };
 
 export function getToolGuide(toolSlug: string): ToolGuideData {

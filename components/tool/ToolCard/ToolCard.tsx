@@ -5,6 +5,8 @@ import { ToolMetadata } from '@/types/tool';
 import { Badge } from '@/components/common/Badge/Badge';
 import { ToolIcon } from '@/components/common/ToolIcon/ToolIcon';
 import { TOOL_CATEGORIES } from '@/config/tools/categories';
+import { Bi } from '@/components/i18n/Bi';
+import { categoryHindi, toolHindi } from '@/lib/i18n/catalog';
 import styles from './ToolCard.module.scss';
 
 export interface ToolCardProps {
@@ -24,12 +26,12 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
           <div className={styles.headerBadges}>
             {tool.isNew && (
               <Badge variant="success" size="sm">
-                New
+                <Bi en="New" hi="नया" />
               </Badge>
             )}
             {tool.isPopular && (
               <Badge variant="warning" size="sm" icon={<Sparkles size={11} />}>
-                Popular
+                <Bi en="Popular" hi="लोकप्रिय" />
               </Badge>
             )}
             <div className={styles.arrowIcon}>
@@ -40,12 +42,18 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
 
         <div className={styles.cardBody}>
           <h3 className={styles.toolName}>{tool.name}</h3>
-          <p className={styles.toolDesc}>{tool.shortDescription}</p>
+          <p className={styles.toolDesc}>
+            <Bi en={tool.shortDescription} hi={toolHindi(tool.slug)?.short ?? tool.shortDescription} />
+          </p>
         </div>
 
         <div className={styles.cardFooter}>
           <span className={styles.categoryName} style={{ color: category?.accentColor }}>
-            {category?.label || tool.category}
+            {category ? (
+              <Bi en={category.label} hi={categoryHindi(tool.category).label} />
+            ) : (
+              tool.category
+            )}
           </span>
           <span className={styles.formatsInfo}>
             {tool.supportedInputFormats.length > 0 &&

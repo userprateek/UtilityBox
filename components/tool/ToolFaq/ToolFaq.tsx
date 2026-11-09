@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { FaqItem } from '@/lib/seo/schema';
+import { Bi } from '@/components/i18n/Bi';
 import styles from './ToolFaq.module.scss';
 
 export interface ToolFaqProps {
@@ -17,10 +18,16 @@ export const ToolFaq: React.FC<ToolFaqProps> = ({ toolName, faqs }) => {
           <HelpCircle size={24} />
         </div>
         <h2 id="faq-heading" className={styles.faqTitle}>
-          Frequently Asked Questions about {toolName}
+          <Bi
+            en={`Frequently Asked Questions about ${toolName}`}
+            hi={`${toolName} के आम सवाल`}
+          />
         </h2>
         <p className={styles.faqSubtitle}>
-          Everything you need to know about privacy, performance, and supported formats.
+          <Bi
+            en="Everything you need to know about privacy, performance, and supported formats."
+            hi="प्राइवेसी, गति और फ़ाइल प्रकार के बारे में।"
+          />
         </p>
       </div>
 

@@ -1,5 +1,6 @@
 import { PDFDocument } from 'pdf-lib';
 import { readFileAsArrayBuffer } from './pdfMerger';
+import { loadPdf, PASSWORD_PROTECTED_PDF } from './loadPdf';
 
 export type SplitMode = 'all_pages' | 'range' | 'fixed_interval';
 
@@ -22,7 +23,7 @@ export interface SplitPdfResultItem {
  */
 export async function getPdfPageCount(file: File): Promise<number> {
   const arrayBuffer = await readFileAsArrayBuffer(file);
-  const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+  const pdfDoc = await loadPdf(arrayBuffer);
   return pdfDoc.getPageCount();
 }
 
@@ -70,7 +71,17 @@ export async function splitPdfDocument(
   onProgress?: (current: number, total: number, message: string) => void
 ): Promise<SplitPdfResultItem[]> {
   const arrayBuffer = await readFileAsArrayBuffer(file);
-  const srcPdf = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+  let srcPdf;
+  try {
+    srcPdf = await loadPdf(arrayBuffer);
+  } catch (error) {
+    if (error instanceof Error && error.message === PASSWORD_PROTECTED_PDF) {
+      throw new Error(
+        `"${file.name}" is password-protected and cannot be split. Remove the password and try again.`
+      );
+    }
+    throw error;
+  }
   const totalPages = srcPdf.getPageCount();
 
   const baseName = file.name.replace(/\.pdf$/i, '');

@@ -37,7 +37,7 @@ export interface ImageCropperWorkspaceProps {
 }
 
 export type AspectRatioPreset =
-  'free' | 'passport' | 'signature' | '1:1' | '16:9' | '4:3' | '3:2' | '9:16';
+  'free' | 'passport' | 'signature' | 'signature-2' | '1:1' | '16:9' | '4:3' | '3:2' | '9:16';
 
 type HandleType = 'move' | 'nw' | 'ne' | 'sw' | 'se' | 'n' | 's' | 'w' | 'e';
 
@@ -60,6 +60,9 @@ function computeCropBoxForRatio(
       break;
     case 'signature':
       targetRatio = 3 / 1; // 3:1 signature banner
+      break;
+    case 'signature-2':
+      targetRatio = 2 / 1;
       break;
     case '1:1':
       targetRatio = 1;
@@ -240,6 +243,9 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
           switch (aspectRatio) {
             case 'signature':
               targetRatio = 3 / 1;
+              break;
+            case 'signature-2':
+              targetRatio = 2 / 1;
               break;
             case 'passport':
               targetRatio = 35 / 45;
@@ -568,7 +574,7 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
               <div className={styles.aspectPills}>
                 <span className={styles.aspectLabel}>Ratio:</span>
                 {(
-                  ['free', 'signature', 'passport', '1:1', '4:3', '16:9'] as AspectRatioPreset[]
+                  ['free', 'signature', 'signature-2', 'passport', '1:1', '4:3', '16:9'] as AspectRatioPreset[]
                 ).map((preset) => (
                   <button
                     key={preset}
@@ -582,7 +588,9 @@ export const ImageCropperWorkspace: React.FC<ImageCropperWorkspaceProps> = ({ to
                         ? 'Passport 35×45'
                         : preset === 'signature'
                           ? 'Signature 3:1'
-                          : preset}
+                          : preset === 'signature-2'
+                            ? 'Signature 2:1'
+                            : preset}
                   </button>
                 ))}
               </div>

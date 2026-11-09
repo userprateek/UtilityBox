@@ -33,6 +33,9 @@ import {
   mimeTypeToExtension,
 } from '@/lib/file/fileUtils';
 import { trackToolUse, trackToolDownload } from '@/lib/analytics/gtag';
+import { zipStored } from '@/lib/file/zipStore';
+import { Bi } from '@/components/i18n/Bi';
+import { hindiForKnownLabel } from '@/lib/i18n/catalog';
 import styles from './ToolShell.module.scss';
 
 export interface ToolShellProps {
@@ -126,6 +129,28 @@ export const ToolShell: React.FC<ToolShellProps> = ({
     resetProcessor();
   };
 
+  const handleDownloadZip = async () => {
+    const entries = [];
+    for (const file of files) {
+      if (!file.processedBlob) continue;
+      const outputExt = mimeTypeToExtension(file.processedBlob.type || file.type) || undefined;
+      const filename = generateDownloadFilename(file.name, tool.slug, outputExt);
+      entries.push({
+        name: filename,
+        bytes: new Uint8Array(await file.processedBlob.arrayBuffer()),
+      });
+    }
+    if (entries.length === 0) return;
+    const archive = zipStored(entries);
+    const zipName = generateDownloadFilename(`${tool.slug}-pages.pdf`, tool.slug, 'zip');
+    downloadBlob(new Blob([archive as unknown as BlobPart], { type: 'application/zip' }), zipName);
+    trackToolDownload(tool.slug, {
+      fileCount: entries.length,
+      toolName: tool.name,
+      fileName: zipName,
+    });
+  };
+
   const handleDownloadAll = () => {
     trackToolDownload(tool.slug, {
       fileCount: files.length,
@@ -175,7 +200,7 @@ export const ToolShell: React.FC<ToolShellProps> = ({
             <Alert
               key={`${err.code}-${idx}`}
               type="error"
-              title="File Upload Warning"
+              title={<Bi en="File Upload Warning" hi="फ़ाइल अपलोड की चेतावनी" />}
               onClose={clearErrors}
             >
               {err.message}
@@ -205,7 +230,9 @@ export const ToolShell: React.FC<ToolShellProps> = ({
               <div className={styles.featuresCard}>
                 <div className={styles.featuresHeader}>
                   <Sparkles size={16} className={styles.featuresIcon} />
-                  <h3 className={styles.featuresTitle}>Tool Capabilities</h3>
+                  <h3 className={styles.featuresTitle}>
+                    <Bi en="Tool Capabilities" hi="इस टूल में क्या है" />
+                  </h3>
                 </div>
                 <ul className={styles.featuresList}>
                   {tool.features.map((feat, i) => (
@@ -247,7 +274,9 @@ export const ToolShell: React.FC<ToolShellProps> = ({
             {/* Tool Specific Options Slot */}
             {optionsSlot && (
               <Card variant="glass" padding="md" className={styles.optionsCard}>
-                <h4 className={styles.optionsTitle}>Processing Settings</h4>
+                <h4 className={styles.optionsTitle}>
+                  <Bi en="Processing Settings" hi="सेटिंग" />
+                </h4>
                 <div className={styles.optionsContent}>{optionsSlot}</div>
               </Card>
             )}
@@ -257,7 +286,14 @@ export const ToolShell: React.FC<ToolShellProps> = ({
               <Card variant="glass" padding="md" className={styles.progressCard}>
                 <ProgressBar
                   percentage={progress.percentage}
-                  label={progress.currentStep || 'Processing your files locally...'}
+                  label={
+                    progress.currentStep || (
+                      <Bi
+                        en="Processing your files locally..."
+                        hi="फ़ाइल आपके डिवाइस पर प्रोसेस हो रही है..."
+                      />
+                    )
+                  }
                   variant="primary"
                 />
               </Card>
@@ -265,7 +301,7 @@ export const ToolShell: React.FC<ToolShellProps> = ({
 
             {/* Process Error */}
             {processStatus === 'error' && processError && (
-              <Alert type="error" title="Processing Error">
+              <Alert type="error" title={<Bi en="Processing Error" hi="प्रोसेस में गलती" />}>
                 {processError}
               </Alert>
             )}
@@ -280,9 +316,14 @@ export const ToolShell: React.FC<ToolShellProps> = ({
                         <CheckCircle2 size={32} />
                       </div>
                       <div>
-                        <h3 className={styles.resultTitle}>Processing Complete!</h3>
+                        <h3 className={styles.resultTitle}>
+                          <Bi en="Processing Complete!" hi="काम पूरा हो गया" />
+                        </h3>
                         <p className={styles.resultDesc}>
-                          Your files have been processed in the browser. You can now download them.
+                          <Bi
+                            en="Your files have been processed in the browser. You can now download them."
+                            hi="फ़ाइल ब्राउज़र में तैयार हो गई। अब डाउनलोड कर सकते हैं।"
+                          />
                         </p>
                       </div>
                     </div>
@@ -340,7 +381,7 @@ export const ToolShell: React.FC<ToolShellProps> = ({
                               leftIcon={<Download size={14} />}
                               onClick={() => handleDownloadSingle(file)}
                             >
-                              Download
+                              <Bi en="Download" hi="डाउनलोड" />
                             </Button>
                           </div>
                         );
@@ -348,15 +389,33 @@ export const ToolShell: React.FC<ToolShellProps> = ({
                     </div>
 
                     <div className={styles.resultActions}>
+                      {tool.slug === 'pdf-splitter' && files.length > 1 && (
+                        <Button
+                          variant="primary"
+                          size="lg"
+                          leftIcon={<Download size={18} />}
+                          onClick={() => void handleDownloadZip()}
+                        >
+                          <Bi
+                            en={`Download ZIP (${files.length} Files)`}
+                            hi={`ZIP डाउनलोड (${files.length} फ़ाइल)`}
+                          />
+                        </Button>
+                      )}
                       <Button
-                        variant="primary"
+                        variant={tool.slug === 'pdf-splitter' && files.length > 1 ? 'outline' : 'primary'}
                         size="lg"
                         leftIcon={<Download size={18} />}
                         onClick={handleDownloadAll}
                       >
-                        {files.length > 1
-                          ? `Download All (${files.length} Files)`
-                          : 'Download Processed File'}
+                        {files.length > 1 ? (
+                          <Bi
+                            en={`Download All (${files.length} Files)`}
+                            hi={`सभी डाउनलोड (${files.length} फ़ाइल)`}
+                          />
+                        ) : (
+                          <Bi en="Download Processed File" hi="तैयार फ़ाइल डाउनलोड करें" />
+                        )}
                       </Button>
                       <Button
                         variant="secondary"
@@ -364,7 +423,7 @@ export const ToolShell: React.FC<ToolShellProps> = ({
                         leftIcon={<Sliders size={16} />}
                         onClick={() => resetProcessor()}
                       >
-                        Adjust Options & Retry
+                        <Bi en="Adjust Options & Retry" hi="सेटिंग बदलकर फिर करें" />
                       </Button>
                       <Button
                         variant="ghost"
@@ -372,7 +431,7 @@ export const ToolShell: React.FC<ToolShellProps> = ({
                         leftIcon={<RotateCcw size={16} />}
                         onClick={handleResetAll}
                       >
-                        Upload New Files
+                        <Bi en="Upload New Files" hi="नई फ़ाइल डालें" />
                       </Button>
                     </div>
                   </Card>
@@ -390,7 +449,7 @@ export const ToolShell: React.FC<ToolShellProps> = ({
                   onClick={handleResetAll}
                   disabled={isProcessing}
                 >
-                  Reset
+                  <Bi en="Reset" hi="रीसेट" />
                 </Button>
 
                 <Button
@@ -400,7 +459,14 @@ export const ToolShell: React.FC<ToolShellProps> = ({
                   isLoading={isProcessing}
                   onClick={handleStartProcessing}
                 >
-                  {processButtonLabel}
+                  {hindiForKnownLabel(processButtonLabel) ? (
+                    <Bi
+                      en={processButtonLabel}
+                      hi={hindiForKnownLabel(processButtonLabel) ?? processButtonLabel}
+                    />
+                  ) : (
+                    processButtonLabel
+                  )}
                 </Button>
               </div>
             )}
@@ -413,9 +479,14 @@ export const ToolShell: React.FC<ToolShellProps> = ({
         <div className={styles.trustItem}>
           <Lock size={18} className={styles.trustIcon} />
           <div>
-            <span className={styles.trustTitle}>Zero Data Upload</span>
+            <span className={styles.trustTitle}>
+              <Bi en="Zero Data Upload" hi="फ़ाइल अपलोड नहीं होती" />
+            </span>
             <p className={styles.trustText}>
-              Processing runs 100% on your device. Your files never hit our servers.
+              <Bi
+                en="Processing runs 100% on your device. Your files never hit our servers."
+                hi="काम पूरी तरह आपके डिवाइस पर होता है। फ़ाइल हमारे सर्वर पर नहीं जाती।"
+              />
             </p>
           </div>
         </div>
@@ -423,9 +494,14 @@ export const ToolShell: React.FC<ToolShellProps> = ({
         <div className={styles.trustItem}>
           <Zap size={18} className={styles.trustIcon} />
           <div>
-            <span className={styles.trustTitle}>Instant Client Execution</span>
+            <span className={styles.trustTitle}>
+              <Bi en="Instant Client Execution" hi="तुरंत आपके कंप्यूटर पर" />
+            </span>
             <p className={styles.trustText}>
-              No server queues or upload bandwidth delays. Immediate local computation.
+              <Bi
+                en="No server queues or upload bandwidth delays. Immediate local computation."
+                hi="सर्वर की लाइन या अपलोड का इंतज़ार नहीं। काम तुरंत यहीं होता है।"
+              />
             </p>
           </div>
         </div>
@@ -433,9 +509,14 @@ export const ToolShell: React.FC<ToolShellProps> = ({
         <div className={styles.trustItem}>
           <ShieldCheck size={18} className={styles.trustIcon} />
           <div>
-            <span className={styles.trustTitle}>Enterprise Privacy Standard</span>
+            <span className={styles.trustTitle}>
+              <Bi en="Enterprise Privacy Standard" hi="कड़ी प्राइवेसी" />
+            </span>
             <p className={styles.trustText}>
-              Compliant with privacy policies and strict internal data guidelines.
+              <Bi
+                en="Compliant with privacy policies and strict internal data guidelines."
+                hi="प्राइवेसी नीति और डेटा के सख्त नियम के साथ।"
+              />
             </p>
           </div>
         </div>

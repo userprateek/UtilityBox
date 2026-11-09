@@ -1,0 +1,58 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.prompt {
+  position: fixed;
+  z-index: $z-dropdown;
+  top: calc(var(--header-height) + 8px);
+  right: 12px;
+  left: 12px;
+  width: auto;
+  max-width: 420px;
+  margin-left: auto;
+  padding: $space-3;
+  border: 1px solid var(--color-border);
+  border-radius: $radius-xl;
+  background: var(--color-surface-elevated);
+  box-shadow: var(--shadow-elevated);
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0 0 $space-3;
+  color: var(--color-text-main);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-2;
+}
+
+.choice {
+  min-height: 60px;
+  padding: 0 $space-4;
+  border: 1px solid var(--color-border);
+  border-radius: $radius-lg;
+  background: var(--color-surface-card);
+  color: var(--color-text-main);
+  font: inherit;
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-subtle);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}

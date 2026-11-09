@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { ThemeToggle } from './ThemeToggle';
+import { WebsiteLanguageProvider } from '@/components/i18n/WebsiteLanguageProvider';
 
 describe('ThemeToggle Component', () => {
   beforeEach(() => {
@@ -10,7 +11,11 @@ describe('ThemeToggle Component', () => {
   });
 
   it('renders correctly and toggles theme when clicked', () => {
-    render(<ThemeToggle />);
+    render(
+      <WebsiteLanguageProvider>
+        <ThemeToggle />
+      </WebsiteLanguageProvider>
+    );
     const button = screen.getByRole('button');
     expect(button).toHaveAttribute('aria-label', expect.stringMatching(/switch to dark mode/i));
 
@@ -31,16 +36,20 @@ describe('ThemeToggle Component', () => {
   });
 
   it('renders switch row variant properly', () => {
-    render(<ThemeToggle variant="row" />);
-    expect(screen.getByText('Appearance')).toBeInTheDocument();
-    expect(screen.getByText('Light Mode')).toBeInTheDocument();
+    render(
+      <WebsiteLanguageProvider>
+        <ThemeToggle variant="row" />
+      </WebsiteLanguageProvider>
+    );
+    expect(screen.getByText(/Appearance/)).toBeInTheDocument();
+    expect(screen.getByText(/Light Mode/)).toBeInTheDocument();
 
     const rowButton = screen.getByRole('button');
     act(() => {
       fireEvent.click(rowButton);
     });
 
-    expect(screen.getByText('Dark Mode')).toBeInTheDocument();
+    expect(screen.getByText(/Dark Mode/)).toBeInTheDocument();
     expect(localStorage.getItem('docswala-theme')).toBe('dark');
   });
 });

@@ -9,6 +9,7 @@ import { ImageCompressorSettings } from '@/features/image/ImageCompressorOptions
 import { ImageResizerSettings } from '@/features/image/ImageResizerOptions';
 import { ImageConverterSettings } from '@/features/image/ImageConverterOptions';
 import { compressImageAdvanced } from '@/lib/image/clientImageCompressor';
+import { physicalLengthToPixels } from '@/lib/image/physicalUnits';
 import { mergePdfFiles } from '@/lib/pdf/pdfMerger';
 import { splitPdfDocument, SplitPdfOptions } from '@/lib/pdf/pdfSplitter';
 import { convertPdfToImages, PdfToImageOptions } from '@/lib/pdf/pdfToImage';
@@ -244,8 +245,9 @@ const FileToolPage: React.FC<ToolPageClientProps> = ({ tool }) => {
           currentStep: `Resizing ${file.name}...`,
         });
 
-        const outputFormat =
-          resizerSettings.outputFormat === 'original' ? undefined : resizerSettings.outputFormat;
+        // "original" must reach the encoder. Mapping it to undefined makes the
+        // compressor emit JPEG for every non-WebP source.
+        const outputFormat = resizerSettings.outputFormat;
 
         let scaleMode: 'custom' | 'percentage' = 'custom';
         let scalePercentage = 100;
@@ -257,19 +259,28 @@ const FileToolPage: React.FC<ToolPageClientProps> = ({ tool }) => {
           scalePercentage = resizerSettings.percentage;
           customWidth = undefined;
           customHeight = undefined;
-        } else if (resizerSettings.unit === 'mm') {
+        } else if (
+          resizerSettings.unit === 'mm' ||
+          resizerSettings.unit === 'cm' ||
+          resizerSettings.unit === 'inch'
+        ) {
           scaleMode = 'custom';
-          customWidth = Math.round((resizerSettings.width / 25.4) * resizerSettings.dpi);
-          customHeight = Math.round((resizerSettings.height / 25.4) * resizerSettings.dpi);
-        } else if (resizerSettings.unit === 'cm') {
-          scaleMode = 'custom';
-          customWidth = Math.round((resizerSettings.width / 2.54) * resizerSettings.dpi);
-          customHeight = Math.round((resizerSettings.height / 2.54) * resizerSettings.dpi);
-        } else if (resizerSettings.unit === 'inch') {
-          scaleMode = 'custom';
-          customWidth = Math.round(resizerSettings.width * resizerSettings.dpi);
-          customHeight = Math.round(resizerSettings.height * resizerSettings.dpi);
+          customWidth = physicalLengthToPixels(
+            resizerSettings.width,
+            resizerSettings.unit,
+            resizerSettings.dpi
+          );
+          customHeight = physicalLengthToPixels(
+            resizerSettings.height,
+            resizerSettings.unit,
+            resizerSettings.dpi
+          );
         }
+
+        const exactPhysicalSize =
+          resizerSettings.unit === 'mm' ||
+          resizerSettings.unit === 'cm' ||
+          resizerSettings.unit === 'inch';
 
         const res = await compressImageAdvanced(file.originalFile, {
           quality: resizerSettings.quality / 100,
@@ -278,7 +289,9 @@ const FileToolPage: React.FC<ToolPageClientProps> = ({ tool }) => {
           scalePercentage,
           customWidth,
           customHeight,
-          maintainAspectRatio: resizerSettings.maintainAspectRatio,
+          // Print sizes are absolute. Fitting them inside the source aspect
+          // turns 25.4 mm at 300 DPI into 225 px on a 4:3 photo.
+          maintainAspectRatio: exactPhysicalSize ? false : resizerSettings.maintainAspectRatio,
         });
 
         applyImageResult(file, res);

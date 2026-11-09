@@ -69,6 +69,7 @@ describe('ImageCropperWorkspace Component', () => {
 
     expect(screen.getByText(/Passport 35×45/i)).toBeInTheDocument();
     expect(screen.getByText(/Signature 3:1/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Signature 2:1' })).toBeInTheDocument();
   });
 
   it('toggles target file size limit and shows KB options', () => {

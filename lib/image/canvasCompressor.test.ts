@@ -110,6 +110,34 @@ describe('canvasCompressor', () => {
     expect(result.format).toBe('image/jpeg');
   });
 
+  it('keeps the source format when output format is original', async () => {
+    const file = new File(['dummy-content'], 'test.png', { type: 'image/png' });
+    const result = await compressImageFile(file, {
+      quality: 0.9,
+      outputFormat: 'original',
+      scaleMode: 'custom',
+      customWidth: 400,
+      customHeight: 300,
+    });
+
+    expect(result.format).toBe('image/png');
+    expect(result.blob.type).toBe('image/png');
+    expect(result.width).toBe(400);
+    expect(result.height).toBe(300);
+  });
+
+  it('still uses an explicitly selected format on the canvas path', async () => {
+    const file = new File(['dummy-content'], 'test.png', { type: 'image/png' });
+    const result = await compressImageFile(file, {
+      quality: 0.9,
+      outputFormat: 'image/jpeg',
+      scaleMode: 'original',
+    });
+
+    expect(result.format).toBe('image/jpeg');
+    expect(result.blob.type).toBe('image/jpeg');
+  });
+
   it('compresses using Target Size mode (e.g. 50KB or 100KB)', async () => {
     const file = new File(['dummy-large-content'], 'large-photo.png', { type: 'image/png' });
     const result = await compressImageFile(file, {

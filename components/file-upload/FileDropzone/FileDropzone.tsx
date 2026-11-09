@@ -5,6 +5,7 @@ import { UploadCloud, FileType, Shield } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 import { Button } from '@/components/common/Button/Button';
 import { Badge } from '@/components/common/Badge/Badge';
+import { Bi } from '@/components/i18n/Bi';
 import styles from './FileDropzone.module.scss';
 
 export interface FileDropzoneProps {
@@ -17,6 +18,7 @@ export interface FileDropzoneProps {
   disabled?: boolean;
   className?: string;
   helperText?: string;
+  privacyNote?: string;
 }
 
 export const FileDropzone: React.FC<FileDropzoneProps> = ({
@@ -29,12 +31,21 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
   disabled = false,
   className,
   helperText,
+  privacyNote,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleTriggerClick = () => {
     if (!disabled && fileInputRef.current) {
       fileInputRef.current.click();
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (disabled || event.target !== event.currentTarget) return;
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleTriggerClick();
     }
   };
 
@@ -65,9 +76,18 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
         disabled && styles.disabled,
         className
       )}
-      onClick={handleTriggerClick}
       aria-label="Upload files by clicking or dragging and dropping"
       {...dragProps}
+      aria-disabled={disabled || undefined}
+      tabIndex={disabled ? -1 : 0}
+      onClick={(event) => {
+        dragProps?.onClick?.(event);
+        handleTriggerClick();
+      }}
+      onKeyDown={(event) => {
+        dragProps?.onKeyDown?.(event);
+        handleKeyDown(event);
+      }}
     >
       <input
         ref={fileInputRef}
@@ -88,11 +108,26 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
 
         <div className={styles.textContainer}>
           <h3 className={styles.mainTitle}>
-            Drop your files here, or <span className={styles.browseText}>browse</span>
+            <Bi
+              en={
+                <>
+                  Drop your files here, or <span className={styles.browseText}>browse</span>
+                </>
+              }
+              hi={
+                <>
+                  फ़ाइल यहाँ छोड़ें, या <span className={styles.browseText}>चुनें</span>
+                </>
+              }
+            />
           </h3>
           <p className={styles.subtitle}>
-            {helperText ||
-              `Select up to ${maxFiles} file${maxFiles > 1 ? 's' : ''} (Max ${maxFileSizeMB}MB each)`}
+            {helperText || (
+              <Bi
+                en={`Select up to ${maxFiles} file${maxFiles > 1 ? 's' : ''} (Max ${maxFileSizeMB}MB each)`}
+                hi={`अधिकतम ${maxFiles} फ़ाइल, हर एक ${maxFileSizeMB}MB तक`}
+              />
+            )}
           </p>
         </div>
 
@@ -108,13 +143,15 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
             }}
             disabled={disabled}
           >
-            Select Files
+            <Bi en="Select Files" hi="फ़ाइल चुनें" />
           </Button>
         </div>
 
         {formatBadges.length > 0 && (
           <div className={styles.formatBadges}>
-            <span className={styles.supportsLabel}>Supported:</span>
+            <span className={styles.supportsLabel}>
+              <Bi en="Supported:" hi="फ़ाइल प्रकार:" />
+            </span>
             {formatBadges.slice(0, 6).map((fmt) => (
               <Badge key={fmt} variant="neutral" size="sm">
                 {fmt}
@@ -122,7 +159,10 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
             ))}
             {formatBadges.length > 6 && (
               <Badge variant="neutral" size="sm">
-                +{formatBadges.length - 6} more
+                <Bi
+                  en={`+${formatBadges.length - 6} more`}
+                  hi={`+${formatBadges.length - 6} और`}
+                />
               </Badge>
             )}
           </div>
@@ -130,7 +170,14 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
 
         <div className={styles.securityNote}>
           <Shield size={13} className={styles.shieldIcon} />
-          <span>Files stay strictly in your browser. Never uploaded to a server.</span>
+          <span>
+            {privacyNote || (
+              <Bi
+                en="Files stay strictly in your browser. Never uploaded to a server."
+                hi="फ़ाइल आपके ब्राउज़र में रहती है। सर्वर पर नहीं जाती।"
+              />
+            )}
+          </span>
         </div>
       </div>
     </div>

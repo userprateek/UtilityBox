@@ -27,8 +27,10 @@ export const EmiCalculatorWorkspace: React.FC<EmiCalculatorWorkspaceProps> = ({ 
   const P = parseFloat(loanAmount) || 0;
   const annualRate = parseFloat(interestRate) || 0;
   const r = annualRate / 12 / 100;
-  const numTenure = parseFloat(tenure) || 0;
-  const N = tenureType === 'years' ? numTenure * 12 : numTenure;
+  const parsedTenure = parseFloat(tenure);
+  const numTenure = Number.isFinite(parsedTenure) ? parsedTenure : 0;
+  const tenureError = numTenure <= 0 ? 'Tenure must be greater than 0.' : null;
+  const N = tenureError ? 0 : tenureType === 'years' ? numTenure * 12 : numTenure;
 
   let monthlyEmi = 0;
   let totalPayable = 0;
@@ -89,6 +91,7 @@ Total Amount Payable: ₹${totalPayable.toFixed(2)}`;
                 value={tenure}
                 onChange={(e) => setTenure(e.target.value)}
                 leftIcon={<Calendar size={16} />}
+                error={tenureError ?? undefined}
               />
               <div className={styles.tenureSwitch}>
                 <button
@@ -125,6 +128,10 @@ Total Amount Payable: ₹${totalPayable.toFixed(2)}`;
       </div>
 
       <CalculatorSummaryCard title="EMI Repayment Summary" icon={<Coins size={20} />}>
+        {tenureError ? (
+          <p role="alert">{tenureError}</p>
+        ) : (
+          <>
         <CalculatorHighlight
           label="MONTHLY EMI PAYABLE"
           value={`₹${monthlyEmi.toLocaleString('en-IN', {
@@ -174,6 +181,8 @@ Total Amount Payable: ₹${totalPayable.toFixed(2)}`;
           idleLabel="Copy EMI Breakdown"
           copiedLabel="Copied EMI Breakdown!"
         />
+          </>
+        )}
       </CalculatorSummaryCard>
     </CalculatorShell>
   );

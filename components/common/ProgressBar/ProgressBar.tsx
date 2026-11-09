@@ -4,8 +4,8 @@ import styles from './ProgressBar.module.scss';
 
 export interface ProgressBarProps {
   percentage: number;
-  label?: string;
-  sublabel?: string;
+  label?: React.ReactNode;
+  sublabel?: React.ReactNode;
   showPercentageText?: boolean;
   variant?: 'primary' | 'success' | 'accent';
   className?: string;

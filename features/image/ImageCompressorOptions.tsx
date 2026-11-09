@@ -126,6 +126,18 @@ export const ImageCompressorOptions: React.FC<ImageCompressorOptionsProps> = ({
         </div>
 
         <div className={styles.presetGrid}>
+          <button
+            type="button"
+            className={`${styles.presetCard} ${!targetSizeEnabled ? styles.presetCardActive : ''}`}
+            onClick={() => {
+              setTargetSizeEnabled(false);
+              setCustomKb('');
+              notifyChange({ targetSizeEnabled: false });
+            }}
+          >
+            <span className={styles.presetKb}>No KB limit</span>
+            <span className={styles.presetLabel}>Quality only, keep size</span>
+          </button>
           {TARGET_SIZE_PRESETS.map((preset) => {
             const isSelected = targetSizeEnabled && targetKb === preset.kb && !customKb;
             return (

@@ -1,5 +1,6 @@
 import { ImageCompressionOptions, ImageProcessorResult, DimensionPreset } from './types';
 import { loadImageFromFile } from './canvasCropper';
+import { resolveExplicitOutputFormat } from './outputFormat';
 
 export const DIMENSION_PRESETS: Record<
   DimensionPreset,
@@ -167,23 +168,18 @@ export async function compressImageFile(
   const naturalWidth = img.naturalWidth;
   const naturalHeight = img.naturalHeight;
 
-  // Determine export format
+  // Determine export format. "original" keeps PNG/JPEG/WebP. An omitted format
+  // keeps the compressor default (photos become JPEG unless lossless PNG at quality 1).
+  const explicitFormat = resolveExplicitOutputFormat(file, options.outputFormat);
   let format = 'image/jpeg';
-  if (options.outputFormat === 'image/webp') {
+  if (explicitFormat) {
+    format = explicitFormat;
+  } else if (file.type === 'image/webp') {
     format = 'image/webp';
-  } else if (options.outputFormat === 'image/png') {
+  } else if (file.type === 'image/png' && !options.targetMaxSizeBytes && options.quality === 1) {
     format = 'image/png';
-  } else if (options.outputFormat === 'image/jpeg') {
-    format = 'image/jpeg';
   } else {
-    // Auto: photos -> JPEG for real reduction, webp -> webp
-    if (file.type === 'image/webp') {
-      format = 'image/webp';
-    } else if (file.type === 'image/png' && !options.targetMaxSizeBytes && options.quality === 1) {
-      format = 'image/png';
-    } else {
-      format = 'image/jpeg';
-    }
+    format = 'image/jpeg';
   }
 
   // PNG quality is ignored by canvas; target-KB mode must use a lossy format

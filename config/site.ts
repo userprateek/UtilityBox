@@ -4,7 +4,7 @@ export const siteConfig = {
   oneLiner:
     'DocsWala is a free, no-signup website of in-browser tools for compressing and cropping photos, merging and converting PDFs, generating shop QR codes, formatting text, running developer utilities, and calculating GST, EMI, SIP, and related figures.',
   description:
-    'Free in-browser tools for photos, PDFs, QR codes, text, developer utilities, and GST/EMI/SIP calculators. No sign-up. Files stay on your device.',
+    'Free tools for photos, PDFs, QR codes, text, developer utilities, and calculators. No sign-up. Browser tools keep files on your device. Document translation uploads the file to the DocsWala server for Google Gemini.',
   url: 'https://docswala.net',
   creator: 'DocsWala Team',
   links: {
@@ -17,6 +17,6 @@ export const siteConfig = {
   privacyGuarantee: {
     title: '100% Free & No Sign-up Required',
     description:
-      'All tools work instantly inside your browser. No account needed, no daily limits, no watermarks, and your personal documents never get uploaded to any server.',
+      'No account and no watermarks. Browser tools process files on your device. Document translation uploads the file to the DocsWala server, which sends it to Google Gemini and does not store it after the response.',
   },
 };

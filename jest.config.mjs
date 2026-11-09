@@ -16,6 +16,8 @@ const config = {
     '\\.(scss|sass|css)$': 'identity-obj-proxy',
   },
   testMatch: ['**/*.test.ts', '**/*.test.tsx'],
+  globalSetup: '<rootDir>/tests/e2e/ensure-fixtures.cjs',
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/tests/e2e/', '<rootDir>/.next/'],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

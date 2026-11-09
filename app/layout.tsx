@@ -4,6 +4,8 @@ import '@/styles/globals.scss';
 import { Header } from '@/components/layout/Header/Header';
 import { Footer } from '@/components/layout/Footer/Footer';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
+import { WebsiteLanguageProvider } from '@/components/i18n/WebsiteLanguageProvider';
+import { LanguagePrompt } from '@/components/i18n/LanguagePrompt';
 import { siteConfig } from '@/config/site';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { generateOrganizationJsonLd, generateWebsiteJsonLd } from '@/lib/seo/schema';
@@ -81,17 +83,20 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('docswala-theme')||localStorage.getItem('utilitybox-theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');document.documentElement.classList.add('dark');}else{document.documentElement.setAttribute('data-theme','light');document.documentElement.classList.remove('dark');}}catch(e){}})();`,
+            __html: `(function(){try{var t=localStorage.getItem('docswala-theme')||localStorage.getItem('utilitybox-theme');if(t==='dark'){document.documentElement.setAttribute('data-theme','dark');document.documentElement.classList.add('dark');}else{document.documentElement.setAttribute('data-theme','light');document.documentElement.classList.remove('dark');}}catch(e){}})();(function(){try{var l=localStorage.getItem('docswala-language');if(l==='hi'||l==='en'){document.documentElement.lang=l;document.documentElement.setAttribute('data-lang',l);}}catch(e){}})();`,
           }}
         />
         <JsonLd schema={websiteJsonLd} />
         <JsonLd schema={organizationJsonLd} />
       </head>
       <body>
-        <GoogleAnalytics />
-        <Header />
-        <main className="main-content">{children}</main>
-        <Footer />
+        <WebsiteLanguageProvider>
+          <GoogleAnalytics />
+          <Header />
+          <main className="main-content">{children}</main>
+          <Footer />
+          <LanguagePrompt />
+        </WebsiteLanguageProvider>
       </body>
     </html>
   );

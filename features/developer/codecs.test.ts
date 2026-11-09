@@ -52,4 +52,20 @@ describe('developer codecs', () => {
       expect(result.payload).toMatchObject({ name: 'John Doe', admin: true });
     }
   });
+
+  it('rejects a two-part token and still decodes a three-part token with a bad signature', () => {
+    const header = Buffer.from(JSON.stringify({ alg: 'none', typ: 'JWT' })).toString('base64url');
+    const payload = Buffer.from(JSON.stringify({ sub: 'qa' })).toString('base64url');
+    const twoPart = decodeJwt(`${header}.${payload}`);
+    expect(twoPart).toEqual({
+      ok: false,
+      error: 'Invalid JWT Token structure (Expected Header.Payload.Signature)',
+    });
+
+    const threePart = decodeJwt(`${header}.${payload}.aaaa`);
+    expect(threePart?.ok).toBe(true);
+    if (threePart?.ok) {
+      expect(threePart.payload).toMatchObject({ sub: 'qa' });
+    }
+  });
 });

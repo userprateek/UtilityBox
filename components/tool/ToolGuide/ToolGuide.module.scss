@@ -60,21 +60,22 @@
   }
 }
 
-.activeLang {
-  color: var(--color-primary);
-  font-weight: $font-weight-bold;
-  background: var(--color-surface-card);
-  box-shadow: var(--shadow-sm);
-}
-
 .langDivider {
   color: var(--color-border);
   font-size: 10px;
 }
 
-.guideSection[data-lang='en'] .langHi,
-.guideSection[data-lang='hi'] .langEn {
+:global(html:not([data-lang='hi'])) .langHi,
+:global(html[data-lang='hi']) .langEn {
   display: none;
+}
+
+:global(html[data-lang='hi']) .langBtn[data-choice='hi'],
+:global(html:not([data-lang='hi'])) .langBtn[data-choice='en'] {
+  color: var(--color-primary);
+  font-weight: $font-weight-bold;
+  background: var(--color-surface-card);
+  box-shadow: var(--shadow-sm);
 }
 
 .guideTitle {

@@ -8,6 +8,7 @@ import { ToolsDirectoryClient } from './ToolsDirectoryClient';
 import { LoadingState } from '@/components/common/States/LoadingState';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { generateBreadcrumbJsonLd, generateItemListJsonLd } from '@/lib/seo/schema';
+import { Bi } from '@/components/i18n/Bi';
 import styles from './page.module.scss';
 
 export const metadata: Metadata = publicPageMetadata({
@@ -37,14 +38,24 @@ export default function ToolsPage() {
       <div className={styles.pageContainer}>
         <Container size="lg">
           <div className={styles.pageHeader}>
-            <h1 className={styles.pageTitle}>All DocsWala tools</h1>
+            <h1 className={styles.pageTitle}>
+              <Bi en="All DocsWala tools" hi="DocsWala के सभी टूल" />
+            </h1>
             <p className={styles.pageSubtitle}>
-              {allTools.length} free tools that run in your browser. Search by name or filter by
-              category. No account required.
+              <Bi
+                en={`${allTools.length} free tools that run in your browser. Search by name or filter by category. No account required.`}
+                hi={`${allTools.length} मुफ़्त टूल आपके ब्राउज़र में चलते हैं। नाम से खोजें या श्रेणी चुनें। अकाउंट नहीं चाहिए।`}
+              />
             </p>
           </div>
 
-          <Suspense fallback={<LoadingState message="Loading utilities catalog..." />}>
+          <Suspense
+            fallback={
+              <LoadingState
+                message={<Bi en="Loading utilities catalog..." hi="टूल की सूची लोड हो रही है..." />}
+              />
+            }
+          >
             <ToolsDirectoryClient initialTools={allTools} />
           </Suspense>
         </Container>

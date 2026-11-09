@@ -5,7 +5,7 @@ import styles from './States.module.scss';
 
 export interface AlertProps {
   type?: 'info' | 'success' | 'warning' | 'error';
-  title?: string;
+  title?: React.ReactNode;
   children: React.ReactNode;
   onClose?: () => void;
   className?: string;

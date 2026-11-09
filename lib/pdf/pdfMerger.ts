@@ -1,4 +1,6 @@
 import { PDFDocument } from 'pdf-lib';
+import { loadPdf, PASSWORD_PROTECTED_PDF } from './loadPdf';
+import { readOutlineEntries, writeOutlineEntries } from './outlines';
 
 export interface MergedPdfResult {
   blob: Blob;
@@ -36,6 +38,7 @@ export async function mergePdfFiles(
 
   const mergedPdf = await PDFDocument.create();
   let totalPages = 0;
+  const collectedOutlines: { title: string; pageIndex: number }[] = [];
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
@@ -44,13 +47,32 @@ export async function mergePdfFiles(
     onProgress?.(i + 1, files.length, `Merging ${file.name}...`);
 
     const arrayBuffer = await readFileAsArrayBuffer(file);
-    const pdfToMerge = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+    let pdfToMerge;
+    try {
+      pdfToMerge = await loadPdf(arrayBuffer);
+    } catch (error) {
+      if (error instanceof Error && error.message === PASSWORD_PROTECTED_PDF) {
+        throw new Error(
+          `"${file.name}" is password-protected and cannot be merged. Remove the password and try again.`
+        );
+      }
+      throw error;
+    }
+    const outlineEntries = readOutlineEntries(pdfToMerge).map((entry) => ({
+      title: entry.title,
+      pageIndex: entry.pageIndex + totalPages,
+    }));
     const copiedPages = await mergedPdf.copyPages(pdfToMerge, pdfToMerge.getPageIndices());
 
     for (const page of copiedPages) {
       mergedPdf.addPage(page);
       totalPages++;
     }
+    collectedOutlines.push(...outlineEntries);
+  }
+
+  if (collectedOutlines.length > 0) {
+    writeOutlineEntries(mergedPdf, collectedOutlines);
   }
 
   onProgress?.(files.length, files.length, 'Finalizing merged PDF document...');

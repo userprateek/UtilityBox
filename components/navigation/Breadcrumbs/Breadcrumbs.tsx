@@ -2,7 +2,23 @@ import React from 'react';
 import Link from 'next/link';
 import { ChevronRight, Home } from 'lucide-react';
 import { BreadcrumbItem } from '@/lib/seo/schema';
+import { Bi } from '@/components/i18n/Bi';
 import styles from './Breadcrumbs.module.scss';
+
+const CRUMB_HI: Record<string, string> = {
+  Home: 'होम',
+  'All Tools': 'सभी टूल',
+  About: 'हमारे बारे में',
+  Help: 'मदद',
+  Privacy: 'प्राइवेसी',
+  Terms: 'नियम',
+};
+
+function CrumbLabel({ name }: { name: string }) {
+  const hindi = CRUMB_HI[name];
+  if (!hindi) return name;
+  return <Bi en={name} hi={hindi} />;
+}
 
 export interface BreadcrumbsProps {
   items: BreadcrumbItem[];
@@ -15,7 +31,9 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items }) => {
         <li className={styles.crumbItem}>
           <Link href="/" className={styles.crumbLink}>
             <Home size={14} className={styles.homeIcon} />
-            <span>Home</span>
+            <span>
+              <CrumbLabel name="Home" />
+            </span>
           </Link>
         </li>
 
@@ -27,11 +45,11 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items }) => {
               <ChevronRight size={13} className={styles.separator} />
               {isLast ? (
                 <span className={styles.current} aria-current="page">
-                  {item.name}
+                  <CrumbLabel name={item.name} />
                 </span>
               ) : (
                 <Link href={item.url} className={styles.crumbLink}>
-                  {item.name}
+                  <CrumbLabel name={item.name} />
                 </Link>
               )}
             </li>

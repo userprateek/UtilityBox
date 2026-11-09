@@ -48,6 +48,7 @@ export interface ToolMetadata {
   isNew?: boolean;
   features?: string[];
   privacyNotice?: string;
+  requiresExternalAi?: boolean;
 }
 
 export type ProcessingStatus =

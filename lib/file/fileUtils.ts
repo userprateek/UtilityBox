@@ -77,7 +77,6 @@ export function generateDownloadFilename(
   // Format action string (e.g. image-compressor -> compressed, pdf-merger -> merged)
   const actionMap: Record<string, string> = {
     'image-compressor': 'compressed',
-    'pdf-compressor': 'compressed',
     'image-cropper': 'cropped',
     'image-resizer': 'resized',
     'image-converter': 'converted',
@@ -88,6 +87,7 @@ export function generateDownloadFilename(
     'qr-code-generator': 'qr',
     'json-formatter': 'formatted',
     'base64-converter': 'converted',
+    'document-translator': 'translated',
   };
 
   const cleanAction = (

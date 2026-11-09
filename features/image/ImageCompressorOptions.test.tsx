@@ -17,6 +17,15 @@ describe('ImageCompressorOptions Component', () => {
     expect(screen.getByText(/Strip EXIF metadata/i)).toBeInTheDocument();
   });
 
+  it('can turn the KB target off for quality-only compression', () => {
+    const handleChange = jest.fn();
+    render(<ImageCompressorOptions onChange={handleChange} />);
+    fireEvent.click(screen.getByRole('button', { name: /no kb limit/i }));
+    expect(handleChange).toHaveBeenCalledWith(
+      expect.objectContaining({ targetSizeEnabled: false })
+    );
+  });
+
   it('switches target size preset when 50 KB button is clicked', () => {
     const handleChange = jest.fn();
     render(<ImageCompressorOptions onChange={handleChange} />);

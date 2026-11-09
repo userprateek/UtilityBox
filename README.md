@@ -1,20 +1,22 @@
 # 📦 DocsWala
 
-> **100% Free • No Sign-Up • Fast In-Browser Utilities**  
-> A high-performance suite of client-side browser tools for images, PDFs, QR codes, and everyday form filling. Built for cyber cafes, small xerox & print shops, students, and citizens filling online exam/government portal forms.
+> **100% Free • No Sign-Up • Browser tools, plus one AI translator**  
+> Tools for images, PDFs, QR codes, and everyday form filling. Built for cyber cafes, small xerox & print shops, students, and citizens filling online exam/government portal forms.
 
 ---
 
-## 🔒 100% Client-Side Privacy Guarantee
+## Privacy
 
-Traditional file conversion websites upload your confidential documents (Aadhaar cards, marksheets, signatures, bank statements) to unknown cloud servers.
+Most DocsWala tools run in your browser. Image cropping and compression, PDF merge and split, QR codes, text utilities, developer utilities, and the calculators process on your device. Those files are not uploaded to a DocsWala server.
 
-**DocsWala executes 100% locally on your computer:**
+**AI Document Translator** (`/document-translator`) is different:
 
-- **Zero Server Uploads**: Files never leave your browser sandbox.
-- **No Sign-Up Required**: Instant unlimited access without creating an account.
-- **Local CPU/GPU Computation**: Image cropping, compression, and QR rendering run locally via HTML5 Canvas and WebAssembly.
-- **Zero Watermarks & Zero Limits**: Free forever for personal and commercial shop counter usage.
+- The document is uploaded to the DocsWala server.
+- The server sends that file to Google Gemini to produce the translation, then returns a PDF or image to the browser.
+- DocsWala does not write the document to disk or a database, and it does not keep the file after the response is sent.
+- Google processes the document under Google's own policies. DocsWala does not control whether Google retains that content.
+
+No account is required. The tools do not add watermarks.
 
 ---
 
@@ -67,7 +69,7 @@ Traditional file conversion websites upload your confidential documents (Aadhaar
 | **Language**     | TypeScript (Strict Configuration)                                             |
 | **Styling**      | SCSS Modules & Structured Design System tokens (No Tailwind CSS)              |
 | **Icons**        | Lucide React & Custom Brand Vectors                                           |
-| **Testing**      | Jest 30 + React Testing Library (24 suites, 83 tests)                         |
+| **Testing**      | Jest 30 + React Testing Library, plus Playwright                              |
 | **SEO & Schema** | Schema.org JSON-LD (`WebApplication`, `FAQPage`, `BreadcrumbList`, `WebSite`) |
 | **Code Quality** | ESLint & Prettier                                                             |
 
@@ -162,8 +164,15 @@ open http://localhost:3000
 ### Verification & Testing
 
 ```bash
-# Run all 24 Jest test suites (83 tests)
+# Run the Jest suite. Missing local fixtures are generated into .local/testing/fixtures/.
 npm test
+
+# Regenerate fixtures without running tests. Output stays under .local/ and is not committed.
+npm run fixtures:e2e
+npm run fixtures:master
+
+# Browser tests. Global setup regenerates the same fixtures.
+npm run test:e2e
 
 # Check types with strict TypeScript
 npm run typecheck

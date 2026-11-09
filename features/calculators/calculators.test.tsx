@@ -50,6 +50,21 @@ describe('Calculators Workspace Suite', () => {
       // 500 + 18% (90) = 590
       expect(screen.getByText('₹590.00')).toBeInTheDocument();
     });
+
+    it('rejects a negative cost and still calculates a valid amount', () => {
+      render(<GstCalculatorWorkspace tool={mockTool} />);
+      fireEvent.change(screen.getByLabelText(/Article Purchase \/ Cost Price/i), {
+        target: { value: '-5' },
+      });
+      expect(screen.getByRole('alert')).toHaveTextContent('Cost cannot be negative.');
+      expect(screen.queryByText(/₹-/)).not.toBeInTheDocument();
+
+      fireEvent.change(screen.getByLabelText(/Article Purchase \/ Cost Price/i), {
+        target: { value: '1000' },
+      });
+      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+      expect(screen.getByText('₹1,416.00')).toBeInTheDocument();
+    });
   });
 
   describe('EmiCalculatorWorkspace', () => {
@@ -73,6 +88,19 @@ describe('Calculators Workspace Suite', () => {
 
       fireEvent.click(screen.getByRole('button', { name: 'Yr' }));
       expect(tenureInput.value).toBe('5');
+    });
+
+    it('rejects tenure 0 and still calculates a positive tenure', () => {
+      render(<EmiCalculatorWorkspace tool={{ ...mockTool, slug: 'emi-calculator' }} />);
+      fireEvent.change(screen.getByLabelText(/Loan Amount/i), { target: { value: '100000' } });
+      fireEvent.change(screen.getByLabelText(/Interest Rate/i), { target: { value: '10' } });
+      fireEvent.change(screen.getByLabelText(/Loan Tenure/i), { target: { value: '0' } });
+      expect(screen.getByRole('alert')).toHaveTextContent('Tenure must be greater than 0.');
+      expect(screen.queryByText('₹0.00')).not.toBeInTheDocument();
+
+      fireEvent.change(screen.getByLabelText(/Loan Tenure/i), { target: { value: '5' } });
+      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+      expect(screen.getByText(/MONTHLY EMI PAYABLE/i)).toBeInTheDocument();
     });
   });
 

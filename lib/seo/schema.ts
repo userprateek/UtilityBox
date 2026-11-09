@@ -310,6 +310,27 @@ export function getDefaultToolFaqs(tool: ToolMetadata): FaqItem[] {
     ];
   }
 
+  if (tool.slug === 'document-translator') {
+    return [
+      {
+        question: `Does the AI Document Translator upload my file?`,
+        answer: `Yes. The file is uploaded to the DocsWala server, which sends it to Google Gemini. DocsWala does not keep the file after the response. Google’s retention of the document is outside DocsWala’s control. Other DocsWala tools still run in the browser.`,
+      },
+      {
+        question: `What files can I translate?`,
+        answer: `${tool.name} accepts ${formats}. ${fileLimit} ${sizeLimit} Password-protected PDFs are not supported.`,
+      },
+      {
+        question: `What happens if translation fails?`,
+        answer: `The tool tries up to three methods: direct AI reading, text extraction plus AI translation, then OCR plus AI translation. If none produce a usable PDF or image, it reports that the document could not be translated.`,
+      },
+      {
+        question: `Is the website language the same as the document language?`,
+        answer: `No. The website language only sets the default target language. The document language (or Auto detect) is chosen separately.`,
+      },
+    ];
+  }
+
   if (tool.slug === 'pdf-merger') {
     return [
       {

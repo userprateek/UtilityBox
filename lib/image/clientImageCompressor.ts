@@ -5,6 +5,7 @@ import {
   calculateTargetDimensions,
 } from './canvasCompressor';
 import { loadImageFromFile } from './canvasCropper';
+import { resolveExplicitOutputFormat } from './outputFormat';
 
 /**
  * High-performance client-side image compressor.
@@ -15,8 +16,16 @@ export async function compressImageAdvanced(
   file: File,
   options: ImageCompressionOptions = {}
 ): Promise<ImageProcessorResult> {
-  // If strict Target KB is requested (e.g. 20KB or 50KB or custom KB), use the deterministic canvas engine
-  if (options.targetMaxSizeBytes && options.targetMaxSizeBytes > 0) {
+  const exactBox =
+    options.scaleMode === 'custom' &&
+    !!options.customWidth &&
+    !!options.customHeight &&
+    options.maintainAspectRatio === false;
+
+  // Target-KB mode and exact width×height both need the canvas engine.
+  // browser-image-compression only caps the longest side, so a 300×300
+  // request on a 4:3 photo would come out 300×225.
+  if ((options.targetMaxSizeBytes && options.targetMaxSizeBytes > 0) || exactBox) {
     return await canvasCompressImageFile(file, options);
   }
 
@@ -31,17 +40,10 @@ export async function compressImageAdvanced(
       options
     );
 
-    // Determine target format
-    let fileType = 'image/jpeg';
-    if (options.outputFormat === 'image/webp') {
-      fileType = 'image/webp';
-    } else if (options.outputFormat === 'image/png') {
-      fileType = 'image/png';
-    } else if (options.outputFormat === 'image/jpeg') {
-      fileType = 'image/jpeg';
-    } else {
-      fileType = file.type === 'image/webp' ? 'image/webp' : 'image/jpeg';
-    }
+    // Explicit and "original" formats are resolved here. An omitted format keeps
+    // the compressor default: WebP stays WebP, other photos encode as JPEG.
+    const explicitFormat = resolveExplicitOutputFormat(file, options.outputFormat);
+    const fileType = explicitFormat ?? (file.type === 'image/webp' ? 'image/webp' : 'image/jpeg');
 
     const maxDim = Math.max(targetWidth, targetHeight);
     const quality = options.quality ?? 0.8;

@@ -59,14 +59,17 @@ export function decodeJwt(token: string): JwtDecodeResult | null {
     const parts = trimmed.split('.');
     const part0 = parts[0];
     const part1 = parts[1];
-    if (parts.length >= 2 && part0 && part1) {
-      return {
-        ok: true,
-        header: JSON.parse(decodeBase64Url(part0)) as object,
-        payload: JSON.parse(decodeBase64Url(part1)) as object,
-      };
+    const part2 = parts[2];
+    // A compact JWT is header.payload.signature. Two segments are not a token.
+    // The signature is decoded only as bytes; it is not checked.
+    if (parts.length !== 3 || !part0 || !part1 || !part2) {
+      return { ok: false, error: 'Invalid JWT Token structure (Expected Header.Payload.Signature)' };
     }
-    return { ok: false, error: 'Invalid JWT Token structure (Expected Header.Payload.Signature)' };
+    return {
+      ok: true,
+      header: JSON.parse(decodeBase64Url(part0)) as object,
+      payload: JSON.parse(decodeBase64Url(part1)) as object,
+    };
   } catch {
     return { ok: false, error: 'Failed to decode JWT base64 JSON token string.' };
   }

@@ -5,6 +5,7 @@ import { Trash2, Plus, ArrowLeftRight } from 'lucide-react';
 import { ManagedFile } from '@/types/file';
 import { Button } from '@/components/common/Button/Button';
 import { FileCard } from './FileCard';
+import { Bi } from '@/components/i18n/Bi';
 import styles from './FileList.module.scss';
 
 export interface FileListProps {
@@ -34,13 +35,15 @@ export const FileList: React.FC<FileListProps> = ({
     <div className={styles.fileListWrapper}>
       <div className={styles.listHeader}>
         <div className={styles.titleInfo}>
-          <h4 className={styles.listTitle}>Selected Files</h4>
+          <h4 className={styles.listTitle}>
+            <Bi en="Selected Files" hi="चुनी हुई फ़ाइलें" />
+          </h4>
           <span className={styles.countBadge}>
             {files.length} / {maxFiles}
           </span>
           {files.length > 1 && (
             <span style={{ fontSize: '11px', color: 'var(--color-text-muted)', marginLeft: '6px' }}>
-              (Click arrows or drag to change sequence)
+              <Bi en="(Click arrows or drag to change sequence)" hi="(क्रम बदलने के लिए तीर दबाएँ या खींचें)" />
             </span>
           )}
         </div>
@@ -54,7 +57,7 @@ export const FileList: React.FC<FileListProps> = ({
               leftIcon={<Plus size={14} />}
               onClick={onAddMoreClick}
             >
-              Add more
+              <Bi en="Add more" hi="और जोड़ें" />
             </Button>
           )}
 
@@ -65,7 +68,7 @@ export const FileList: React.FC<FileListProps> = ({
             leftIcon={<Trash2 size={14} />}
             onClick={onClearAll}
           >
-            Clear all
+            <Bi en="Clear all" hi="सब हटाएँ" />
           </Button>
         </div>
       </div>
@@ -73,7 +76,9 @@ export const FileList: React.FC<FileListProps> = ({
       {/* Visual Sequence Order Strip */}
       {files.length > 1 && (
         <div className={styles.orderSequenceBar}>
-          <span className={styles.orderSequenceLabel}>📄 Output Sequence:</span>
+          <span className={styles.orderSequenceLabel}>
+            <Bi en="📄 Output Sequence:" hi="📄 आउटपुट का क्रम:" />
+          </span>
           <div className={styles.orderSequenceList}>
             {files.map((file, i) => (
               <React.Fragment key={file.id}>

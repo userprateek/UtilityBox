@@ -18,12 +18,17 @@ import { cn } from '@/lib/utils/cn';
 import { Container } from '../Container/Container';
 import { Badge } from '@/components/common/Badge/Badge';
 import { ThemeToggle } from '@/components/common/ThemeToggle/ThemeToggle';
+import { LanguageSwitch } from '@/components/i18n/LanguageSwitch';
+import { Bi } from '@/components/i18n/Bi';
+import { useWebsiteLanguage } from '@/components/i18n/WebsiteLanguageProvider';
+import { categoryHindi } from '@/lib/i18n/catalog';
 import { TOOL_CATEGORIES_LIST } from '@/config/tools/categories';
 import styles from './Header.module.scss';
 
 export const Header: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const { language } = useWebsiteLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [categoriesDropdownOpen, setCategoriesDropdownOpen] = useState(false);
 
@@ -104,11 +109,11 @@ export const Header: React.FC = () => {
             href="/"
             className={cn(styles.navLink, isActive('/') && pathname === '/' && styles.active)}
           >
-            Home
+            <Bi en="Home" hi="होम" />
           </Link>
 
           <Link href="/tools" className={cn(styles.navLink, isActive('/tools') && styles.active)}>
-            All Tools
+            <Bi en="All Tools" hi="सभी टूल" />
           </Link>
 
           {/* Categories Dropdown */}
@@ -123,7 +128,9 @@ export const Header: React.FC = () => {
               aria-expanded={categoriesDropdownOpen}
               onClick={() => setCategoriesDropdownOpen((prev) => !prev)}
             >
-              <span>Categories</span>
+              <span>
+                <Bi en="Categories" hi="श्रेणियाँ" />
+              </span>
               <ChevronDown
                 size={14}
                 className={cn(styles.chevron, categoriesDropdownOpen && styles.chevronRotated)}
@@ -141,8 +148,12 @@ export const Header: React.FC = () => {
                   >
                     <span className={styles.itemIcon}>{getCategoryIcon(cat.id)}</span>
                     <div className={styles.itemContent}>
-                      <span className={styles.itemTitle}>{cat.label}</span>
-                      <span className={styles.itemDesc}>{cat.description}</span>
+                      <span className={styles.itemTitle}>
+                        <Bi en={cat.label} hi={categoryHindi(cat.id).label} />
+                      </span>
+                      <span className={styles.itemDesc}>
+                        <Bi en={cat.description} hi={categoryHindi(cat.id).description} />
+                      </span>
                     </div>
                   </Link>
                 ))}
@@ -151,11 +162,11 @@ export const Header: React.FC = () => {
           </div>
 
           <Link href="/about" className={cn(styles.navLink, isActive('/about') && styles.active)}>
-            About
+            <Bi en="About" hi="हमारे बारे में" />
           </Link>
 
           <Link href="/help" className={cn(styles.navLink, isActive('/help') && styles.active)}>
-            Help
+            <Bi en="Help" hi="मदद" />
           </Link>
         </nav>
 
@@ -163,7 +174,7 @@ export const Header: React.FC = () => {
         <div className={styles.rightActions}>
           <div className={styles.privacyBadge}>
             <Badge variant="success" size="sm" icon={<Sparkles size={13} />}>
-              100% Free • No Sign-up
+              <Bi en="100% Free • No Sign-up" hi="100% मुफ़्त • साइन-अप नहीं" />
             </Badge>
           </div>
 
@@ -171,14 +182,18 @@ export const Header: React.FC = () => {
             type="button"
             className={styles.searchButton}
             onClick={handleSearchClick}
-            aria-label="Search tools"
+            aria-label={language === 'hi' ? 'टूल खोजें' : 'Search tools'}
           >
             <Search size={16} />
-            <span className={styles.searchLabel}>Search tools...</span>
+            <span className={styles.searchLabel}>
+              <Bi en="Search tools..." hi="टूल खोजें..." />
+            </span>
             <kbd className={styles.searchKbd}>⌘K</kbd>
           </button>
 
-          {/* Theme Switcher Toggle */}
+          <div className={styles.desktopLang}>
+            <LanguageSwitch />
+          </div>
           <ThemeToggle />
 
           {/* Mobile Menu Trigger */}
@@ -186,7 +201,15 @@ export const Header: React.FC = () => {
             type="button"
             className={styles.mobileMenuButton}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
+            aria-label={
+              language === 'hi'
+                ? mobileMenuOpen
+                  ? 'मेनू बंद करें'
+                  : 'मेनू खोलें'
+                : mobileMenuOpen
+                  ? 'Close Menu'
+                  : 'Open Menu'
+            }
             aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -199,6 +222,7 @@ export const Header: React.FC = () => {
         <div className={styles.mobileDrawer}>
           <nav className={styles.mobileNav}>
             <div className={styles.mobileThemeWrapper}>
+              <LanguageSwitch />
               <ThemeToggle variant="row" />
             </div>
 
@@ -207,18 +231,20 @@ export const Header: React.FC = () => {
               className={cn(styles.mobileNavLink, pathname === '/' && styles.active)}
               onClick={() => setMobileMenuOpen(false)}
             >
-              Home
+              <Bi en="Home" hi="होम" />
             </Link>
             <Link
               href="/tools"
               className={cn(styles.mobileNavLink, isActive('/tools') && styles.active)}
               onClick={() => setMobileMenuOpen(false)}
             >
-              All Tools
+              <Bi en="All Tools" hi="सभी टूल" />
             </Link>
 
             <div className={styles.mobileCategorySection}>
-              <span className={styles.mobileCategoryTitle}>Categories</span>
+              <span className={styles.mobileCategoryTitle}>
+                <Bi en="Categories" hi="श्रेणियाँ" />
+              </span>
               <div className={styles.mobileCategoryGrid}>
                 {TOOL_CATEGORIES_LIST.map((cat) => (
                   <Link
@@ -228,7 +254,9 @@ export const Header: React.FC = () => {
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     <span className={styles.itemIcon}>{getCategoryIcon(cat.id)}</span>
-                    <span>{cat.label}</span>
+                    <span>
+                      <Bi en={cat.label} hi={categoryHindi(cat.id).label} />
+                    </span>
                   </Link>
                 ))}
               </div>
@@ -239,21 +267,21 @@ export const Header: React.FC = () => {
               className={cn(styles.mobileNavLink, isActive('/about') && styles.active)}
               onClick={() => setMobileMenuOpen(false)}
             >
-              About DocsWala
+              <Bi en="About DocsWala" hi="DocsWala के बारे में" />
             </Link>
             <Link
               href="/help"
               className={cn(styles.mobileNavLink, isActive('/help') && styles.active)}
               onClick={() => setMobileMenuOpen(false)}
             >
-              Help
+              <Bi en="Help" hi="मदद" />
             </Link>
             <Link
               href="/privacy"
               className={cn(styles.mobileNavLink, isActive('/privacy') && styles.active)}
               onClick={() => setMobileMenuOpen(false)}
             >
-              Privacy
+              <Bi en="Privacy" hi="प्राइवेसी" />
             </Link>
           </nav>
         </div>

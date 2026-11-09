@@ -222,6 +222,11 @@ body {
 // ----------------------------------------------------------------------------
 // Shared Micro Utilities
 // ----------------------------------------------------------------------------
+html:not([data-lang='hi']) [data-i18n='hi'],
+html[data-lang='hi'] [data-i18n='en'] {
+  display: none;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

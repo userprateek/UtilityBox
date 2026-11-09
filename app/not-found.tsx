@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Compass, Home, Grid } from 'lucide-react';
 import { Container } from '@/components/layout/Container/Container';
 import { Button } from '@/components/common/Button/Button';
+import { Bi } from '@/components/i18n/Bi';
 
 export default function NotFound() {
   return (
@@ -43,7 +44,7 @@ export default function NotFound() {
           color: 'var(--color-text-primary)',
         }}
       >
-        Page or Tool Not Found
+        <Bi en="Page or Tool Not Found" hi="पेज या टूल नहीं मिला" />
       </h2>
 
       <p
@@ -55,8 +56,10 @@ export default function NotFound() {
           lineHeight: 1.6,
         }}
       >
-        The page you are looking for doesn&apos;t exist or has been moved. Explore our popular tools
-        or return to the homepage.
+        <Bi
+          en="The page you are looking for doesn't exist or has been moved. Explore our popular tools or return to the homepage."
+          hi="यह पेज नहीं मिला, या कहीं और चला गया है। लोकप्रिय टूल देखें, या होम पर वापस जाएँ।"
+        />
       </p>
 
       <div
@@ -69,12 +72,12 @@ export default function NotFound() {
       >
         <Link href="/">
           <Button variant="primary" size="lg" leftIcon={<Home size={18} />}>
-            Back to Home
+            <Bi en="Back to Home" hi="होम पर जाएँ" />
           </Button>
         </Link>
         <Link href="/tools">
           <Button variant="secondary" size="lg" leftIcon={<Grid size={18} />}>
-            Browse All Tools
+            <Bi en="Browse All Tools" hi="सभी टूल देखें" />
           </Button>
         </Link>
       </div>

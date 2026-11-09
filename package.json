@@ -2,7 +2,7 @@
   "name": "docswala",
   "version": "0.1.0",
   "private": true,
-  "description": "Privacy-first, in-browser utilities for images, PDFs, and common file conversions.",
+  "description": "Utilities for images, PDFs, QR codes, and calculators. Browser tools run locally. Document translation uploads the file to the DocsWala server for Google Gemini.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,9 +11,14 @@
     "format": "prettier --write \"**/*.{ts,tsx,scss,css,json,md}\"",
     "typecheck": "tsc --noEmit",
     "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "test:e2e": "playwright test",
+    "fixtures:e2e": "node tests/e2e/fixtures/generate.mjs",
+    "fixtures:master": "node tests/e2e/fixtures/master/generate.mjs"
   },
   "dependencies": {
+    "@google/genai": "^3.0.0",
+    "@napi-rs/canvas": "^1.1.0",
     "browser-image-compression": "^2.0.2",
     "clsx": "^2.1.1",
     "lucide-react": "^1.16.0",
@@ -24,9 +29,11 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "sass": "^1.85.0",
-    "sharp": "^0.35.3"
+    "sharp": "^0.35.3",
+    "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.0",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.5",
@@ -41,6 +48,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
+    "jsqr": "^1.4.0",
     "prettier": "^3.5.1",
     "typescript": "^5.7.3"
   }

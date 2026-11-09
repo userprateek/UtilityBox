@@ -36,10 +36,21 @@ export const GstCalculatorWorkspace: React.FC<GstCalculatorWorkspaceProps> = ({ 
   const [amount, setAmount] = useState<string>('1000');
 
   // Calculate outputs based on active mode
-  const numCost = parseFloat(costPrice) || 0;
-  const numProfit = parseFloat(desiredProfit) || 0;
-  const numAmount = parseFloat(amount) || 0;
+  const numCost = parseFloat(costPrice);
+  const numProfit = parseFloat(desiredProfit);
+  const numAmount = parseFloat(amount);
   const safeGstRate = Number.isFinite(gstRate) ? Math.min(100, Math.max(0, gstRate)) : 0;
+  const moneyError =
+    mode === 'shopkeeper' && Number.isFinite(numCost) && numCost < 0
+      ? 'Cost cannot be negative.'
+      : mode === 'shopkeeper' && Number.isFinite(numProfit) && numProfit < 0
+        ? 'Profit cannot be negative.'
+        : mode !== 'shopkeeper' && Number.isFinite(numAmount) && numAmount < 0
+          ? 'Amount cannot be negative.'
+          : null;
+  const costValue = Number.isFinite(numCost) && numCost > 0 ? numCost : 0;
+  const profitValue = Number.isFinite(numProfit) && numProfit > 0 ? numProfit : 0;
+  const amountValue = Number.isFinite(numAmount) && numAmount > 0 ? numAmount : 0;
 
   let basePrice = 0;
   let gstAmount = 0;
@@ -48,26 +59,28 @@ export const GstCalculatorWorkspace: React.FC<GstCalculatorWorkspaceProps> = ({ 
 
   if (mode === 'shopkeeper') {
     // Businessman Logic: Desired Profit (X) + Cost (Y) = Base Selling Price
-    basePrice = numCost + numProfit;
+    basePrice = costValue + profitValue;
     gstAmount = basePrice * (safeGstRate / 100);
     finalMrp = basePrice + gstAmount;
-    netProfitKept = numProfit;
+    netProfitKept = profitValue;
   } else if (mode === 'add') {
     // Exclusive GST: Amount + GST%
-    basePrice = numAmount;
-    gstAmount = numAmount * (safeGstRate / 100);
-    finalMrp = numAmount + gstAmount;
+    basePrice = amountValue;
+    gstAmount = amountValue * (safeGstRate / 100);
+    finalMrp = amountValue + gstAmount;
   } else {
     // Inclusive GST: Amount already includes GST%
-    finalMrp = numAmount;
-    basePrice = numAmount / (1 + safeGstRate / 100);
+    finalMrp = amountValue;
+    basePrice = safeGstRate >= 100 ? 0 : amountValue / (1 + safeGstRate / 100);
     gstAmount = finalMrp - basePrice;
   }
 
   const cgst = gstAmount / 2;
   const sgst = gstAmount / 2;
 
-  const summaryText =
+  const summaryText = moneyError
+    ? moneyError
+    :
       mode === 'shopkeeper'
         ? `UtilityBox GST & Profit Calculation:
 Cost Price: ₹${numCost.toFixed(2)}
@@ -172,6 +185,7 @@ TOTAL BILL AMOUNT: ₹${finalMrp.toFixed(2)}`;
                     value={costPrice}
                     onChange={(e) => setCostPrice(e.target.value)}
                     helperText="How much you paid to buy or produce the article"
+                    error={moneyError && numCost < 0 ? moneyError : undefined}
                   />
                   <Input
                     label="Desired Net Profit in Pocket (₹X) *"
@@ -212,14 +226,20 @@ TOTAL BILL AMOUNT: ₹${finalMrp.toFixed(2)}`;
               <span className={styles.mrpLabel}>
                 {mode === 'shopkeeper' ? 'RECOMMENDED CUSTOMER MRP' : 'TOTAL BILL AMOUNT'}
               </span>
-              <span className={styles.mrpValue}>
-                ₹
-                {finalMrp.toLocaleString('en-IN', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </span>
-              {mode === 'shopkeeper' && (
+              {moneyError ? (
+                <span className={styles.mrpValue} role="alert">
+                  {moneyError}
+                </span>
+              ) : (
+                <span className={styles.mrpValue}>
+                  ₹
+                  {finalMrp.toLocaleString('en-IN', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </span>
+              )}
+              {mode === 'shopkeeper' && !moneyError && (
                 <span className={styles.mrpSubtext}>
                   Charge this MRP to keep exact <strong>₹{netProfitKept.toFixed(2)}</strong> profit
                 </span>
@@ -227,6 +247,7 @@ TOTAL BILL AMOUNT: ₹${finalMrp.toFixed(2)}`;
             </div>
 
             {/* Detailed Key Value Rows */}
+            {!moneyError && (
             <div className={styles.detailsGrid}>
               <div className={styles.detailRow}>
                 <span className={styles.detailLabel}>Base Selling Price (excl. GST)</span>
@@ -259,6 +280,7 @@ TOTAL BILL AMOUNT: ₹${finalMrp.toFixed(2)}`;
                 </div>
               )}
             </div>
+            )}
 
             <CopyButton
               className={styles.copyBtn}

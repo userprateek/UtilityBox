@@ -108,6 +108,40 @@ export const TOOL_REGISTRY: Record<string, ToolMetadata> = {
       'Preserve transparency during PNG conversion',
     ],
   },
+  'document-translator': {
+    slug: 'document-translator',
+    name: 'AI Document Translator',
+    shortDescription:
+      'Translate a PDF or image into another language with AI while keeping a usable page layout.',
+    description:
+      'Upload a PDF, JPG, PNG, or WebP file, choose a target language, and download a translated PDF or image. Google Gemini reads the document in context. If direct AI processing cannot produce usable output, the tool tries text extraction, then OCR, and stops after three strategies.',
+    category: 'converters',
+    iconName: 'Languages',
+    supportedInputFormats: ['application/pdf', 'image/jpeg', 'image/png', 'image/webp'],
+    supportedOutputFormats: ['application/pdf', 'image/jpeg', 'image/png', 'image/webp'],
+    maxFiles: 1,
+    maxFileSizeMB: 8,
+    seoTitle: 'AI Document & Image Translator — PDF and photo translation',
+    seoDescription:
+      'Translate PDFs and images with AI. Choose a target language, preview the reconstructed document, and download a translated PDF or image.',
+    keywords: [
+      'document translator',
+      'pdf translator',
+      'image translator',
+      'translate pdf to hindi',
+      'ai document translation',
+    ],
+    isPopular: false,
+    isNew: true,
+    requiresExternalAi: true,
+    privacyNotice:
+      'This tool uploads the file to the DocsWala server, which sends it to Google Gemini. DocsWala does not store the file after the response. Google’s retention of the document is covered by Google’s policies.',
+    features: [
+      'AI translation of PDFs and images, not word-by-word dictionaries',
+      'Source language (or auto detect) is independent of the website language',
+      'Falls back through at most three processing strategies, then reports failure',
+    ],
+  },
   'pdf-merger': {
     slug: 'pdf-merger',
     name: 'PDF Merger',

@@ -100,6 +100,19 @@ describe('Developer Tools Suite', () => {
       expect(screen.getByText(/HEADER: Algorithm & Token Type/i)).toBeInTheDocument();
       expect(screen.getByText(/PAYLOAD: Data Claims & Expiry/i)).toBeInTheDocument();
       expect(screen.getByText(/John Doe/)).toBeInTheDocument();
+      expect(screen.getByText(/does not check the signature/i)).toBeInTheDocument();
+      expect(document.body.textContent?.toLowerCase()).not.toMatch(/verified|trusted|signature valid/);
+    });
+
+    it('rejects a two-part token on the page', () => {
+      render(<DevToolsWorkspace tool={mockJwtTool} />);
+      const header = btoa(JSON.stringify({ alg: 'none' })).replace(/=+$/, '');
+      const payload = btoa(JSON.stringify({ sub: 'qa' })).replace(/=+$/, '');
+      fireEvent.change(screen.getByPlaceholderText(/Paste your JWT token string here/i), {
+        target: { value: `${header}.${payload}` },
+      });
+      expect(screen.getByText(/Expected Header\.Payload\.Signature/i)).toBeInTheDocument();
+      expect(screen.queryByText(/"sub"/)).not.toBeInTheDocument();
     });
   });
 

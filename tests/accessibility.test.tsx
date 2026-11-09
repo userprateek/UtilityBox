@@ -11,10 +11,16 @@ describe('Accessibility (a11y) and Keyboard Navigation', () => {
     const { container } = render(<FileDropzone onFilesSelected={handleFilesSelected} />);
 
     const input = container.querySelector('input[type="file"]') as HTMLInputElement;
-    const clickSpy = jest.spyOn(input, 'click');
-    const selectFilesBtn = screen.getByRole('button', { name: /select files/i });
-    fireEvent.click(selectFilesBtn);
-    expect(clickSpy).toHaveBeenCalled();
+    const clickSpy = jest.spyOn(input, 'click').mockImplementation(() => {});
+    const zone = screen.getByLabelText(/upload files by clicking or dragging/i);
+
+    expect(zone.tabIndex).toBe(0);
+    zone.focus();
+    fireEvent.keyDown(zone, { key: 'Enter' });
+    fireEvent.keyDown(zone, { key: ' ' });
+
+    expect(clickSpy).toHaveBeenCalledTimes(2);
+    expect(handleFilesSelected).not.toHaveBeenCalled();
   });
 
   it('maintains proper ARIA progressbar semantics', () => {

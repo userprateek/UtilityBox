@@ -150,9 +150,9 @@ export const PdfSplitterOptions: React.FC<PdfSplitterOptionsProps> = ({
       {mode === 'all_pages' && (
         <div className={styles.optionGroup}>
           <p className={styles.dimPresetDesc}>
-            📄 <strong>Extract All Pages</strong>: Every single page of your PDF will be extracted
-            into its own separate PDF document (e.g. <code>page_1.pdf</code>,{' '}
-            <code>page_2.pdf</code>), ready for individual or batch download.
+            📄 <strong>Extract All Pages</strong>: Every page is saved as its own PDF
+            (for example <code>page_1.pdf</code>). Use Download on a single page, or Download
+            ZIP to save them together in one archive.
           </p>
         </div>
       )}

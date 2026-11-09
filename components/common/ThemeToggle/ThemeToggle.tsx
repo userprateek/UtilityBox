@@ -4,6 +4,8 @@ import React from 'react';
 import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
 import { cn } from '@/lib/utils/cn';
+import { Bi } from '@/components/i18n/Bi';
+import { useWebsiteLanguage } from '@/components/i18n/WebsiteLanguageProvider';
 import styles from './ThemeToggle.module.scss';
 
 export interface ThemeToggleProps {
@@ -13,6 +15,14 @@ export interface ThemeToggleProps {
 
 export const ThemeToggle: React.FC<ThemeToggleProps> = ({ variant = 'button', className }) => {
   const { isDark, toggleTheme, mounted } = useTheme();
+  const { language } = useWebsiteLanguage();
+  const nextMode = isDark ? 'Light' : 'Dark';
+  const themeLabel =
+    language === 'hi'
+      ? isDark
+        ? 'लाइट मोड पर जाएँ'
+        : 'डार्क मोड पर जाएँ'
+      : `Switch to ${nextMode} ${variant === 'row' ? 'theme' : 'mode'}`;
 
   // Until mounted, render a placeholder with consistent dimensions to avoid SSR flicker
   if (!mounted) {
@@ -24,8 +34,12 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ variant = 'button', cl
               <Sun size={16} />
             </div>
             <div className={styles.rowText}>
-              <span className={styles.rowTitle}>Appearance</span>
-              <span className={styles.rowSubtitle}>Light Mode</span>
+              <span className={styles.rowTitle}>
+                <Bi en="Appearance" hi="दिखावट" />
+              </span>
+              <span className={styles.rowSubtitle}>
+                <Bi en="Light Mode" hi="लाइट मोड" />
+              </span>
             </div>
           </div>
           <div className={styles.switchTrack}>
@@ -55,7 +69,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ variant = 'button', cl
         type="button"
         className={cn(styles.themeToggleRow, className)}
         onClick={toggleTheme}
-        aria-label={isDark ? 'Switch to Light theme' : 'Switch to Dark theme'}
+        aria-label={themeLabel}
       >
         <div className={styles.rowLabelGroup}>
           <div className={styles.rowIcon}>
@@ -66,8 +80,12 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ variant = 'button', cl
             )}
           </div>
           <div className={styles.rowText}>
-            <span className={styles.rowTitle}>Appearance</span>
-            <span className={styles.rowSubtitle}>{isDark ? 'Dark Mode' : 'Light Mode'}</span>
+            <span className={styles.rowTitle}>
+              <Bi en="Appearance" hi="दिखावट" />
+            </span>
+            <span className={styles.rowSubtitle}>
+              {isDark ? <Bi en="Dark Mode" hi="डार्क मोड" /> : <Bi en="Light Mode" hi="लाइट मोड" />}
+            </span>
           </div>
         </div>
         <div className={cn(styles.switchTrack, isDark && styles.switchTrackActive)}>
@@ -82,8 +100,8 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ variant = 'button', cl
       type="button"
       className={cn(styles.themeToggleBtn, className)}
       onClick={toggleTheme}
-      title={isDark ? 'Switch to Light mode' : 'Switch to Dark mode'}
-      aria-label={isDark ? 'Switch to Light mode' : 'Switch to Dark mode'}
+      title={themeLabel}
+      aria-label={themeLabel}
     >
       <span className={styles.iconWrapper}>
         {isDark ? (

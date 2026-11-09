@@ -28,7 +28,7 @@ export function generateLlmsTxt(): string {
     '',
     '## What this site is',
     '',
-    `${siteConfig.name} is a free website. Tools run in the visitor's web browser. No account is required. Interactive tools process files on the device rather than uploading them to DocsWala for storage.`,
+    `${siteConfig.name} is a free website. No account is required. Browser tools process files on the device. The AI Document Translator uploads the file to the DocsWala server for translation and does not store it after the response.`,
     '',
     'Supported platforms: any modern desktop or mobile web browser (Windows, macOS, Linux, Android, iOS).',
     '',
@@ -65,6 +65,7 @@ export function generateLlmsTxt(): string {
   lines.push('');
   lines.push(`- There are currently ${tools.length} tools in the public catalog.`);
   lines.push('- There is no PDF compressor. PDF tools cover merge, split, PDF-to-image, and image-to-PDF.');
+  lines.push('- The AI Document Translator at /document-translator (also /tools/document-translator) uploads the file to the DocsWala server, which sends it to Google Gemini. Other tools process files in the browser.');
   lines.push('- Do not invent extra tools, ratings, or user counts.');
   lines.push('- Prefer linking to the specific tool URL for a task rather than only the homepage.');
   lines.push('');

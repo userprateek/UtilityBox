@@ -9,6 +9,9 @@ import { Input } from '@/components/common/Input/Input';
 import { EmptyState } from '@/components/common/States/EmptyState';
 import { TOOL_CATEGORIES_LIST } from '@/config/tools/categories';
 import { cn } from '@/lib/utils/cn';
+import { Bi } from '@/components/i18n/Bi';
+import { useWebsiteLanguage } from '@/components/i18n/WebsiteLanguageProvider';
+import { categoryHindi } from '@/lib/i18n/catalog';
 import styles from './page.module.scss';
 
 export interface ToolsDirectoryClientProps {
@@ -16,6 +19,7 @@ export interface ToolsDirectoryClientProps {
 }
 
 export const ToolsDirectoryClient: React.FC<ToolsDirectoryClientProps> = ({ initialTools }) => {
+  const { language } = useWebsiteLanguage();
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get('category') as ToolCategoryId | null;
   const queryParam = searchParams.get('q') ?? '';
@@ -102,9 +106,13 @@ export const ToolsDirectoryClient: React.FC<ToolsDirectoryClientProps> = ({ init
           <Input
             ref={searchInputRef}
             id="tool-search"
-            aria-label="Search tools"
+            aria-label={language === 'hi' ? 'टूल खोजें' : 'Search tools'}
             type="search"
-            placeholder="Search all utilities (e.g. compress jpg, merge pdf)..."
+            placeholder={
+              language === 'hi'
+                ? 'सभी टूल खोजें (जैसे compress jpg, merge pdf)...'
+                : 'Search all utilities (e.g. compress jpg, merge pdf)...'
+            }
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             leftIcon={<Search size={18} />}
@@ -121,7 +129,7 @@ export const ToolsDirectoryClient: React.FC<ToolsDirectoryClientProps> = ({ init
             className={cn(styles.tabBtn, selectedCategory === 'all' && styles.activeTab)}
             onClick={() => setSelectedCategory('all')}
           >
-            All Tools ({initialTools.length})
+            <Bi en={`All Tools (${initialTools.length})`} hi={`सभी टूल (${initialTools.length})`} />
           </button>
 
           {TOOL_CATEGORIES_LIST.map((cat) => {
@@ -135,7 +143,10 @@ export const ToolsDirectoryClient: React.FC<ToolsDirectoryClientProps> = ({ init
                 className={cn(styles.tabBtn, selectedCategory === cat.id && styles.activeTab)}
                 onClick={() => setSelectedCategory(cat.id)}
               >
-                {cat.label} ({count})
+                <Bi
+                  en={`${cat.label} (${count})`}
+                  hi={`${categoryHindi(cat.id).label} (${count})`}
+                />
               </button>
             );
           })}
@@ -145,8 +156,19 @@ export const ToolsDirectoryClient: React.FC<ToolsDirectoryClientProps> = ({ init
       {/* Results Header Info */}
       <div className={styles.resultsInfo}>
         <span className={styles.resultsCount}>
-          Showing <strong>{filteredTools.length}</strong>{' '}
-          {filteredTools.length === 1 ? 'utility' : 'utilities'}
+          <Bi
+            en={
+              <>
+                Showing <strong>{filteredTools.length}</strong>{' '}
+                {filteredTools.length === 1 ? 'utility' : 'utilities'}
+              </>
+            }
+            hi={
+              <>
+                <strong>{filteredTools.length}</strong> टूल दिख रहे हैं
+              </>
+            }
+          />
         </span>
       </div>
 
@@ -159,8 +181,13 @@ export const ToolsDirectoryClient: React.FC<ToolsDirectoryClientProps> = ({ init
         </div>
       ) : (
         <EmptyState
-          title="No utilities match your search"
-          description={`We couldn't find any tools matching "${searchQuery}". Try a different keyword or category.`}
+          title={<Bi en="No utilities match your search" hi="खोज से कोई टूल नहीं मिला" />}
+          description={
+            <Bi
+              en={`We couldn't find any tools matching "${searchQuery}". Try a different keyword or category.`}
+              hi={`"${searchQuery}" से कोई टूल नहीं मिला। दूसरा शब्द या श्रेणी आज़माएँ।`}
+            />
+          }
           action={
             <button
               type="button"
@@ -170,7 +197,7 @@ export const ToolsDirectoryClient: React.FC<ToolsDirectoryClientProps> = ({ init
                 setSelectedCategory('all');
               }}
             >
-              Reset Filters
+              <Bi en="Reset Filters" hi="फ़िल्टर हटाएँ" />
             </button>
           }
         />

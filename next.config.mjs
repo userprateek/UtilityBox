@@ -17,6 +17,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  serverExternalPackages: ['@napi-rs/canvas', 'tesseract.js', '@google/genai', 'pdfjs-dist'],
+  outputFileTracingIncludes: {
+    '/api/translate-document': ['./lib/ai/translation/fonts/**/*'],
+  },
   outputFileTracingRoot: __dirname,
   webpack: (config, { isServer }) => {
     if (!isServer) {

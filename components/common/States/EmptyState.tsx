@@ -4,8 +4,8 @@ import { cn } from '@/lib/utils/cn';
 import styles from './States.module.scss';
 
 export interface EmptyStateProps {
-  title?: string;
-  description?: string;
+  title?: React.ReactNode;
+  description?: React.ReactNode;
   icon?: React.ReactNode;
   action?: React.ReactNode;
   className?: string;

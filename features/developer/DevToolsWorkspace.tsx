@@ -175,6 +175,7 @@ function JwtDecoder() {
       <div className={styles.cardHeader}>
         <Shield size={20} className={styles.headerIcon} />
         <h3 className={styles.cardTitle}>Client-Side JWT Token Decoder</h3>
+        <p>Reads the header and payload. Does not check the signature.</p>
       </div>
 
       <textarea

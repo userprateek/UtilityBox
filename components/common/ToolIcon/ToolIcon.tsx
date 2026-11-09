@@ -20,6 +20,7 @@ import {
   Receipt,
   Briefcase,
   Wrench,
+  Languages,
 } from 'lucide-react';
 
 export interface ToolIconProps {
@@ -68,6 +69,8 @@ export const ToolIcon: React.FC<ToolIconProps> = ({ name, size = 24, className }
       return <Receipt size={size} className={className} />;
     case 'Briefcase':
       return <Briefcase size={size} className={className} />;
+    case 'Languages':
+      return <Languages size={size} className={className} />;
     default:
       return <Wrench size={size} className={className} />;
   }

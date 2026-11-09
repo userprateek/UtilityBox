@@ -238,11 +238,15 @@ export const TextToolsWorkspace: React.FC<TextToolsWorkspaceProps> = ({ tool }) 
 
             <div className={styles.statsList}>
               <div className={styles.statBox}>
-                <span className={styles.statNum}>{wordCount.toLocaleString()}</span>
+                <span className={styles.statNum} data-testid="word-count">
+                  {wordCount.toLocaleString('en-IN')}
+                </span>
                 <span className={styles.statLabel}>Words</span>
               </div>
               <div className={styles.statBox}>
-                <span className={styles.statNum}>{charCount.toLocaleString()}</span>
+                <span className={styles.statNum} data-testid="char-count">
+                  {charCount.toLocaleString('en-IN')}
+                </span>
                 <span className={styles.statLabel}>Characters</span>
               </div>
               <div className={styles.statBox}>
@@ -250,11 +254,15 @@ export const TextToolsWorkspace: React.FC<TextToolsWorkspaceProps> = ({ tool }) 
                 <span className={styles.statLabel}>Chars (No Spaces)</span>
               </div>
               <div className={styles.statBox}>
-                <span className={styles.statNum}>{sentenceCount.toLocaleString()}</span>
+                <span className={styles.statNum} data-testid="sentence-count">
+                  {sentenceCount.toLocaleString('en-IN')}
+                </span>
                 <span className={styles.statLabel}>Sentences</span>
               </div>
               <div className={styles.statBox}>
-                <span className={styles.statNum}>{paragraphCount.toLocaleString()}</span>
+                <span className={styles.statNum} data-testid="paragraph-count">
+                  {paragraphCount.toLocaleString('en-IN')}
+                </span>
                 <span className={styles.statLabel}>Paragraphs</span>
               </div>
               <div className={styles.statBox}>

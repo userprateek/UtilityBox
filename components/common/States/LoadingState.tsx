@@ -4,8 +4,8 @@ import { cn } from '@/lib/utils/cn';
 import styles from './States.module.scss';
 
 export interface LoadingStateProps {
-  message?: string;
-  description?: string;
+  message?: React.ReactNode;
+  description?: React.ReactNode;
   className?: string;
 }
 

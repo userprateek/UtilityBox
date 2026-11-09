@@ -2,6 +2,15 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ToolsDirectoryClient } from './ToolsDirectoryClient';
 import { getAllTools } from '@/config/tools/registry';
+import { WebsiteLanguageProvider } from '@/components/i18n/WebsiteLanguageProvider';
+
+function renderDirectory(tools = getAllTools()) {
+  return render(
+    <WebsiteLanguageProvider>
+      <ToolsDirectoryClient initialTools={tools} />
+    </WebsiteLanguageProvider>
+  );
+}
 
 jest.mock('next/navigation', () => ({
   useSearchParams: () => mockSearchParams,
@@ -17,7 +26,7 @@ describe('ToolsDirectoryClient Component Integration', () => {
   });
 
   it('renders search input and category filter buttons', () => {
-    render(<ToolsDirectoryClient initialTools={allTools} />);
+    renderDirectory(allTools);
 
     expect(screen.getByPlaceholderText(/Search all utilities/i)).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: /all tools/i })).toBeInTheDocument();
@@ -26,7 +35,7 @@ describe('ToolsDirectoryClient Component Integration', () => {
   });
 
   it('filters tools when searching with keyword', () => {
-    render(<ToolsDirectoryClient initialTools={allTools} />);
+    renderDirectory(allTools);
 
     const searchInput = screen.getByPlaceholderText(/Search all utilities/i);
 
@@ -37,7 +46,7 @@ describe('ToolsDirectoryClient Component Integration', () => {
   });
 
   it('filters tools when clicking category tab', () => {
-    render(<ToolsDirectoryClient initialTools={allTools} />);
+    renderDirectory(allTools);
 
     const pdfTab = screen.getByRole('tab', { name: /pdf tools/i });
     fireEvent.click(pdfTab);
@@ -54,7 +63,7 @@ describe('ToolsDirectoryClient Component Integration', () => {
   });
 
   it('shows empty state and allows resetting filters when no matches found', () => {
-    render(<ToolsDirectoryClient initialTools={allTools} />);
+    renderDirectory(allTools);
 
     const searchInput = screen.getByPlaceholderText(/Search all utilities/i);
     fireEvent.change(searchInput, { target: { value: 'nonexistentquery123' } });
@@ -70,7 +79,7 @@ describe('ToolsDirectoryClient Component Integration', () => {
 
   it('applies the q search-param from the URL on first render', () => {
     mockSearchParams = new URLSearchParams('q=cropper');
-    render(<ToolsDirectoryClient initialTools={allTools} />);
+    renderDirectory(allTools);
 
     expect(screen.getByText('Image Cropper')).toBeInTheDocument();
     expect(screen.queryByText('PDF Merger')).not.toBeInTheDocument();

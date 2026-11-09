@@ -24,7 +24,7 @@ describe('ToolShell Workflow Integration', () => {
     render(<ToolShell tool={mockTool} />);
 
     expect(screen.getByText('Image Compressor')).toBeInTheDocument();
-    expect(screen.getByText('Drop your files here, or')).toBeInTheDocument();
+    expect(screen.getByText(/Drop your files here, or/)).toBeInTheDocument();
     expect(screen.getByText('Instant preview')).toBeInTheDocument();
     expect(screen.getByText('Zero server upload')).toBeInTheDocument();
   });
@@ -54,7 +54,7 @@ describe('ToolShell Workflow Integration', () => {
     });
 
     // Workspace rendered
-    expect(screen.getByText('Selected Files')).toBeInTheDocument();
+    expect(screen.getByText(/Selected Files/)).toBeInTheDocument();
     expect(screen.getByText('test.png')).toBeInTheDocument();
     expect(screen.getByTestId('custom-options')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Compress Now' })).toBeInTheDocument();
@@ -68,7 +68,7 @@ describe('ToolShell Workflow Integration', () => {
     expect(mockProcess).toHaveBeenCalled();
 
     // Completion state
-    expect(screen.getByText('Processing Complete!')).toBeInTheDocument();
+    expect(screen.getByText(/Processing Complete!/)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /download processed file/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /adjust options & retry/i })).toBeInTheDocument();
 
@@ -79,6 +79,6 @@ describe('ToolShell Workflow Integration', () => {
     });
 
     // Returned to dropzone
-    expect(screen.getByText('Drop your files here, or')).toBeInTheDocument();
+    expect(screen.getByText(/Drop your files here, or/)).toBeInTheDocument();
   });
 });
